@@ -14,10 +14,14 @@ class Menu2 extends Component {
 
     render() {
         return (
-            <View style={[styles.menu1Container, styles.textStyle]}>
-                <Text>{this.props.menu1.menuId}</Text>
-                <Text>{this.props.menu1.title}</Text>
-                {this.renderMenus2()}
+            <View>
+                <View>
+                    <Text>{this.props.menu1.menuId}</Text>
+                    <Text>{this.props.menu1.title}</Text>
+                </View>
+                <View>
+                    {this.renderMenus2()}
+                </View>
             </View>
         );
     }

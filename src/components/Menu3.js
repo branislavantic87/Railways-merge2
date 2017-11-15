@@ -16,9 +16,14 @@ class Menu3 extends Component {
     render() {
         return (
             <View>
-                <Text>{this.props.menu2.menuId}</Text>
-                <Text>{this.props.menu2.title}</Text>
-                {this.renderMenus3()}
+                <View>
+                    <Text>{this.props.menu2.menuId}</Text>
+                    <Text>{this.props.menu2.title}</Text>
+                </View>
+
+                <View>
+                    {this.renderMenus3()}
+                </View>
             </View>
         );
     }
