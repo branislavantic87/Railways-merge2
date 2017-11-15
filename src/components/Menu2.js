@@ -1,31 +1,20 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import axios from 'axios';
+import Menu3 from './Menu3';
 
 class Menu2 extends Component {
 
     renderMenus2() {
-        return this.props.menu.children.map(child =>
-            <View style={styles.textStyle} key={child.menuId}>
-                <Text>{child.title}</Text>
-                {this.renderMenus3(child)}
-            </View>
-        );
-    }
-
-    renderMenus3(child) {
-        if (child.children) {
-            return child.children.map(ch =>
-                <View style={styles.textStyle} key={ch.menuId}>
-                    <Text>{ch.title}</Text>
-                </View>
+        if (this.props.menu.children) {
+            return this.props.menu.children.map(child =>
+                <Menu3 key={child.menuId} menu={child} />
             );
         }
     }
 
     render() {
         return (
-            <View style={styles.menu1Container}>
+            <View style={[styles.menu1Container, styles.textStyle]}>
                 <Text>{this.props.menu.menuId}</Text>
                 <Text>{this.props.menu.title}</Text>
                 {this.renderMenus2()}
