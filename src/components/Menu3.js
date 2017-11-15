@@ -4,8 +4,8 @@ import { ScrollView, View, Text } from 'react-native';
 class Menu3 extends Component {
 
     renderMenus3() {
-        if (this.props.menu.children) {
-            return this.props.menu.children.map(ch =>
+        if (this.props.menu2.children) {
+            return this.props.menu2.children.map(ch =>
                 <View key={ch.menuId}>
                     <Text>{ch.title}</Text>
                 </View>
@@ -15,9 +15,9 @@ class Menu3 extends Component {
 
     render() {
         return (
-            <View style={styles.textStyle}>
-                <Text>{this.props.menu.menuId}</Text>
-                <Text>{this.props.menu.title}</Text>
+            <View>
+                <Text>{this.props.menu2.menuId}</Text>
+                <Text>{this.props.menu2.title}</Text>
                 {this.renderMenus3()}
             </View>
         );

@@ -5,9 +5,9 @@ import Menu3 from './Menu3';
 class Menu2 extends Component {
 
     renderMenus2() {
-        if (this.props.menu.children) {
-            return this.props.menu.children.map(child =>
-                <Menu3 key={child.menuId} menu={child} />
+        if (this.props.menu1.children) {
+            return this.props.menu1.children.map(child =>
+                <Menu3 key={child.menuId} menu2={child} />
             );
         }
     }
@@ -15,8 +15,8 @@ class Menu2 extends Component {
     render() {
         return (
             <View style={[styles.menu1Container, styles.textStyle]}>
-                <Text>{this.props.menu.menuId}</Text>
-                <Text>{this.props.menu.title}</Text>
+                <Text>{this.props.menu1.menuId}</Text>
+                <Text>{this.props.menu1.title}</Text>
                 {this.renderMenus2()}
             </View>
         );

@@ -13,7 +13,7 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map(menu => 
-            <Menu2 key={menu.menuId} menu={menu} />
+            <Menu2 key={menu.menuId} menu1={menu} />
         );
     }
 
