@@ -4,16 +4,19 @@ import axios from 'axios';
 
 class Menu2 extends Component {
 
-    /*menu2Children() {
-        if (this.props.menu.children) {
-
-        }
-    }*/
+    renderMenus2() {
+        return this.props.menu.children.map(child => 
+            
+                <Text style={styles.textStyle} key={child.menuId}> {child.title} </Text>
+            
+        );
+    }
     render() {
         return (
             <View style={styles.menu1Container}>
                 <Text>{this.props.menu.menuId}</Text>
                 <Text>{this.props.menu.title}</Text>
+                {this.renderMenus2()}
             </View>
         );
     }
@@ -24,6 +27,9 @@ const styles = {
         borderWidth: 1,
         borderColor: '#ddd',
         borderBottomWidth: 0
+    },
+    textStyle: {
+        paddingLeft: 15
     }
 }
 

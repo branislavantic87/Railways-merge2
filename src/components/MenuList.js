@@ -4,28 +4,20 @@ import axios from 'axios';
 import Menu2 from './Menu2';
 
 class MenuList extends Component {
-    state = { menus: [] };
+    state = { menus: [], child: [] };
 
     componentWillMount() {
         axios.get('http://192.168.0.15:8000/railways')
         .then(response => this.setState({ menus: response.data.menuTrees[1].menuTree }));
     }
 
-    renderMenus2() {
-
-    }
     renderMenus1() {
         return this.state.menus.map(menu => 
             <Menu2 key={menu.menuId} menu={menu} />
         );
     }
 
-    /*renderMenus2() {
-        return this.state.menus.map(menu => )
-    }*/
-
     render() {
-
         return (
             <View>
                 {this.renderMenus1()}
