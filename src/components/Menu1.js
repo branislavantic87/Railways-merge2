@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import Menu3 from './Menu3';
+import Menu2 from './Menu2';
 
-class Menu2 extends Component {
+class Menu1 extends Component {
 
     renderMenus2() {
         if (this.props.menu1.children) {
             return this.props.menu1.children.map(child =>
-                <Menu3 key={child.menuId} menu2={child} />
+                <Menu2 key={child.menuId} menu2={child} />
             );
         }
     }
@@ -21,8 +21,4 @@ class Menu2 extends Component {
     }
 }
 
-const styles = {
-
-}
-
-export default Menu2;
+export default Menu1;

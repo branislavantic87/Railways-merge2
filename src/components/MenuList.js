@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import axios from 'axios';
-import Menu2 from './Menu2';
+import Menu1 from './Menu2';
 
 class MenuList extends Component {
     state = { menus: [], child: [] };
@@ -13,7 +13,7 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map(menu => 
-            <Menu2 key={menu.menuId} menu1={menu} />
+            <Menu1 key={menu.menuId} menu1={menu} />
         );
     }
 
