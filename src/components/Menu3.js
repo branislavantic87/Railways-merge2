@@ -6,9 +6,7 @@ class Menu3 extends Component {
     renderMenus3() {
         if (this.props.menu2.children) {
             return this.props.menu2.children.map(ch =>
-                <View key={ch.menuId}>
-                    <Text>{ch.title}</Text>
-                </View>
+                <kugf key={ch.menuId} ch={ch}/>
             );
         }
     }
@@ -17,7 +15,7 @@ class Menu3 extends Component {
         return (
             <View>
                 <View>
-                    <Text>{this.props.menu2.menuId}</Text>
+                    <Text style={{color: 'blue'}}>{this.props.menu2.menuId}</Text>
                     <Text>{this.props.menu2.title}</Text>
                 </View>
 
@@ -28,6 +26,15 @@ class Menu3 extends Component {
         );
     }
 }
+
+const kugf = () => {
+    return (
+        <View>
+            <Text>{this.props.ch.menuId}</Text>
+            <Text>{this.props.ch.title}</Text>
+    </View>
+    )
+};
 
 const styles = {
     menu1Container: {

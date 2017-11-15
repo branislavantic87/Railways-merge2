@@ -19,10 +19,18 @@ class MenuList extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <View>
                 {this.renderMenus1()}
-            </ScrollView>
+            </View>
         );
+    }
+}
+
+const styles = {
+    menu1Container: {
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderBottomWidth: 0
     }
 }
 

@@ -16,25 +16,20 @@ class Menu2 extends Component {
         return (
             <View>
                 <View>
-                    <Text>{this.props.menu1.menuId}</Text>
-                    <Text>{this.props.menu1.title}</Text>
+                    <Text style={styles.menu1Text}>{this.props.menu1.title}</Text>
                 </View>
-                <View>
-                    {this.renderMenus2()}
-                </View>
+                {this.renderMenus2()}
             </View>
         );
     }
 }
 
 const styles = {
-    menu1Container: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderBottomWidth: 0
+    menu1View: {
+        
     },
-    textStyle: {
-        paddingLeft: 30
+    menu1Text: {
+        color: 'red'
     }
 }
 
