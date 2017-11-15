@@ -19,9 +19,9 @@ class MenuList extends Component {
 
     render() {
         return (
-            <View>
+            <ScrollView>
                 {this.renderMenus1()}
-            </View>
+            </ScrollView>
         );
     }
 }
