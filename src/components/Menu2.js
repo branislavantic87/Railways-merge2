@@ -15,8 +15,8 @@ class Menu2 extends Component {
     render() {
         return (
             <View>
-                <TouchableOpacity>
-                    <Text>{this.props.menu2.title}</Text>
+                <TouchableOpacity style={styles.menu2Item}>
+                    <Text style={styles.menu2Text}>{this.props.menu2.title}</Text>
                 </TouchableOpacity>
                 <View>
                     {this.renderMenus3()}
@@ -28,7 +28,15 @@ class Menu2 extends Component {
 }
 
 const styles = {
+    menu2Item: {
+        padding: 10,
+        margin: 5,
 
+    },
+    menu2Text: {
+        backgroundColor: 'orange',
+        padding: 10
+    }
 }
 
 export default Menu2;

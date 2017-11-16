@@ -30,7 +30,6 @@ class MenuList extends Component {
     }
 
     render() {
-        console.log("asd");
         return (
             <View style={styles.mainCont}>
                 <ScrollView horizontal={true} style={styles.menu1Container}>
