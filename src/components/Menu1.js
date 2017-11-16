@@ -6,7 +6,7 @@ class Menu1 extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { menu1: props.menu1 }
+        this.state = { isActive: props.isPressed };
     }
 
     renderMenus2() {
@@ -17,20 +17,28 @@ class Menu1 extends Component {
         }
     }
 
-    checkIfSelected() {
+    checkIfSelectedAndPrint2() {
         if(this.props.isPressed) {
             return this.renderMenus2();
+        }
+    }
+
+    isActive() {
+        if(this.props.isPressed) {
+            return styles.active;
+        } else {
+            return styles.menu1Item;
         }
     }
 
     render() {
         return (
             <View>
-                <TouchableOpacity style={styles.menu1Item}>
-                    <Text>{this.state.menu1.title}</Text>
+                <TouchableOpacity  onPress={this.props.onPress} style={this.isActive()}>
+                    <Text>{this.props.menu1.title}</Text>
                 </TouchableOpacity>
                 <View>
-                    {this.checkIfSelected()}
+                    {this.checkIfSelectedAndPrint2()} 
                 </View>
             </View>
         );
@@ -42,7 +50,14 @@ const styles = {
         marginLeft: 5,
         marginRight: 5,
         backgroundColor: 'yellow',
-        height: 5,
+        height: 20,
+        padding: 20
+    },
+    active: {
+        backgroundColor: 'green',
+        marginLeft: 5,
+        marginRight: 5,
+        height: 20,
         padding: 20
     }
 }

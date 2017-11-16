@@ -11,9 +11,14 @@ class MenuList extends Component {
         .then(response => this.setState({ menus: response.data.menuTrees[1].menuTree }));
     }
 
-    setSelected(i) {
-        this.setState({ selected: i});
-        console.log(this.state.selected);
+    renderMenus1() {
+        return this.state.menus.map((menu, i) => 
+            <Menu1  onPress={() => this.setState({selected: i})} 
+                    isPressed={this.checkIsPressed(i)} 
+                    key={menu.menuId} 
+                    menu1={menu} 
+            />
+        );
     }
 
     checkIsPressed(i) {
@@ -23,31 +28,14 @@ class MenuList extends Component {
             return false;
         }
     }
-/* onPress={this.setSelected(i)} */
-/*
-
-onPress={() => this.setSelected(i)}
-
-isPressed={this.checkIsPressed(i)}
-
-<TouchableOpacity onPress={() => {this.setState({selected: i})}}>
- </TouchableOpacity>
-*/
-    renderMenus1() {
-        return this.state.menus.map((menu, i) => 
-            <TouchableOpacity onPress={() => this.setState({selected: i})}>
-                <Menu1 isPressed={this.checkIsPressed(i)} key={menu.menuId} menu1={menu} />
-            </TouchableOpacity>
-        );
-    }
 
     render() {
+        console.log("asd");
         return (
             <View style={styles.mainCont}>
                 <ScrollView horizontal={true} style={styles.menu1Container}>
                     {this.renderMenus1()}
                 </ScrollView>
-                
             </View>
         );
     }
