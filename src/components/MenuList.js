@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, Button } from 'react-native';
 import axios from 'axios';
-import Menu1 from './Menu2';
+import Menu1 from './Menu1';
 
 class MenuList extends Component {
     state = { menus: [], child: [] };
@@ -13,14 +13,19 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map(menu => 
-            <Menu1 key={menu.menuId} menu1={menu} />
+            <Menu1 key={menu.menuId} menu1={menu}>
+                <Text>{menu.title}</Text>
+            </Menu1>
         );
     }
 
     render() {
         return (
-            <View>
-                {this.renderMenus1()}
+            <View style={styles.mainCont}>
+                <Text>AAAABBBB</Text>
+                <ScrollView horizontal={true} style={styles.menu1Container}>
+                  {this.renderMenus1()}
+                </ScrollView>
             </View>
         );
     }
@@ -28,9 +33,13 @@ class MenuList extends Component {
 
 const styles = {
     menu1Container: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderBottomWidth: 0
+        flexDirection: 'row',
+        
+        
+    },
+    mainCont: {
+        flex: 1,
+        
     }
 }
 

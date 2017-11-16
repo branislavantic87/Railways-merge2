@@ -7,7 +7,7 @@ class Menu3 extends Component {
         if (this.props.menu2.children) {
             return this.props.menu2.children.map(ch =>
                 <View key={ch.menuId}>
-                    <Text>{ch.title}</Text>
+                    <Text></Text>
                 </View>
             );
         }

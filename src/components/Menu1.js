@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import Menu2 from './Menu2';
 
 class Menu1 extends Component {
@@ -14,10 +14,20 @@ class Menu1 extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.menu1Item}>
+                {this.props.children}
                 {this.renderMenus2()}
             </View>
         );
+    }
+}
+
+const styles = {
+    menu1Item: {
+        marginLeft: 5,
+        marginRight: 5,
+        backgroundColor: 'yellow',
+        height: 20
     }
 }
 
