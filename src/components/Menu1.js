@@ -6,22 +6,32 @@ class Menu1 extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { menu1: props.menu1 }
+        this.state = { menu1: props.menu1, index: props.index, isSelected: false }
     }
 
     renderMenus2() {
-        if (this.props.menu1.children) {
-            return this.props.menu1.children.map(child =>
+        if (this.state.menu1.children) {
+            return this.state.menu1.children.map(child =>
                 <Menu2 key={child.menuId} menu2={child} />
             );
         }
     }
 
+    checkIfSelected() {
+        if(this.state.isSelected) {
+            return this.renderMenus2();
+        }
+    }
+
     render() {
         return (
-            <View style={styles.menu1Item}>
-                <Text>{this.state.menu1.title}</Text>
-                {this.renderMenus2()}
+            <View>
+                <TouchableOpacity onPress={() => { this.setState({isSelected: true}) }} style={styles.menu1Item}>
+                    <Text>{this.state.menu1.title}</Text>
+                </TouchableOpacity>
+                <View>
+                    {this.checkIfSelected()}
+                </View>
             </View>
         );
     }

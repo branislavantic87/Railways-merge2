@@ -12,8 +12,8 @@ class MenuList extends Component {
     }
 
     renderMenus1() {
-        return this.state.menus.map(menu => 
-            <Menu1 key={menu.menuId} menu1={menu} />
+        return this.state.menus.map((menu, i) => 
+            <Menu1 key={menu.menuId} menu1={menu} index={i} />
         );
     }
 
