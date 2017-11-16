@@ -6,19 +6,19 @@ class Menu1 extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { menu1: props.menu1, index: props.index, isSelected: false }
+        this.state = { menu1: props.menu1 }
     }
 
     renderMenus2() {
-        if (this.state.menu1.children) {
-            return this.state.menu1.children.map(child =>
+        if (this.props.menu1.children) {
+            return this.props.menu1.children.map(child =>
                 <Menu2 key={child.menuId} menu2={child} />
             );
         }
     }
 
     checkIfSelected() {
-        if(this.state.isSelected) {
+        if(this.props.isPressed) {
             return this.renderMenus2();
         }
     }
@@ -26,7 +26,7 @@ class Menu1 extends Component {
     render() {
         return (
             <View>
-                <TouchableOpacity onPress={() => { this.setState({isSelected: true}) }} style={styles.menu1Item}>
+                <TouchableOpacity style={styles.menu1Item}>
                     <Text>{this.state.menu1.title}</Text>
                 </TouchableOpacity>
                 <View>
