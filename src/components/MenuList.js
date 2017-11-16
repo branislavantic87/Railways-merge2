@@ -13,7 +13,7 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map((menu, i) => 
-            <Menu1  onPress={() => this.setState({selected: i})} 
+            <Menu1  onPress={() => this.setState({ selected: i})} 
                     isPressed={this.checkIsPressed(i)} 
                     key={menu.menuId} 
                     menu1={menu} 

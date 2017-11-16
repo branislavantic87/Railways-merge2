@@ -5,7 +5,7 @@ import MenuList from './src/components/MenuList';
 export default class App extends React.Component {
   render() {
     return (
-      <ScrollView horizontal={true}>
+      <ScrollView>
         <MenuList />
       </ScrollView>
     );

@@ -34,7 +34,7 @@ class Menu1 extends Component {
     render() {
         return (
             <View>
-                <TouchableOpacity  onPress={this.props.onPress} style={this.isActive()}>
+                <TouchableOpacity onPress={this.props.onPress} style={this.isActive()}>
                     <Text>{this.props.menu1.title}</Text>
                 </TouchableOpacity>
                 <View>
