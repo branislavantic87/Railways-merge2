@@ -13,16 +13,13 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map(menu => 
-            <Menu1 key={menu.menuId} menu1={menu}>
-                <Text>{menu.title}</Text>
-            </Menu1>
+            <Menu1 key={menu.menuId} menu1={menu} />
         );
     }
 
     render() {
         return (
             <View style={styles.mainCont}>
-                <Text>AAAABBBB</Text>
                 <ScrollView horizontal={true} style={styles.menu1Container}>
                   {this.renderMenus1()}
                 </ScrollView>
@@ -34,7 +31,7 @@ class MenuList extends Component {
 const styles = {
     menu1Container: {
         flexDirection: 'row',
-        
+        marginTop: 50
         
     },
     mainCont: {

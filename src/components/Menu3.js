@@ -16,7 +16,7 @@ class Menu3 extends Component {
     render() {
         return (
             <View>
-                {this.renderMenus3()}
+                {/*this.renderMenus3()*/}
             </View>
         );
     }
