@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { ScrollView, View, Text, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Menu1 from './Menu1';
+import Menu2 from './Menu2';
 
 class MenuList extends Component {
-    state = { menus: [], selected: 0 };
+    state = { menus: [], selected: 0, languange: 'English' };
 
     componentWillMount() {
         axios.get('http://192.168.0.15:8000/railways')
@@ -13,19 +14,27 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map((menu, i) => 
-            <Menu1  onPress={() => this.setState({ selected: i})} 
-                    isPressed={this.checkIsPressed(i)} 
+            <Menu1  onPress={() => {
+                if(this.state.selected == i) {
+                this.setState({ selected: -1});
+                } else {
+                this.setState({ selected: i});
+                }
+            }}
+                    isPressed={this.state.selected == i ? true : false} 
                     key={menu.menuId} 
                     menu1={menu} 
             />
         );
     }
 
-    checkIsPressed(i) {
-        if(this.state.selected == i) {
-            return true;
-        } else {
-            return false;
+    renderMenus2() {
+        if(this.state.menus[this.state.selected]) {
+            if (this.state.menus[this.state.selected].children) {
+                return this.state.menus[this.state.selected].children.map(child =>
+                    <Menu2 key={child.menuId} menu2={child} />
+                );
+            }
         }
     }
 
@@ -35,6 +44,10 @@ class MenuList extends Component {
                 <ScrollView horizontal={true} style={styles.menu1Container}>
                     {this.renderMenus1()}
                 </ScrollView>
+
+                <View style={{borderWidth: 5, borderColor: 'red'}}>
+                    {this.renderMenus2()}
+                </View>
             </View>
         );
     }
@@ -43,11 +56,13 @@ class MenuList extends Component {
 const styles = {
     menu1Container: {
         flexDirection: 'row',
-        marginTop: 50
+        marginTop: 50,
+        borderWidth: 5,
+        borderColor: 'black'
         
     },
     mainCont: {
-        flex: 1,
+        
         
     }
 }
