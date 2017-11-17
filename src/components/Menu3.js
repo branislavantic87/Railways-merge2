@@ -7,7 +7,7 @@ class Menu3 extends Component {
         return (
             <View style={styles.menu3Item}>
                 <TouchableOpacity>
-                    <Text style={styles.menu3Text}>{this.props.menu3.title}</Text>
+                    <Text numberOfLines={1} style={styles.menu3Text}>{this.props.menu3.title}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -18,7 +18,7 @@ class Menu3 extends Component {
 const styles = {
     menu3Item: {
         padding: 10,
-        paddingLeft: 20,
+        width: 200
     },
     menu3Text: {
         padding: 10,

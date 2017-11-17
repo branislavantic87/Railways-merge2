@@ -45,9 +45,9 @@ class MenuList extends Component {
                     {this.renderMenus1()}
                 </ScrollView>
 
-                <View style={{borderWidth: 5, borderColor: 'red'}}>
+                <ScrollView horizontal={true} style={{flexDirection: 'row'}}>
                     {this.renderMenus2()}
-                </View>
+                </ScrollView>
             </View>
         );
     }
@@ -56,9 +56,7 @@ class MenuList extends Component {
 const styles = {
     menu1Container: {
         flexDirection: 'row',
-        marginTop: 50,
-        borderWidth: 5,
-        borderColor: 'black'
+        marginTop: 50
         
     },
     mainCont: {

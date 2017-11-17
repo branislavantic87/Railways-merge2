@@ -16,9 +16,9 @@ class Menu2 extends Component {
         return (
             <View>
                 <TouchableOpacity style={styles.menu2Item}>
-                    <Text style={styles.menu2Text}>{this.props.menu2.title}</Text>
+                    <Text numberOfLines={1} style={styles.menu2Text}>{this.props.menu2.title}</Text>
                 </TouchableOpacity>
-                <View>
+                <View style={{height: 250, flexWrap: 'wrap'}}>
                     {this.renderMenus3()}
                 </View>
 
@@ -31,7 +31,7 @@ const styles = {
     menu2Item: {
         padding: 10,
         margin: 5,
-
+        width: 200
     },
     menu2Text: {
         backgroundColor: 'orange',
