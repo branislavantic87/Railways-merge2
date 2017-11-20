@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, Button, TouchableOpacity } from 'react-native';
-import axios from 'axios';
 import Menu1 from './Menu1';
 import Menu2 from './Menu2';
 
 class MenuList extends Component {
-    state = { menus: [], selected: 0, languange: 'English' };
 
-    componentWillMount() {
-        axios.get('http://192.168.0.15:8000/railways')
-        .then(response => this.setState({ menus: response.data.menuTrees[1].menuTree }));
+    state = {   menus: this.props.data.menuTrees[1].menuTree, 
+                selected: 0, 
+                languange: 'English' 
+            };
+
+    componentDidUpdate() {
+        this.refs._scrollView2.scrollTo({y:0, x:0, animated: true});
     }
 
     renderMenus1() {
         return this.state.menus.map((menu, i) => 
-            <Menu1  onPress={() => {
-                if(this.state.selected == i) {
-                this.setState({ selected: -1});
-                } else {
-                this.setState({ selected: i});
-                }
-            }}
+            <Menu1  onPress={() => this.state.selected == i ? this.setState({selected: -1}) : this.setState({selected: i})}
                     isPressed={this.state.selected == i ? true : false} 
                     key={menu.menuId} 
                     menu1={menu} 
@@ -39,13 +35,14 @@ class MenuList extends Component {
     }
 
     render() {
+        console.log("a");
         return (
             <View style={styles.mainCont}>
-                <ScrollView horizontal={true} style={styles.menu1Container}>
+                <ScrollView horizontal={true} style={styles.menu1Container} showsHorizontalScrollIndicator={false}>
                     {this.renderMenus1()}
                 </ScrollView>
 
-                <ScrollView horizontal={true} style={{flexDirection: 'row'}}>
+                <ScrollView ref='_scrollView2' showsHorizontalScrollIndicator={false} horizontal={true} style={{flexDirection: 'row'}}>
                     {this.renderMenus2()}
                 </ScrollView>
             </View>
