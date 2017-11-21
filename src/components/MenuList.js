@@ -35,7 +35,6 @@ class MenuList extends Component {
     }
 
     render() {
-        console.log("a");
         return (
             <View style={styles.mainCont}>
                 <ScrollView horizontal={true} style={styles.menu1Container} showsHorizontalScrollIndicator={false}>
