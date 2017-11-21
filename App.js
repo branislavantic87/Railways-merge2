@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import axios from 'axios';
-import expo, { Video } from 'expo';
+import expo, { FileSystem } from 'expo';
 import MenuList from './src/components/MenuList';
 import md5 from 'md5';
 
@@ -17,7 +17,15 @@ export default class App extends Component {
 
       const path = expo.FileSystem.documentDirectory + 'contentJson.json';
 
-      expo.FileSystem.getInfoAsync(path).then(data => { console.log(data.exists) });
+      FileSystem.deleteAsync(FileSystem.documentDirectory)
+      .catch(err => console.log('aaaa'));
+
+
+      FileSystem.getInfoAsync(path).then(data => { console.log(data.exists)});
+
+      // iz state u json fajl
+
+      /*expo.FileSystem.getInfoAsync(path).then(data => { console.log(data.exists) });
 
       expo.FileSystem.downloadAsync(
         'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890',
@@ -29,12 +37,12 @@ export default class App extends Component {
         console.error(error);
       });    
 
-      expo.FileSystem.getInfoAsync(path, {md5: true}).then(data => { console.log(md5(data)) });
+      expo.FileSystem.getInfoAsync(path).then(data => { console.log(md5(data)) });
       // json iz fajla
       expo.FileSystem.readAsStringAsync(path)
       .then(data => { 
         let a = JSON.parse(data);
-        console.log(a) });
+        console.log(a) });*/
       
       // preuzeti json, staviti u state
       // proveriti dal postoji kao fajl
@@ -79,11 +87,9 @@ export default class App extends Component {
     }
   }*/
 
-  /*checkHash() {
-    return this.state.data.files.map(file => {
-      if(file.hash == )
-    });
-  }*/
+  compareJsonHash() {
+    
+  }
 
   render() {
     if (!this.state.isLoading) {
