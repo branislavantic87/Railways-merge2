@@ -7,50 +7,111 @@ import md5 from 'md5';
 
 export default class App extends Component {
 
-  state = { data: {}, isLoading: true };
+  state = { fetchedData: {}, data: {}, isLoading: true };
 
   componentWillMount() {
-    axios.get('http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890')
-      .then(response => this.setState({ data: response.data }))
-      .then(console.log(md5(this.state.data)))
-      .then(() => this.setState({ isLoading: false }));
 
-      const path = expo.FileSystem.documentDirectory + 'contentJson.json';
+    const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
+    const pathToFiles = FileSystem.documentDirectory + 'files/';
+    const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
 
-      FileSystem.deleteAsync(FileSystem.documentDirectory)
-      .catch(err => console.log('aaaa'));
+    /*FileSystem.downloadAsync('http://www.medias.rs/images/15/1545/prolece_3.jpg', 
+    FileSystem.documentDirectory + 'a/' + 'prolece.jpg')
+    .catch((error) => console.log('Pukao DownloadAsync'));*/
+    //FileSystem.deleteAsync(pathToFiles + 'prolece.jpg');
+    // pravljenje foldera './files'
+    FileSystem.getInfoAsync(pathToFiles)
+    .then(response => {
+      console.log(response.isDirectory);
+      console.log(response.size);
+      if(!response.isDirectory) {
+        FileSystem.makeDirectoryAsync(pathToFiles);
+      }
+    });
+    
+    // problem jer size od foldera je uvek 4096, nebitno dal ima nesto u njemu
+    // naci drugi nacin kako proveriti dal ima nesto u folderu
 
-
-      FileSystem.getInfoAsync(path).then(data => { console.log(data.exists)});
-
-      // iz state u json fajl
-
-      /*expo.FileSystem.getInfoAsync(path).then(data => { console.log(data.exists) });
-
-      expo.FileSystem.downloadAsync(
-        'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890',
-        path
-      ).then(({ uri }) => {
-        console.log('Finished downloading to ', uri);
-      })
-      .catch(error => {
-        console.error(error);
-      });    
-
-      expo.FileSystem.getInfoAsync(path).then(data => { console.log(md5(data)) });
-      // json iz fajla
-      expo.FileSystem.readAsStringAsync(path)
-      .then(data => { 
-        let a = JSON.parse(data);
-        console.log(a) });*/
+    checkFilesAndDownloadMissingOnes = () => {
       
-      // preuzeti json, staviti u state
-      // proveriti dal postoji kao fajl
-      // ako ne postoji, snimiti kao fajl
-      // ako postoji, proveriti hash-eve
+    }
+    
+    FileSystem.getInfoAsync(FileSystem.documentDirectory + 'a/').catch('error kod getInfo')
+    .then(res => { console.log(res.isDirectory); console.log(res.size); });
 
-      //this.downloadAllFiles();
-      
+    // ako ima interneta
+    axios.get(contentJsonURL)
+      .then(response => this.setState({ fetchedData: response.data }))
+      .done(() => {
+        FileSystem.getInfoAsync(pathToContentJson) // uzmi info od contentJson
+          .then(data => {
+            if (!data.exists) { // ako ne postoji contentJson
+              putContentInFile(); // skini, smesti, ocitaj, smesti u this.state.data iz fajla
+            } else { // ako postoji contentJson vec
+              compareJsonsAndDownloadNewContent();
+            }
+          });
+      });
+
+    putContentInFile = () => {
+      FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
+        .then(({ fileUri }) => {
+          console.log('Fajl nije postojao i sad je snimljen contentJson.json');
+          FileSystem.readAsStringAsync(fileUri)
+            .then(str => {
+              let contentJsonObj = JSON.parse(str);
+              this.setState({ data: contentJsonObj, isLoading: false });
+            });
+        })
+        .catch(error => { console.log(error) });
+    }
+
+    compareJsonsAndDownloadNewContent = () => {
+      FileSystem.readAsStringAsync(pathToContentJson) // ocitaj
+      .then(fileAsString => {
+        const contentJsonObj = JSON.parse(fileAsString); // parsiraj kao objekat
+        if (md5(this.state.fetchedData) == md5(contentJsonObj)) { // ako su hash-evi isti
+          this.setState({ data: contentJsonObj, isLoading: false }); // u this.state.data stavi {} iz fajla
+          console.log("Hashevi su isti, nema potrebe za preuzimanjem podataka!");
+        } else { // ako hash-evi nisu isti
+          console.log("Hash nije isti, POCNI");
+          const oldJson = JSON.parse(fileAsString); // smesti trenutni fajl u ovu varijablu
+          const newJson = this.state.fetchedData;
+          FileSystem.writeAsStringAsync(pathToContentJson, newJson.toString()); // overwrite file
+
+          // provera fajlova
+        }
+      });
+    }
+
+    // iz state u json fajl
+
+    /*expo.FileSystem.getInfoAsync(path).then(data => { console.log(data.exists) });
+
+    expo.FileSystem.downloadAsync(
+      'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890',
+      path
+    ).then(({ uri }) => {
+      console.log('Finished downloading to ', uri);
+    })
+    .catch(error => {
+      console.error(error);
+    });    
+
+    expo.FileSystem.getInfoAsync(path).then(data => { console.log(md5(data)) });
+    // json iz fajla
+    expo.FileSystem.readAsStringAsync(path)
+    .then(data => { 
+      let a = JSON.parse(data);
+      console.log(a) });*/
+
+    // preuzeti json, staviti u state
+    // proveriti dal postoji kao fajl
+    // ako ne postoji, snimiti kao fajl
+    // ako postoji, proveriti hash-eve
+
+    //this.downloadAllFiles();
+
   }
 
   /*downloadOne() {
@@ -88,35 +149,35 @@ export default class App extends Component {
   }*/
 
   compareJsonHash() {
-    
+
   }
 
   render() {
     if (!this.state.isLoading) {
       //this.downloadAllFiles();
       return (
-        
         <ScrollView>
           {/*<Image style={{marginTop: 300, height: 300, width: 300}} source={{uri: expo.FileSystem.documentDirectory + '90.jpg'}} />
+        <Image source={{uri: FileSystem.documentDirectory + 'files/prolece.jpg'}}  style={{height: 300, width: 300}} />
           
-      <Video
-        source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
-        rate={1.0}
-        volume={1.0}
-        muted={false}
-        resizeMode="cover"
-        shouldPlay
-        isLooping
-        style={{ width: 300, height: 300 }}
-      />*/}
-    
+          <Video
+          source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+          rate={1.0}
+          volume={1.0}
+          muted={false}
+          resizeMode="cover"
+          shouldPlay
+          isLooping
+          style={{ width: 300, height: 300 }}
+        />*/}
+
           <MenuList data={this.state.data} />
         </ScrollView>
       );
     }
-    else 
+    else
       return (
-        <View style={{marginTop: 50}}>
+        <View style={{ marginTop: 50 }}>
           <Text>Loading, please wait.</Text>
         </View>
       );
