@@ -20,14 +20,14 @@ export default class App extends Component {
     .catch((error) => console.log('Pukao DownloadAsync'));*/
     //FileSystem.deleteAsync(pathToFiles + 'prolece.jpg');
     // pravljenje foldera './files'
-    FileSystem.getInfoAsync(pathToFiles)
+    /*FileSystem.getInfoAsync(pathToFiles)
     .then(response => {
       console.log(response.isDirectory);
       console.log(response.size);
       if(!response.isDirectory) {
         FileSystem.makeDirectoryAsync(pathToFiles);
       }
-    });
+    });*/
     
     // problem jer size od foldera je uvek 4096, nebitno dal ima nesto u njemu
     // naci drugi nacin kako proveriti dal ima nesto u folderu
@@ -46,24 +46,54 @@ export default class App extends Component {
         FileSystem.getInfoAsync(pathToContentJson) // uzmi info od contentJson
           .then(data => {
             if (!data.exists) { // ako ne postoji contentJson
-              putContentInFile(); // skini, smesti, ocitaj, smesti u this.state.data iz fajla
+              console.log('Fajl nije postojao i sad je snimljen contentJson.json'); 
+              putContentInFile3(); // skini, smesti, ocitaj, smesti u this.state.data iz fajla
             } else { // ako postoji contentJson vec
               compareJsonsAndDownloadNewContent();
             }
           });
       });
 
+    putContentInFile3 = () => {
+      FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
+      .then((dataFromDownload) => FileSystem.readAsStringAsync(pathToContentJson))
+      .then((dataFromRead) => { 
+        let contentJsonObj = JSON.parse(dataFromRead);
+        this.setState({ data: contentJsonObj, isLoading: false }) 
+      });
+    }
+
+    putContentInFile2 = () => {
+      FileSystem.downloadAsync(contentJsonURL, pathToContentJson, {}, (data) => { 
+        console.log("Preuzeo");
+        FileSystem.readAsStringAsync(data.fileUri, (str) => {
+          console.log("Ocitao");
+          let contentJsonObj = JSON.parse(str);
+          this.setState({ data: contentJsonObj, isLoading: false });
+        });
+      });
+    }
+
+
     putContentInFile = () => {
       FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
+      .catch(err => console.log('catch od download: ' + err))
         .then(({ fileUri }) => {
-          console.log('Fajl nije postojao i sad je snimljen contentJson.json');
-          FileSystem.readAsStringAsync(fileUri)
+          console.log('=====================');
+          FileSystem.readAsStringAsync(fileUri).catch(console.log('Catch od Read'))
             .then(str => {
               let contentJsonObj = JSON.parse(str);
-              this.setState({ data: contentJsonObj, isLoading: false });
-            });
+              this.setState({ data: contentJsonObj, isLoading: false })
+              .then(() => {
+                console.log('Krece skidanje svih fajlova');
+                //downloadAllFiles();
+              })
+              .catch(console.log('error posle setState'));
+              
+            })
+            .catch(console.log('error kod then posle catch of read'));
         })
-        .catch(error => { console.log(error) });
+        .catch(error => { console.log('catch od prvog then') });
     }
 
     compareJsonsAndDownloadNewContent = () => {
@@ -82,6 +112,23 @@ export default class App extends Component {
           // provera fajlova
         }
       });
+    }
+
+    downloadAllFiles = () => {
+      if(!this.state.isLoading) {
+        this.state.data.files.map(file => {
+          FileSystem.downloadAsync(
+            'http://www.cduppy.com/salescms/files/3/' + file.fileId,
+            FileSystem.documentDirectory + file.fileId + '.' + file.ext
+          )
+          .then(({ uri }) => {
+            console.log('Finished downloading to ', uri);
+          })
+          .catch(error => {
+            console.log(error);
+          });  
+        });
+      }
     }
 
     // iz state u json fajl
