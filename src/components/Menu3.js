@@ -18,7 +18,7 @@ class Menu3 extends Component {
     render() {
         return (
             <View style={styles.menu3Item}>
-                <TouchableOpacity onPress={() => { return <Temptest  /> }}>
+                <TouchableOpacity onPress={() => console.log(this.state.filteredPages)}>
                     <Text numberOfLines={1} style={styles.menu3Text}>{this.props.menu3.title}</Text>
                     
                 </TouchableOpacity>

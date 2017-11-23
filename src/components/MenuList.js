@@ -8,8 +8,7 @@ class MenuList extends Component {
     state = {   menus: this.props.data.menuTrees[1].menuTree, 
                 selected: 0, 
                 languange: 'English',
-                pages: this.props.data.pages,
-                files: this.props.data.files
+                pages: this.props.data.pages
             };
 
     componentDidUpdate() {
@@ -18,10 +17,10 @@ class MenuList extends Component {
 
     renderMenus1() {
         return this.state.menus.map((menu, i) => 
-            <Menu1  onPress={() => this.state.selected == i ? this.setState({selected: -1}) : this.setState({selected: i})}
+            <Menu1  onPress={() => this.setState({selected: i})}
                     isPressed={this.state.selected == i ? true : false} 
                     key={menu.menuId} 
-                    menu1={menu} 
+                    menu1={menu}
             />
         );
     }
@@ -29,10 +28,10 @@ class MenuList extends Component {
     renderMenus2() {
         if(this.state.menus[this.state.selected]) {
             if (this.state.menus[this.state.selected].children) {
-                return this.state.menus[this.state.selected].children.map(child => 
+                return this.state.menus[this.state.selected].children.map(menu => 
                     <Menu2 
-                        key={child.menuId} 
-                        menu2={child} 
+                        key={menu.menuId} 
+                        menu2={menu} 
                         pages={this.state.pages}
                             
                     />
