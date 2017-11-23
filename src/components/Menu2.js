@@ -19,7 +19,6 @@ class Menu2 extends Component {
         }
     }
 
-    /* pages={this.props.data.pages.filter(elem => { return elem.menuId == child.menuId})} */
 
     filterPages() {
         var a = this.props.pages.filter(elem => { return elem.menuId == this.props.menu2.menuId});
