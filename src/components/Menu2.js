@@ -13,7 +13,7 @@ class Menu2 extends Component {
     renderMenus3() {
         if (this.props.menu2.children) {
             return this.props.menu2.children.map(child =>
-                <Menu3 key={child.menuId} menu3={child} files={this.props.files}
+                <Menu3 key={child.menuId} menu3={child}
                     pages={this.props.pages} />
             );
         }

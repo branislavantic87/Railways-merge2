@@ -34,7 +34,6 @@ class MenuList extends Component {
                         key={child.menuId} 
                         menu2={child} 
                         pages={this.state.pages}
-                        files={this.state.files}
                             
                     />
                 );

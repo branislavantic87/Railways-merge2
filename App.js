@@ -14,15 +14,17 @@ export default class App extends Component {
     const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
     const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
 
+    const slika = 'http://edukacija.rs/wp-content/uploads/2016/03/prolece-cvece-890x395.jpg';
+    const slika2 = 'http://www.medias.rs/images/15/1545/prolece_3.jpg';
     // FileSystem.deleteAsync(pathToContentJson)
     // .then(() => console.log('Obrisao'));
 
     //dodati uslov ako ima interneta
     axios.get(contentJsonURL)
       .then(response => this.setState({ fetchedData: response.data }))
-      .done(() => {
-        FileSystem.getInfoAsync(pathToContentJson) // uzmi info od contentJson
-          .then(data => {
+      .then(() => FileSystem.downloadAsync(slika, FileSystem.documentDirectory + 'prolece.jpg'))
+      .then(() => FileSystem.getInfoAsync(pathToContentJson)) // uzmi info od contentJson
+      .then(data => {
             if (!data.exists) { // ako ne postoji contentJson
               console.log('Fajl nije postojao i sad je snimljen contentJson.json');
               putContentInFile(); // skini, smesti, ocitaj, smesti u this.state.data iz fajla
@@ -30,7 +32,6 @@ export default class App extends Component {
               compareJsonsAndDownloadNewContent();
             }
           });
-      });
 
     putContentInFile = () => {
       FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
@@ -39,6 +40,10 @@ export default class App extends Component {
         .then((contentJsonObj) => { this.setState({ data: contentJsonObj }) })
         .then(() => downloadAllFiles())
         .then(() => this.setState({ isLoading: false })) 
+    }
+
+    calculateSize = () => {
+
     }
 
 
@@ -74,34 +79,6 @@ export default class App extends Component {
       console.log('All downloads completed!');
     }
 
-    // iz state u json fajl
-
-    /*expo.FileSystem.getInfoAsync(path).then(data => { console.log(data.exists) });
-
-    expo.FileSystem.downloadAsync(
-      'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890',
-      path
-    ).then(({ uri }) => {
-      console.log('Finished downloading to ', uri);
-    })
-    .catch(error => {
-      console.error(error);
-    });    
-
-    expo.FileSystem.getInfoAsync(path).then(data => { console.log(md5(data)) });
-    // json iz fajla
-    expo.FileSystem.readAsStringAsync(path)
-    .then(data => { 
-      let a = JSON.parse(data);
-      console.log(a) });*/
-
-    // preuzeti json, staviti u state
-    // proveriti dal postoji kao fajl
-    // ako ne postoji, snimiti kao fajl
-    // ako postoji, proveriti hash-eve
-
-    //this.downloadAllFiles();
-
   } // end of componentWillMount
 
   /*downloadOne() {
@@ -119,23 +96,6 @@ export default class App extends Component {
           console.error(error);
         });  
     }
-  }
-
-  downloadAllFiles() {
-    if(!this.state.isLoading) {
-      this.state.data.files.map(file => {
-        expo.FileSystem.downloadAsync(
-          'http://www.cduppy.com/salescms/files/3/' + file.fileId,
-          expo.FileSystem.documentDirectory + file.fileId + '.' + file.ext
-        )
-        .then(({ uri }) => {
-          console.log('AAAAAAAAAAAAAAAAAFinished downloading to ', uri);
-        })
-        .catch(error => {
-          console.error(error);
-        });  
-      });
-    }
   }*/
 
   render() {
@@ -143,7 +103,7 @@ export default class App extends Component {
       //this.downloadAllFiles();
       return (
         <ScrollView>
-          <Image source={{ uri: FileSystem.documentDirectory + '82.jpg' }} style={{ height: 300, width: 300 }} />
+          <Image source={{ uri: FileSystem.documentDirectory + 'prolece.jpg' }} style={{ height: 300, width: 300 }} />
           <Video
             source={{ uri: FileSystem.documentDirectory + '94.mp4' }}
             style={{ width: 300, height: 300 }}
