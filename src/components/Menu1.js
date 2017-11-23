@@ -4,16 +4,6 @@ import Menu2 from './Menu2';
 
 class Menu1 extends Component {
 
-    renderMenus2() {
-        if (this.props.isPressed) {
-            if (this.props.menu1.children) {
-                return this.props.menu1.children.map(child =>
-                    <Menu2 key={child.menuId} menu2={child} />
-                );
-            }
-        }
-    }
-
     render() {
         return (
             <View>

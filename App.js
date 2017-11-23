@@ -25,55 +25,22 @@ export default class App extends Component {
           .then(data => {
             if (!data.exists) { // ako ne postoji contentJson
               console.log('Fajl nije postojao i sad je snimljen contentJson.json');
-              putContentInFile3(); // skini, smesti, ocitaj, smesti u this.state.data iz fajla
+              putContentInFile(); // skini, smesti, ocitaj, smesti u this.state.data iz fajla
             } else { // ako postoji contentJson vec
               compareJsonsAndDownloadNewContent();
             }
           });
       });
 
-    putContentInFile3 = () => {
+    putContentInFile = () => {
       FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
         .then((dataFromDownload) => FileSystem.readAsStringAsync(pathToContentJson))
         .then((dataFromRead) => { return contentJsonObj = JSON.parse(dataFromRead) })
         .then((contentJsonObj) => { this.setState({ data: contentJsonObj }) })
-        // dodali return kod downloadAllFIles()
-        .then(() => { console.log('Pre download'); return downloadAllFiles(); console.log('Posle download'); })
-        .then(() => { console.log('Pre podesio isLoading na false'); this.setState({ isLoading: false }); console.log('Posle podesio isLoading na false'); });
+        .then(() => downloadAllFiles())
+        .then(() => this.setState({ isLoading: false })) 
     }
 
-    putContentInFile2 = () => {
-      FileSystem.downloadAsync(contentJsonURL, pathToContentJson, {}, (data) => {
-        console.log("Preuzeo");
-        FileSystem.readAsStringAsync(data.fileUri, (str) => {
-          console.log("Ocitao");
-          let contentJsonObj = JSON.parse(str);
-          this.setState({ data: contentJsonObj, isLoading: false });
-        });
-      });
-    }
-
-
-    putContentInFile = () => {
-      FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
-        .catch(err => console.log('catch od download: ' + err))
-        .then(({ fileUri }) => {
-          console.log('=====================');
-          FileSystem.readAsStringAsync(fileUri).catch(console.log('Catch od Read'))
-            .then(str => {
-              let contentJsonObj = JSON.parse(str);
-              this.setState({ data: contentJsonObj, isLoading: false })
-                .then(() => {
-                  console.log('Krece skidanje svih fajlova');
-                  //downloadAllFiles();
-                })
-                .catch(console.log('error posle setState'));
-
-            })
-            .catch(console.log('error kod then posle catch of read'));
-        })
-        .catch(error => { console.log('catch od prvog then') });
-    }
 
     compareJsonsAndDownloadNewContent = () => {
       FileSystem.readAsStringAsync(pathToContentJson) // ocitaj
@@ -93,29 +60,18 @@ export default class App extends Component {
         });
     }
 
-    downloadAllFiles = () => {
+    downloadAllFiles = async () => {
       console.log('Usao u funkciju downloadAllFiles()');
-
-      return new Promise((resolve, reject) => {
-        var a = this.state.data.files.map(file => {
-          FileSystem.downloadAsync(
-            'http://www.cduppy.com/salescms/files/3/' + file.fileId,
-            FileSystem.documentDirectory + file.fileId + '.' + file.ext
-          )
-            .then(({ uri }) => {
-              console.log('Finished downloading to ', uri);
-              resolve(uri);
-            })
-            .catch(error => {
-              console.log('Error kod download fajla: ' + file.fileId);
-              
-            });
-        });
-        var b = Promise.all(a);
-        console.log('==============');
-        console.log(b);
-        console.log('==============');
-      });
+      const a = this.state.data.files.map(file => 
+        FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, FileSystem.documentDirectory + file.fileId + '.' + file.ext)
+        .then(({ uri }) => { console.log('Finished downloading to ', uri);  })
+      ); // end of map
+      try {
+        await Promise.all(a);
+      } catch(error) {
+        console.log('Catch od downloadAllFiles2()');
+      }
+      console.log('All downloads completed!');
     }
 
     // iz state u json fajl
@@ -187,7 +143,7 @@ export default class App extends Component {
       //this.downloadAllFiles();
       return (
         <ScrollView>
-          <Image source={{ uri: FileSystem.documentDirectory + '90.jpg' }} style={{ height: 300, width: 300 }} />
+          <Image source={{ uri: FileSystem.documentDirectory + '82.jpg' }} style={{ height: 300, width: 300 }} />
           <Video
             source={{ uri: FileSystem.documentDirectory + '94.mp4' }}
             style={{ width: 300, height: 300 }}
@@ -198,7 +154,7 @@ export default class App extends Component {
             shouldPlay
             isLooping
           />
-    
+
           <MenuList data={this.state.data} />
         </ScrollView>
       );
