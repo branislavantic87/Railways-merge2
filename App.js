@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Alert, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Alert, NetInfo, WebView } from 'react-native';
 import axios from 'axios';
 import expo, { FileSystem, Video } from 'expo';
 import MenuList from './src/components/MenuList';
@@ -14,19 +14,33 @@ export default class App extends Component {
     const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
     const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
     const pathToFiles = FileSystem.documentDirectory + 'files/';
-    let doDownload = false;
-    // FileSystem.deleteAsync(pathToFiles + '94.mp4')
-    // .then(() => console.log('Obrisao'));
-    let successDownload = [];
+
+
+    brisanje = () => {
+      FileSystem.deleteAsync(pathToFiles + '94.mp4')
+        .then(() => console.log('Obrisao'));
+    }
+
+    //brisanje();
+
+
 
     //dodati uslov ako ima interneta
-    axios.get(contentJsonURL)
-      .then(response => this.setState({ fetchedData: response.data }))
-      .then(() => FileSystem.getInfoAsync(pathToFiles))
-      .then((res) => !res.exists ? FileSystem.makeDirectoryAsync(pathToFiles) : console.log(res.size))
-      .then(() => FileSystem.getInfoAsync(pathToContentJson)) // uzmi info od contentJson
-      .then(data => !data.exists ? putContentInFile() : compareJsonsAndDownloadNewContent())
+    akoImaNeta = () => {
+      axios.get(contentJsonURL)
+        .then(response => this.setState({ fetchedData: response.data }))
+        .then(() => FileSystem.getInfoAsync(pathToFiles))
+        .then((res) => !res.exists ? FileSystem.makeDirectoryAsync(pathToFiles) : null)
+        .then(() => FileSystem.getInfoAsync(pathToContentJson)) // uzmi info od contentJson
+        .then(data => !data.exists ? putContentInFile() : compareJsonsAndDownloadNewContent())
+    }
 
+    if (NetInfo.isConnected)
+      akoImaNeta();
+    else {
+      FileSystem.getInfoAsync(pathToContentJson)
+        .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
+    }
 
     putContentInFile = () => {
       FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
@@ -51,42 +65,47 @@ export default class App extends Component {
       let sD = [];
       let size = 0;
       const a = this.state.data.files.map(file =>
-        FileSystem.getInfoAsync(pathToFiles + file.fileId + '.' + file.ext, {size: true})
-          .then((res) => res.size != Number(file.size) ? sD.push(file) : null)
+        FileSystem.getInfoAsync(pathToFiles + file.fileId + '.' + file.ext, { md5: true })
+          .then((res) => res.md5 != file.hash ? sD.push(file) : null)
       );
-
       try {
         await Promise.all(a)
-          .then(() => sD.length > 0 ? calculateSize(sD) : console.log('Ne treba nista da se skine'))
-          .then((mb) => alertForDownload(mb)
-            .then(() => sD.map(file => downloadOne(file)))
-            .catch(() => console.log('Pritisnut je NO u calculateDifference()'))
-          )
-          .then(() => this.setState({ isLoading: false}))
+          .then(() => {
+            if (sD.length > 0)
+              return calculateSize(sD)
+                .then((mb) => alertForDownload(mb))
+                .then(() => sD.map(file => downloadOne(file)))
+                .then(async (res) => await Promise.all(res))
+                .catch(() => console.log('Pritisnut je NO u calculateDifference()'))
+                .then(() => this.setState({ isLoading: false }))
+            else {
+              console.log('Fajlovi su isti, nema potrebe za novim download-om');
+              this.setState({ isLoading: false });
+            }
+          })
       } catch (error) {
         console.log(sD);
         console.log(calculateSize(sD));
         console.log('Catch od Promise.all(a)' + error);
       }
-
-
-
     }
 
-    // napravi promise od donjeg bogalja
-
     downloadOne = async (file) => {
-      return await FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
-      .then(({uri}) => { console.log("One file has been downloaded at " + uri); successDownload.push(file); })
+      return await new Promise((resolve, reject) => {
+        FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
+          .then(({ uri }) => { console.log("One file has been downloaded at " + uri); resolve(); })
+      })
     }
 
     calculateSize = (filesArr) => {
-      let result = 0;
-      filesArr.forEach(ele => {
-        result += Number(ele.size);
-      });
-      result = (result / 1024 / 1024).toFixed(2);
-      return result;
+      return new Promise((resolve, reject) => {
+        let result = 0;
+        filesArr.forEach(ele => {
+          result += Number(ele.size);
+        });
+        result = (result / 1024 / 1024).toFixed(2);
+        resolve(result);
+      })
     }
 
     alertForDownload = async (result) => {
@@ -107,10 +126,10 @@ export default class App extends Component {
         .then(fileAsString => {
           const contentJsonObj = JSON.parse(fileAsString); // parsiraj kao objekat
           if (md5(this.state.fetchedData) == md5(contentJsonObj)) { // ako su hash-evi isti
-            this.setState({ data: contentJsonObj}); // u this.state.data stavi {} iz fajla
+            this.setState({ data: contentJsonObj }); // u this.state.data stavi {} iz fajla
             console.log("Hashevi su isti, poredim fajlove!");
             calculateDifference();
-
+            console.log("Fajlovi se sada podudaraju!");
           } else { // ako hash-evi nisu isti
             console.log("Hash nije isti, POCNI");
             const oldJson = JSON.parse(fileAsString); // smesti trenutni fajl u ovu varijablu
@@ -120,17 +139,16 @@ export default class App extends Component {
             // provera fajlova
           }
         });
+        
     }
 
     downloadAllFiles = async () => {
       console.log('Usao u funkciju downloadAllFiles()');
       const a = this.state.data.files.map(file =>
-        FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
-          .then(({ uri }) => { console.log('Finished downloading to ', uri); successDownload.push(file); })
+        downloadOne(file)
       ); // end of map
       try {
         await Promise.all(a);
-        console.log(a);
       } catch (error) {
         console.log('Catch od downloadAllFiles()');
       }
@@ -144,7 +162,13 @@ export default class App extends Component {
       //this.downloadAllFiles();
       return (
         <ScrollView>
-          <Image source={{ uri: FileSystem.documentDirectory + 'files/93.jpg' }} style={{ height: 300, width: 300 }} />
+      <WebView
+          bounces={false}
+          scrollEnabled={false} 
+          source={{ uri: FileSystem.documentDirectory + 'files/105.pdf' }}
+          style={{width: 300, height: 300}}
+          />
+          <Image source={{ uri: FileSystem.documentDirectory + 'files/87.jpg' }} style={{ height: 300, width: 300 }} />
           <Video
             source={{ uri: FileSystem.documentDirectory + 'files/94.mp4' }}
             style={{ width: 300, height: 300 }}
@@ -160,12 +184,21 @@ export default class App extends Component {
         </ScrollView>
       );
     }
-    else
+    else if (this.state.isLoading) {
       return (
         <View style={{ marginTop: 50 }}>
           <Text>Loading, please wait.</Text>
         </View>
       );
+    }
+    else if (this.state.isLoading == 'offline') {
+      return (
+        <View style={{ marginTop: 50 }}>
+          <Text>You are starting app for first time nad you are offline. We need to show some content, and for this we need to download it.</Text>
+          <Text>Please connect to internet first.</Text>
+        </View>
+      );
+    }
   }
 }
 
