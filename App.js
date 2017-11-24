@@ -73,9 +73,10 @@ export default class App extends Component {
 
     }
 
+    // napravi promise od donjeg bogalja
 
-    downloadOne = (file) => {
-      FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
+    downloadOne = async (file) => {
+      return await FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
       .then(({uri}) => { console.log("One file has been downloaded at " + uri); successDownload.push(file); })
     }
 
