@@ -5,10 +5,10 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from '../Home';
 import Settings from '../Settings';
-import ImageButtons from '../temp1_imagebuttons';
-import FullImage from '../temp2_fullimage';
-import TextImage from '../temp3_textimage';
-import FullText from '../temp4_fulltext';
+import ImageButtons from './components/temp1_imagebuttons';
+import FullImage from './components/temp2_fullimage';
+import TextImage from './components/temp3_textimage';
+import FullText from './components/temp4_fulltext';
 
 export default class Routes extends React.Component {
   render() {
