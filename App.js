@@ -7,24 +7,37 @@ import md5 from 'md5';
 
 export default class App extends Component {
 
-  state = { fetchedData: {}, data: {}, isLoading: true };
+  state = {
+    fetchedProject: {},
+    project: {},
+    fetchedData: {},
+    data: {},
+    isLoading: true,
+    downloadedL: 0,
+    downloaded: 0,
+    hashing: 0,
+    hashingL: 0
+  };
 
   componentWillMount() {
 
     const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
+    const pathToProjectJson = FileSystem.documentDirectory + 'projectJson.json';
     const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
     const pathToFiles = FileSystem.documentDirectory + 'files/';
 
 
-    brisanje = () => {
-      FileSystem.deleteAsync(pathToFiles + '94.mp4')
-        .then(() => console.log('Obrisao'));
-    }
 
-    //brisanje();
-
+    /*axios.get(projectJsonURL)
+      .then(response => this.setState({ fetchedProject: response.data }))
+      .then(() => FileSystem.getInfoAsync(pathToProjectJson, { md5: true }))
+      .then((res) => !res.exists ? FileSystem.downloadAsync(projectJsonURL, pathToProjectJson) : compareHash(res))
 
 
+    compareHash = () => {
+
+    }*/
     //dodati uslov ako ima interneta
     akoImaNeta = () => {
       axios.get(contentJsonURL)
@@ -64,13 +77,17 @@ export default class App extends Component {
     calculateDifference = async () => {
       let sD = [];
       let size = 0;
+      let t0 = Date.now();
       const a = this.state.data.files.map(file =>
         FileSystem.getInfoAsync(pathToFiles + file.fileId + '.' + file.ext, { md5: true })
           .then((res) => res.md5 != file.hash ? sD.push(file) : null)
       );
+      this.setState({ hashingL: a.length });
       try {
         await Promise.all(a)
           .then(() => {
+            this.setState({ downloadedL: sD.length });
+            this.setState(prevState => ({ hashing: prevState.hashing + 1 }));
             if (sD.length > 0)
               return calculateSize(sD)
                 .then((mb) => alertForDownload(mb))
@@ -82,6 +99,8 @@ export default class App extends Component {
               console.log('Fajlovi su isti, nema potrebe za novim download-om');
               this.setState({ isLoading: false });
             }
+            let t1 = Date.now();
+            console.log(Number(t1) - Number(t0));
           })
       } catch (error) {
         console.log(sD);
@@ -90,11 +109,10 @@ export default class App extends Component {
       }
     }
 
-    downloadOne = async (file) => {
-      return await new Promise((resolve, reject) => {
-        FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
-          .then(({ uri }) => { console.log("One file has been downloaded at " + uri); resolve(); })
-      })
+    downloadOne = (file) => {
+      return FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
+        .then(({ uri }) => { this.setState(prevState => ({ downloaded: prevState.downloaded + 1 })); console.log("One file has been downloaded at " + uri); })
+
     }
 
     calculateSize = (filesArr) => {
@@ -139,7 +157,7 @@ export default class App extends Component {
             // provera fajlova
           }
         });
-        
+
     }
 
     downloadAllFiles = async () => {
@@ -147,6 +165,7 @@ export default class App extends Component {
       const a = this.state.data.files.map(file =>
         downloadOne(file)
       ); // end of map
+      this.setState({ downloadedL: a.length })
       try {
         await Promise.all(a);
       } catch (error) {
@@ -162,13 +181,13 @@ export default class App extends Component {
       //this.downloadAllFiles();
       return (
         <ScrollView>
-      <WebView
+          {/*<WebView
           bounces={false}
           scrollEnabled={false} 
           source={{ uri: FileSystem.documentDirectory + 'files/105.pdf' }}
           style={{width: 300, height: 300}}
-          />
-          <Image source={{ uri: FileSystem.documentDirectory + 'files/87.jpg' }} style={{ height: 300, width: 300 }} />
+      />*/}
+          <Image source={{ uri: FileSystem.documentDirectory + 'files/1597.jpg' }} style={{ height: 300, width: 300 }} />
           <Video
             source={{ uri: FileSystem.documentDirectory + 'files/94.mp4' }}
             style={{ width: 300, height: 300 }}
@@ -188,13 +207,15 @@ export default class App extends Component {
       return (
         <View style={{ marginTop: 50 }}>
           <Text>Loading, please wait.</Text>
+          <Text>Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
+          <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>
         </View>
       );
     }
     else if (this.state.isLoading == 'offline') {
       return (
         <View style={{ marginTop: 50 }}>
-          <Text>You are starting app for first time nad you are offline. We need to show some content, and for this we need to download it.</Text>
+          <Text>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
           <Text>Please connect to internet first.</Text>
         </View>
       );
