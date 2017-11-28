@@ -313,16 +313,16 @@ export default class Home extends Component {
     }
     else if (this.state.isLoading) {
       return (
-        <View style={{ marginTop: 50 }}>
-          <Text>Loading, please wait.</Text>
-          <Text>Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
+        <View style={{ marginTop: 50,  }}>
+          <Text >Loading, please wait.</Text>
+          <Text >Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
           <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>
         </View>
       );
     }
     else if (this.state.isLoading == 'offline') {
       return (
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: 50, }}>
           <Text>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
           <Text>Please connect to internet first.</Text>
         </View>
@@ -423,7 +423,8 @@ const styles = StyleSheet.create({
     marginRight: 20,
     height: 24,
     marginTop: 10
-  }
+  },
+ 
 
 
 });
