@@ -10,8 +10,8 @@ import { Actions } from 'react-native-router-flux';
 export default class Home extends Component {
 
   state = {
-    fetchedData: {},
-    data: {},
+    projectJson: {},
+    contentJson: {},
     isLoading: true,
     visible: false,
     allow: false,
@@ -53,147 +53,211 @@ export default class Home extends Component {
 
   componentWillMount() {
 
-    const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
+    // project Json vars
+    let fetchedProject = {};
+    let server = '';
     const pathToProjectJson = FileSystem.documentDirectory + 'projectJson.json';
-    const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
-    const pathToFiles = FileSystem.documentDirectory + 'files/';
+
+    // content json vars
+    let fetchedContent = {};
+    const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
+    const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
 
 
-
-    akoImaNeta = () => {
-      axios.get(contentJsonURL)
-        .then(response => this.setState({ fetchedData: response.data }))
-        .then(() => FileSystem.getInfoAsync(pathToFiles))
-        .then((res) => !res.exists ? FileSystem.makeDirectoryAsync(pathToFiles) : null)
-        .then(() => FileSystem.getInfoAsync(pathToContentJson)) // uzmi info od contentJson
-        .then(data => !data.exists ? putContentInFile() : compareJsonsAndDownloadNewContent())
+    // project Json Logic
+    projectJsonLogic = () => {
+      return new Promise((resolve, reject) => {
+        axios.get(projectJsonURL)
+          .then(res => { fetchedProject = res.data })
+          .then(() => FileSystem.getInfoAsync(pathToProjectJson))
+          .then(res => !res.exists ? nePostojiProjectJson() : postojiProjectJson())
+          .then(() => checkServer())
+          .then(res => { server = res.config.url; })
+          .then(() => resolve())
+          .catch((err) => { console.log('Greska u projectJsonLogic: ' + err); reject(); })
+      })
     }
 
-    if (NetInfo.isConnected)
-      akoImaNeta();
-    else {
-      FileSystem.getInfoAsync(pathToContentJson)
-        .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
+    nePostojiProjectJson = () => {
+      console.log('Usao u nePostojiProjectJson()');
+      return new Promise((resolve, reject) => {
+        FileSystem.downloadAsync(projectJsonURL, pathToProjectJson)
+          .then(res => this.setState({ projectJson: fetchedProject }))
+          .then(() => resolve())
+          .catch((err) => { console.log('Greska kod nePostojiProjectJson:' + err); reject(); })
+      })
+
     }
 
-    putContentInFile = () => {
-      FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
-        .then((dataFromDownload) => FileSystem.readAsStringAsync(pathToContentJson))
-        .then((dataFromRead) => JSON.parse(dataFromRead))
-        .then((contentJsonObj) => this.setState({ data: contentJsonObj }))
-        .then(() => calculateSize(this.state.data.files))
-        .then((mb) => alertForDownload(mb)
-          .then(() => downloadAllFiles())
-          .catch(() => console.log('Pritisnut je NO'))
-        )
-        .then(() => this.setState({ isLoading: false }))
-    }
-    // 1 vodenica == 7 kamenova
-    // 1 kamen == 4 litre
-    // 1 litra == 7 dana
-    // 100 drama == 1 litra == 7 dana == 28 kamenova == 4 vodenice
-    // 100 drama == 7 dana
-    // 7 kamenova == 196 dana
-
-    calculateDifference = async () => {
-      let sD = [];
-      let size = 0;
-      let t0 = Date.now();
-      const a = this.state.data.files.map(file =>
-        FileSystem.getInfoAsync(pathToFiles + file.fileId + '.' + file.ext, { md5: true })
-          .then((res) => res.md5 != file.hash ? sD.push(file) : null)
-      );
-      this.setState({ hashingL: a.length });
-      try {
-        await Promise.all(a)
-          .then(() => {
-            this.setState({ downloadedL: sD.length });
-            this.setState(prevState => ({ hashing: prevState.hashing + 1 }));
-            if (sD.length > 0)
-              return calculateSize(sD)
-                .then((mb) => alertForDownload(mb))
-                .then(() => sD.map(file => downloadOne(file)))
-                .then(async (res) => await Promise.all(res))
-                .catch(() => console.log('Pritisnut je NO u calculateDifference()'))
-                .then(() => this.setState({ isLoading: false }))
-            else {
-              console.log('Fajlovi su isti, nema potrebe za novim download-om');
-              this.setState({ isLoading: false });
+    postojiProjectJson = () => {
+      console.log('Usao u postojiProjectJson()');
+      return new Promise((resolve, reject) => {
+        FileSystem.readAsStringAsync(pathToProjectJson)
+          .then(res => {
+            const projectJsonObj = JSON.parse(res);
+            if (md5(fetchedProject) == md5(projectJsonObj)) {
+              console.log('Hashevi Project JSON-a su isti');
+              this.setState({ projectJson: projectJsonObj });
+              resolve();
+            } else {
+              console.log('Hashevi nisu isti, skinuo fajl i stavio ga u this.state.projectJson');
+              FileSystem.downloadAsync(projectJsonURL, pathToProjectJson)
+                .then(() => this.setState({ projectJson: fetchedProject }))
+                .then(() => resolve())
             }
-            let t1 = Date.now();
-            console.log(Number(t1) - Number(t0));
           })
-      } catch (error) {
-        console.log(sD);
-        console.log(calculateSize(sD));
-        console.log('Catch od Promise.all(a)' + error);
-      }
+      })
+    }
+
+    checkServer = () => {
+      let s1 = axios.get(this.state.projectJson.project.server1);
+      let s2 = axios.get(this.state.projectJson.project.server2);
+
+      return Promise.race([s1, s2]);
+    }
+
+    // content Json Logic
+    contentJsonLogic = () => {
+      return new Promise((resolve, reject) => {
+        axios.get(contentJsonURL)
+          .then(res => { fetchedContent = res.data })
+          .then(() => FileSystem.getInfoAsync(pathToContentJson))
+          .then(res => !res.exists ? nePostojiContentJson() : postojiContentJson())
+          .then(() => resolve())
+          .catch((err) => { console.log('Greska u contentJsonLogic: ' + err); reject() })
+      })
+    }
+
+    nePostojiContentJson = () => {
+      console.log('Usao u nePostojiContentJson()');
+      return new Promise((resolve, reject) => {
+        FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
+          .then(res => this.setState({ contentJson: fetchedContent }))
+          .then(() => resolve())
+          .catch((err) => { console.log('Greska kod nePostojiContentJson:' + err); reject(); })
+      })
+    }
+
+    postojiContentJson = () => {
+      console.log('Usao u postojiContentJson()');
+      return new Promise((resolve, reject) => {
+        FileSystem.readAsStringAsync(pathToContentJson)
+          .then(res => {
+            const contentJsonObj = JSON.parse(res);
+            if (md5(fetchedContent) == md5(contentJsonObj)) {
+              console.log('Hashevi Content JSON-a su isti');
+              this.setState({ contentJson: contentJsonObj });
+              resolve();
+            } else {
+              // OVDE RESITI KADA STIGNE NOVI JSON
+              console.log('Hashevi nisu isti, skinuo fajl i stavio ga u this.state.contentJson');
+              srediFajlove(contentJsonObj);
+            }
+          })
+      })
+    }
+
+    srediFajlove = (stariJson) => {
+      return new Promise((resolve, reject) => {
+
+        let stageRemove = stariJson.files.filter(x => fetchedContent.files.indexOf(x) < 0)
+        let stageDownload = fetchedContent.files.filter(x => stariJson.files.indexOf(x) < 0)
+
+        console.log('StageRemove: ' + stageRemove);
+        console.log('StageDownload: ' + stageDownload);
+      })
     }
 
     downloadOne = (file) => {
-      return FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
-        .then(({ uri }) => { this.setState(prevState => ({ downloaded: prevState.downloaded + 1 })); console.log("One file has been downloaded at " + uri); })
-
+      return new Promise((resolve, reject) => {
+        FileSystem.downloadAsync(server + this.state.projectJson.project.contentDir + file.fileId, FileSystem.documentDirectory + file.fileId + '.' + file.ext)
+          .then(({ uri }) => {
+            this.setState(prevState => ({ downloaded: prevState.downloaded + 1 }));
+            console.log('File downloaded at: ' + uri);
+            resolve();
+          })
+          .catch((err) => { console.log('Greska kod downloadOne kod fajla: ' + file.fileId); reject(); })
+      })
     }
 
     calculateSize = (filesArr) => {
       return new Promise((resolve, reject) => {
         let result = 0;
-        filesArr.forEach(ele => {
-          result += Number(ele.size);
+        if (filesArr.length <= 0) {
+
+          reject('Array is empty');
+        }
+        filesArr.forEach(element => {
+          result += Number(element.size);
         });
         result = (result / 1024 / 1024).toFixed(2);
         resolve(result);
       })
     }
 
-    alertForDownload = async (result) => {
-      let p = new Promise((resolve, reject) => {
+    alertForDownload = (mb) => {
+      return new Promise((resolve, reject) => {
+        if (!mb) {
+          reject();
+        }
         Alert.alert(
-          'About to download ' + result + ' MB.',
+          'About to download ' + mb + ' MB.',
           'Do you wish to download?',
-          [{ text: 'Yes', onPress: () => { resolve(); } },
-          { text: 'No', onPress: () => { reject(); } }
+          [
+            { text: 'OK', onPress: () => { resolve(); } }
           ]
         )
-      });
-      return p;
+      })
     }
 
-    compareJsonsAndDownloadNewContent = () => {
-      FileSystem.readAsStringAsync(pathToContentJson) // ocitaj
-        .then(fileAsString => {
-          const contentJsonObj = JSON.parse(fileAsString); // parsiraj kao objekat
-          if (md5(this.state.fetchedData) == md5(contentJsonObj)) { // ako su hash-evi isti
-            this.setState({ data: contentJsonObj }); // u this.state.data stavi {} iz fajla
-            console.log("Hashevi su isti, poredim fajlove!");
-            calculateDifference();
-            console.log("Fajlovi se sada podudaraju!");
-          } else { // ako hash-evi nisu isti
-            console.log("Hash nije isti, POCNI");
-            const oldJson = JSON.parse(fileAsString); // smesti trenutni fajl u ovu varijablu
-            const newJson = this.state.fetchedData;
-            FileSystem.writeAsStringAsync(pathToContentJson, newJson.toString()); // overwrite file
+    checkHashFiles = () => {
+      return new Promise((resolve, reject) => {
+        let downloadStage = [];
 
-            // provera fajlova
-          }
-        });
+        let a = this.state.contentJson.files.map(file =>
+          FileSystem.getInfoAsync(FileSystem.documentDirectory + file.fileId + '.' + file.ext, { md5: true })
+            .then(res => res.md5 != file.hash ? downloadStage.push(file) : null)
+            .then(() => this.setState(prevState => ({ hashing: prevState.hashing + 1 })))
+        );
+        this.setState({ hashingL: a.length });
 
+        Promise.all(a)
+          .then(() => resolve(downloadStage))
+          .catch((err) => console.log('Greska kod checkHashFiles()'))
+
+      })
     }
 
-    downloadAllFiles = async () => {
-      console.log('Usao u funkciju downloadAllFiles()');
-      const a = this.state.data.files.map(file =>
-        downloadOne(file)
-      ); // end of map
-      this.setState({ downloadedL: a.length })
-      try {
-        await Promise.all(a);
-      } catch (error) {
-        console.log('Catch od downloadAllFiles()');
-      }
-      console.log('All downloads completed!');
+    downloadFiles = (filesArr) => {
+      return new Promise((resolve, reject) => {
+        console.log('Usao u funkciju downloadFiles()');
+        let a = filesArr.map(file =>
+          downloadOne(file)
+        );
+        this.setState({ downloadedL: a.length });
+
+        Promise.all(a)
+          .then(() => resolve())
+          .catch(err => console.log('Greska kod checkHashFiles(): ' + err))
+
+      })
+    }
+
+    // ovako radim closure u then-ovima
+    if(NetInfo.isConnected) {
+      projectJsonLogic()
+        .then(() => contentJsonLogic())
+        .then(() => checkHashFiles())
+        .then((niz) => calculateSize(niz)
+          .then((data) => alertForDownload(data))
+          .then(() => downloadFiles(niz))
+        )
+        .catch((err) => console.log("Catch od glavnog bloka od checkHashFiles: " + err))
+        .then(() => this.setState({ isLoading: false }))
+    } else {
+      FileSystem.getInfoAsync(pathToContentJson)
+      .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
     }
 
   } // end of componentWillMount
@@ -233,7 +297,7 @@ export default class Home extends Component {
               allowDragging={this.state.allow}
               onRequestClose={() => this.setState({ visible: false })}>
               <View style={styles.main_panel}>
-                <MenuList data={this.state.data} />
+                <MenuList data={this.state.contentJson} />
               </View>
             </SlidingUpPanel>
 
