@@ -6,21 +6,19 @@ export default class FullText extends Component {
     render() {
         return (
             <View style={mainView}>
-                <View style={navContainer}>
-                    <Text style={navText}>Navigacija</Text>
-                </View>
+              
 
                 <View style={body}>
                     <View>
-                        <Text style={[headingText, headingMain]}>{this.title}</Text>
-                       <Text style={headingText}>{this.subtitle}</Text>
+                        <Text style={[headingText, headingMain]}>{this.props.title}</Text>
+                       <Text style={headingText}>{this.props.subtitle}</Text>
                     </View>
 
                     <View style={contentContainer}>
 
                         <View style={contentText}>
                             <ScrollView>
-                                <Text style={{ fontSize: 15 }}>{this.text}</Text>
+                                <Text style={{ fontSize: 15 }}>{this.props.text}</Text>
                             </ScrollView>
                         </View>
 
@@ -28,9 +26,7 @@ export default class FullText extends Component {
 
                 </View>
 
-                <View style={navFooter}>
-                    <Text style={navFooterNav}>FooterNav</Text>
-                </View>
+                
            </View>
         );
     }
@@ -76,7 +72,7 @@ const styles = StyleSheet.create({
    contentText: {
         flex: 2.5,
         backgroundColor: '#ebeced',
-        height: '70%',
+        height: '100%',
         padding: 20,
         paddingTop: 30
     },

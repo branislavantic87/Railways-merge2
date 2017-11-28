@@ -2,12 +2,19 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableWithoutFeedback, TouchableOpacity, Alert, NetInfo } from 'react-native';
 import axios from 'axios';
 import expo, { FileSystem, Video } from 'expo';
-import MenuList from './src/components/MenuList';
+import MenuList from './MenuList';
 import md5 from 'md5';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { Actions } from 'react-native-router-flux';
+import Header from './Header';
+import FullImage from './temp1_fullimage';
+import ImageButtons from './temp2_imagebuttons';
+import TextImage from './temp3_textimage';
+import FullText from './temp4_fulltext';
 
-export default class Home extends Component {
+
+
+export default class HeaderFooter extends Component {
 
   state = {
     fetchedData: {},
@@ -197,33 +204,41 @@ export default class Home extends Component {
     }
 
   } // end of componentWillMount
-
+  
   render() {
     if (!this.state.isLoading) {
-      //this.downloadAllFiles();
+     
+        let titles = 'Leading innovations'; 
+        let subtitle = 'For highest performance and mobillity'; 
+        let text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at egestas neque, vitae lacinia justo. Nullam sem ipsum, pulvinar in lobortis a, mollis interdum metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur dapibus ante quis nisl imperdiet, ut auctor erat ultricies. In hac habitasse platea dictumst. Vivamus quis convallis est. In hac habitasse platea dictumst. Morbi fermentum interdum orci accumsan pharetra. Aenean ullamcorper sollicitudin augue. Maecenas lobortis, tortor aliquet placerat pellentesque, sapien metus aliquam lacus, in volutpat enim massa vel nunc. Praesent quam risus, placerat ut ligula vitae, ultricies ornare massa. Praesent a dictum leo. Phasellus pretium arcu nisl, malesuada ultrices sapien commodo sit amet. Mauris convallis efficitur elit sit amet consectetur. Aenean viverra ligula sed leo facilisis, nec dignissim ex consectetur. In hac habitasse platea dictumst. Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus.Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus';
+        let pics = [
+            {
+              source: 'http://lorempixel.com/output/people-q-c-800-500-9.jpg'
+            },
+            {
+              source: 'http://lorempixel.com/output/people-q-c-800-500-2.jpg'
+            },
+            {
+              source: 'http://lorempixel.com/output/people-q-c-800-500-3.jpg'
+            },
+          ]; 
+        let img = {source: 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg' };
       return (
         <View style={styles.container}>
-          <StatusBar barStyle="dark-content" hidden={true} />
+          <Header />
          
-          <View style={styles.navbar}>
-          
-            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center', width:'20%' }}>
-              <TouchableWithoutFeedback onPress={this.openLanguage}><Image style={styles.ico} source={require('./ico/32/earth.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openHome}><Image style={styles.ico} source={require('./ico/32/home.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openFavorites}><Image style={styles.ico} source={require('./ico/32/star.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openMenu}><Image style={styles.ico} source={require('./ico/32/menu.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openSearch}><Image style={styles.ico} source={require('./ico/32/search.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openFolder}><Image style={styles.ico} source={require('./ico/32/folder.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openSettings}><Image style={styles.ico} source={require('./ico/32/settings.png')} /></TouchableWithoutFeedback>
-            </View>
-
-          </View>
           <View style={styles.content}>
 
-            <Image style={{ width: '100%', height: '100%' }} source={{ uri: 'http://www.planwallpaper.com/static/images/880665-road-wallpapers.jpg' }} />
-            <View style={styles.content2}>
-              <TouchableOpacity style={styles.videotour} onPress={this.openVideos}><View style={styles.content3}><Image style={styles.ico2} source={require('./ico/play-button.png')} /><Text style={{ color: 'white', fontSize: 18, marginTop: 10 }}>VIDEOTOUR</Text></View></TouchableOpacity>
-            </View>
+
+
+          {/*<FullText title={title} subtitle={subtitle} text={text}/>*/}
+          {/* <FullImage pics={pics}/>*/}
+          {/*<TextImage title={title} subtitle={subtitle} text={text} pics={pics}/>*/}
+          <ImageButtons titles={titles} subtitle={subtitle} img={img}/>
+
+
+
+
 
 
 
