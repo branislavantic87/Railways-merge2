@@ -37,15 +37,6 @@ const styles = StyleSheet.create({
         position: 'relative',
        height: '100%'
     },
-    navContainer: {
-        marginTop: 19,
-        padding: 10,
-       backgroundColor: '#e5e5e5'
-    },
-    navText: {
-        textAlign: 'center',
-        fontSize: 15
-      },
     body: {
         height: '100%',
         paddingLeft: 40,
@@ -76,23 +67,6 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingTop: 30
     },
-    navFooter: {
-        padding: 8,
-        backgroundColor: '#e5e5e5',
-        position: 'absolute',
-        bottom: 0,
-        width: '100%'
-    },
-    navFooterNav: {
-        textAlign: 'left',
-        paddingLeft: 30,
-        fontSize: 25
-    },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold',
-    }
 });
 
-const { mainView, navContainer, navText, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic, navFooter, navFooterNav } = styles;
+const { mainView, body, headingText, headingMain, contentContainer, contentText} = styles;
