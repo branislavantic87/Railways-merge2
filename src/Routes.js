@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import Home from '../Home';
 import Settings from '../Settings';
 import BodyFooter from './components/BodyFooter';
+import TestPage from './components/TestPage';
 
 export default class Routes extends React.Component {
   render() {
@@ -16,7 +17,7 @@ export default class Routes extends React.Component {
           <Scene key="signup" component={Signup} title="Register" />
           <Scene key="home" component={Home} title="Home" initial={true}/>
           <Scene key="settings" component={Settings} title="Settings" />
-          <Scene key="bf" component={BodyFooter} title="BodyFooter" />
+          <Scene key="bodyFooter" component={BodyFooter} title="BodyFooter" />
         </Stack>
       </Router>
     )

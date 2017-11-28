@@ -11,8 +11,7 @@ import FullImage from './temp1_fullimage';
 import ImageButtons from './temp2_imagebuttons';
 import TextImage from './temp3_textimage';
 import FullText from './temp4_fulltext';
-
-
+import Swiper from 'react-native-swiper';
 
 export default class BodyFooter extends Component {
 
@@ -204,12 +203,79 @@ export default class BodyFooter extends Component {
     }
 
   } // end of componentWillMount
-  
+
+  renderPics() {
+    // let a = JSON.parse(this.props.forwardData);
+    // console.log(a);
+
+    // return a.map((slide,index) => {
+    //   if(slide.files) {
+    //     return slide.files.map(file => {
+    //       return (
+    //         <View>
+    //           <Image style={{width: 400, height: 400}} source={{uri: FileSystem.documentDirectory + 'files/' + file.fileId + '.' + file.ext}} />
+    //         </View>
+    //       );
+    //     });
+    //   }
+    // }
+    // );
+
+    let data = JSON.parse(this.props.forwardData);
+    console.log(data);
+
+    let img, title, subtitle, text;
+
+    return data.map((slide,index) => {
+      let templateId = slide.templateId;
+
+      if (slide.files) {
+        slide.files.map(file => {
+          img = FileSystem.documentDirectory + 'files/' + file.fileId + '.' + file.ext;
+
+        });
+      }
+
+      title = slide.title;
+      subtitle = slide.subtitle;
+      text = slide.text;
+
+      switch(templateId) {
+        case '1':
+        return <Text>1</Text>
+        break;
+
+        case '2':
+         console.log('govno');
+        break;
+
+        case '3':
+        return <Text>3</Text>
+        break;
+
+        case '4':
+        return <Text>4</Text>
+        break;
+
+        default:
+        console.log('WTF SHKK?!');
+
+      }
+
+      console.log(img);
+      console.log(title);
+      console.log(subtitle);
+      console.log(text);
+    });
+
+  }
+
   render() {
+
     if (!this.state.isLoading) {
      // propsovi za testiranje stilova
-        let title = 'Leading innovations'; 
-        let subtitle = 'For highest performance and mobillity'; 
+        let title = 'Leading innovations';
+        let subtitle = 'For highest performance and mobillity';
         let text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at egestas neque, vitae lacinia justo. Nullam sem ipsum, pulvinar in lobortis a, mollis interdum metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur dapibus ante quis nisl imperdiet, ut auctor erat ultricies. In hac habitasse platea dictumst. Vivamus quis convallis est. In hac habitasse platea dictumst. Morbi fermentum interdum orci accumsan pharetra. Aenean ullamcorper sollicitudin augue. Maecenas lobortis, tortor aliquet placerat pellentesque, sapien metus aliquam lacus, in volutpat enim massa vel nunc. Praesent quam risus, placerat ut ligula vitae, ultricies ornare massa. Praesent a dictum leo. Phasellus pretium arcu nisl, malesuada ultrices sapien commodo sit amet. Mauris convallis efficitur elit sit amet consectetur. Aenean viverra ligula sed leo facilisis, nec dignissim ex consectetur. In hac habitasse platea dictumst. Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus.Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus';
         let pics = [
             {
@@ -221,21 +287,23 @@ export default class BodyFooter extends Component {
             {
               source: 'http://lorempixel.com/output/people-q-c-800-500-3.jpg'
             },
-          ]; 
-        let img = require('./ico/32/sss.jpg'); 
+          ];
+        let img = require('./ico/32/sss.jpg');
 
       return (
         <View style={styles.container}>
           <Header />
-         
+
           <View style={styles.content}>
 
-{/*pozivanje TEMPLATOVA*/}
+            <Swiper showsButtons={false} width={'100%'}>
+              {this.renderPics()}
+            </Swiper>
 
           {/*<FullText title={title} subtitle={subtitle} text={text}/>*/}
-           {/*<FullImage img={img}/>*/}
+          {/*<FullImage img={img}/>*/}
           {/*<TextImage title={title} subtitle={subtitle} text={text} pics={pics}/>*/}
-          <ImageButtons title={title} subtitle={subtitle} img={img}/>
+          {/*<ImageButtons title={title} subtitle={subtitle} img={img}/>*/}
 
 
 
@@ -380,4 +448,3 @@ const styles = StyleSheet.create({
 
 });
 console.disableYellowBox = true;
-
