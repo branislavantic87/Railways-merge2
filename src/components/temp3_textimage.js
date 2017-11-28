@@ -6,10 +6,10 @@ import Lightbox from 'react-native-lightbox';
 
 export default class TextImage extends Component {
   renderPics() {
-    return this.props.pics.map((pic,index) => 
+    return this.props.img.map((pic,index) => 
       <View key={index}>
         <Lightbox>
-          <Image style={swiperPic} source={{ uri: this.props.pics[index].source }}
+          <Image style={swiperPic} source={{ uri: this.props.img[index] }}
           />
         </Lightbox>
       </View>

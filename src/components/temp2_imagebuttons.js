@@ -14,14 +14,14 @@ export default class ImageButtons extends Component {
                 <View style={body}>
 
                     <View>
-                        <Text style={[headingText, headingMain]}>{this.props.title}</Text>
+                        <Text style={[headingText, headingMain]}>{this.props.templateTitle}</Text>
                         <Text style={headingText}>{this.props.subtitle}</Text>
                     </View>
 
                     <View style={contentContainer}>
 
                         <View style={contentPic}>
-                        <Image style={{flex: 1, width: '100%'}} source={this.props.img} />
+                            <Image style={{flex: 1, width: '100%'}} source={{uri: this.props.img}} />
                             <View style={ButtonContainer}>
                                 <TouchableOpacity style={ButtonContent}  >
                                     <Image
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        resizeMode: 'contain',
         backgroundColor: '#e5e5e5',
         position: 'relative',
         alignItems: 'center'
