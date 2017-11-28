@@ -174,11 +174,12 @@ export default class Home extends Component {
     calculateSize = (filesArr) => {
       return new Promise((resolve, reject) => {
         let result = 0;
-        if(!(filesArr.length > 0)) {
+        if(filesArr.length <= 0) {
+          
           reject('Array is empty');
         }
         filesArr.forEach(element => {
-          result += element;
+          result += Number(element.size);
         });
         result = (result/1024/1024).toFixed(2);
         resolve(result);
@@ -187,6 +188,9 @@ export default class Home extends Component {
 
     alertForDownload = (mb) => {
       return new Promise((resolve, reject) => {
+        if(!mb) {
+          reject();
+        }
         Alert.alert(
           'About to download ' + mb + ' MB.',
           'Do you wish to download?',
@@ -200,7 +204,6 @@ export default class Home extends Component {
     checkHashFiles = () => {
       return new Promise((resolve, reject) => {
         let downloadStage = [];
-        let size = 0;
 
         let a = this.state.contentJson.files.map(file =>
           FileSystem.getInfoAsync(FileSystem.documentDirectory + file.fileId + '.' + file.ext, {md5: true})
@@ -216,10 +219,29 @@ export default class Home extends Component {
       })
     }
 
+    downloadFiles = (filesArr) => {
+      return new Promise((resolve, reject) => {
+        console.log('Usao u funkciju downloadFiles()');
+        let a = filesArr.map(file => 
+          downloadOne(file)
+        );
+        this.setState({ downloadedL: a.length });
 
+        Promise.all(a)
+        .then(() => resolve())
+        .catch(err => console.log('Greska kod checkHashFiles(): ' + err))
 
-    projectJsonLogic()
-    .then(() => contentJsonLogic());
+      })
+    }
+
+    /*projectJsonLogic()
+    .then(() => contentJsonLogic())
+    .then(() => checkHashFiles())
+    .then((res) => calculateSize(res))
+    .then((data) => alertForDownload(data))
+    .then((data) => downloadFiles(data.n))
+    .then(() => this.setState({ isLoading: false }))
+    .catch((err) => console.log("Catch od glavnog bloka: " + err))*/
   
   } // end of componentWillMount
 
