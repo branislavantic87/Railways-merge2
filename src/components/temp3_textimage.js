@@ -6,10 +6,10 @@ import Lightbox from 'react-native-lightbox';
 
 export default class TextImage extends Component {
   renderPics() {
-    return this.pics.map((pic,index) => 
+    return this.props.pics.map((pic,index) => 
       <View key={index}>
         <Lightbox>
-          <Image style={styles.swiperPic} source={{ uri: this.pics[index].source }}
+          <Image style={styles.swiperPic} source={{ uri: this.props.pics[index].source }}
           />
         </Lightbox>
       </View>
@@ -21,22 +21,19 @@ export default class TextImage extends Component {
     return (
 
       <View style={mainView}>
-        <View style={navContainer}>
-          <Text style={navText}>Navigacija</Text>
-        </View>
-
+       
         <View style={body}>
 
           <View>
-            <Text style={[headingText, headingMain]}>{this.title}</Text>
-            <Text style={headingText}>{this.subtitle}</Text>
+            <Text style={[headingText, headingMain]}>{this.props.title}</Text>
+            <Text style={headingText}>{this.props.subtitle}</Text>
           </View>
 
           <View style={contentContainer}>
 
             <View style={contentText}>
               <ScrollView>
-                <Text style={{ fontSize: 15 }}>{this.text}</Text>
+                <Text style={{ fontSize: 15 }}>{this.props.text}</Text>
               </ScrollView>
             </View>
 
@@ -53,9 +50,7 @@ export default class TextImage extends Component {
 
         </View>
 
-        <View style={navFooter}>
-          <Text style={navFooterNav}>FooterNav</Text>
-        </View>
+     
       </View>
     );
   }
@@ -101,13 +96,13 @@ const styles = StyleSheet.create({
   contentText: {
     flex: 2.5,
     backgroundColor: '#ebeced',
-    height: '70%',
+    height: '100%',
     padding: 20,
     paddingTop: 30
   },
   contentPic: {
     flex: 4.5,
-    height: '70%',
+    height: '100%',
     marginLeft: 30,
     backgroundColor: '#ebeced'
   },

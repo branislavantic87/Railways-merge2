@@ -6,10 +6,10 @@ import Lightbox from 'react-native-lightbox';
 
 export default class FullImage extends Component {
   renderPics(){
-    return this.pics.map((pic,index) => 
+    return this.props.pics.map((pic,index) => 
       <View key={index}>
         <Lightbox>
-          <Image style={styles.swiperPic} source={{ uri: this.pics[index].source}}
+          <Image style={styles.swiperPic} source={{ uri: this.props.pics[index].source}}
           />
         </Lightbox>
       </View>
@@ -28,16 +28,11 @@ export default class FullImage extends Component {
       
     return (
       <View style={mainView}>
-        <View style={navContainer}>
-          <Text style={navText}>Navigacija</Text>
-        </View>
+        
 
         <View style={body}>
 
-          <View>
-            <Text style={[headingText, headingMain]}>{this.title}</Text>
-           <Text style={headingText}>{this.subtitle}</Text>
-          </View>
+    
 
           <View style={contentContainer}>
 
@@ -51,9 +46,7 @@ export default class FullImage extends Component {
 
         </View>
 
-        <View style={navFooter}>
-          <Text style={navFooterNav}>FooterNav</Text>
-        </View>
+        
       </View>
     );
   }
@@ -99,7 +92,7 @@ const styles = StyleSheet.create({
   },
  contentPic: {
     flex: 3,
-    height: '85%',
+    height: '100%',
     backgroundColor: '#e5e5e5'
   },
   swiperPic: {
