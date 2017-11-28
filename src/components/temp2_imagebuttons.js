@@ -1,120 +1,126 @@
 import React, { Component } from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Dimensions,
-    Image,
-    TouchableOpacity,
-    TouchableHighlight,
-} from 'react-native';
-
-
-import { Actions } from 'react-native-router-flux';
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native';
+import Swiper from 'react-native-swiper';
+import { Constants } from 'expo';
+import Lightbox from 'react-native-lightbox';
 
 export default class ImageButtons extends Component {
 
 
-
     render() {
         return (
-           
-            <View style={styles.container}>
-                <View>
-                    <Text style={[headingText, headingMain]}>{this.props.titles}</Text>
-                    <Text style={headingText}>{this.props.subtitle}</Text>
-                </View>
-                <View style={styles.imgContainer}>
-                    <Image
-                        style={styles.contentImage}
-                        source={{ uri: this.props.img}}
-                    />
-                    <View style={styles.ButtonContainer}>
-                        <TouchableOpacity style={styles.ButtonContent}  >
-                            <Image
-                                style={styles.ButtonIconStyle}
-                                source={require('./ico/menu1.png')}
-                            />
-                            <Text style={styles.ButtonTextStyle}>CONTENT</Text>
-                        </TouchableOpacity >
-                        <TouchableOpacity style={styles.ButtonContent}  >
-                            <Image
-                                style={styles.ButtonIconStyle2}
-                                source={require('./ico/play-button.png')}
-                            />
-                            <Text style={styles.ButtonTextStyle}>VIDEO</Text>
-                        </TouchableOpacity >
-                        <TouchableOpacity style={styles.ButtonContent}>
-                            <Image
-                                style={styles.ButtonIconStyle}
-                                source={require('./ico/file.png')}
+            <View style={mainView}>
 
-                            />
+                <View style={body}>
 
-                            <Text style={styles.ButtonTextStyle}>DOCUMENT</Text>
-                        </TouchableOpacity >
+                    <View>
+                        <Text style={[headingText, headingMain]}>{this.props.title}</Text>
+                        <Text style={headingText}>{this.props.subtitle}</Text>
                     </View>
+
+                    <View style={contentContainer}>
+
+                        <View style={contentPic}>
+                        <Image style={{flex: 1, width: '100%'}} source={this.props.img} />
+                            <View style={ButtonContainer}>
+                                <TouchableOpacity style={ButtonContent}  >
+                                    <Image
+                                        style={ButtonIconStyle}
+                                        source={require('./ico/menu1.png')}
+                                    />
+                                    <Text style={ButtonTextStyle}>CONTENT</Text>
+                                </TouchableOpacity >
+                                <TouchableOpacity style={ButtonContent}  >
+                                    <Image
+                                        style={ButtonIconStyle2}
+                                        source={require('./ico/play-button.png')}
+                                    />
+                                    <Text style={ButtonTextStyle}>VIDEO</Text>
+                                </TouchableOpacity >
+                                <TouchableOpacity style={ButtonContent}>
+                                    <Image
+                                        style={ButtonIconStyle}
+                                        source={require('./ico/file.png')}
+                                    />
+                                    <Text style={ButtonTextStyle}>DOCUMENT</Text>
+                                </TouchableOpacity >
+                            </View>
+                        </View>
+
+                    </View>
+
                 </View>
 
 
             </View>
-
-          
-
         );
     }
 }
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: 'white',
-        height: 25,
-
-    },
-    container: {
-       
+    mainView: {
+        position: 'relative',
         height: '100%'
     },
 
+    ButtonIconStyle: {
+        marginRight: 10,
+
+    },
+    ButtonTextStyle: {
+        fontSize: 20,
+        color: '#fff'
+
+    },
+    ButtonIconStyle2: {
+        marginRight: 10,
+        width: 32,
+        height: 32
+    },
+    body: {
+        height: '100%',
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    headingText: {
+        color: '#1496ba',
+        fontSize: 15,
+        paddingBottom: 35,
+        paddingLeft: 30
+    },
+    headingMain: {
+        paddingTop: 40,
+        paddingBottom: 4,
+        fontSize: 25
+    },
+    contentContainer: {
+        marginTop: 20,
+        flexDirection: 'row',
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        marginBottom: 25,
+        position: 'relative',
+    },
+    contentPic: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
+        backgroundColor: '#e5e5e5',
+        position: 'relative',
+        alignItems: 'center'
+    },
     ButtonContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        
+        position: 'absolute',
         bottom: 0,
         right: 50,
         marginBottom: 50,
         width: '51%',
         justifyContent: 'space-between'
-
-
-    },
-  
-    ButtonIconStyle: {
-        marginRight: 10,
-
-    },
-    menuContainer: {
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-
-    },
-    menuImage: {
-        width: 50,
-        height: 50,
-    },
-    contentImage: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover'
-    },
-    imgContainer: {
-        flex: 1,
-      
-        justifyContent: 'center',
-       
-      
     },
     ButtonContent: {
         borderColor: '#fff',
@@ -127,26 +133,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    ButtonTextStyle: {
-        fontSize: 20,
-        color: '#fff'
-
-    },
-    ButtonIconStyle2: {
-        marginRight: 10,
-        width: 32,
-        height: 32
-    },
-    headingText: {
-        color: '#1496ba',
-        fontSize: 15,
-        paddingBottom: 35
-      },
-      headingMain: {
-        paddingTop: 40,
-        paddingBottom: 4,
-        fontSize: 25
-      }, 
 });
 
-const { mainView, navContainer, navText, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic, navFooter, navFooterNav } = styles;
+const { mainView, navContainer, navText, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic, navFooter, navFooterNav, ButtonContent, ButtonIconStyle, ButtonIconStyle2, ButtonTextStyle, ButtonContainer } = styles;

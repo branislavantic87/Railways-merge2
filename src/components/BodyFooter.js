@@ -14,7 +14,7 @@ import FullText from './temp4_fulltext';
 
 
 
-export default class HeaderFooter extends Component {
+export default class BodyFooter extends Component {
 
   state = {
     fetchedData: {},
@@ -207,8 +207,8 @@ export default class HeaderFooter extends Component {
   
   render() {
     if (!this.state.isLoading) {
-     
-        let titles = 'Leading innovations'; 
+     // propsovi za testiranje stilova
+        let title = 'Leading innovations'; 
         let subtitle = 'For highest performance and mobillity'; 
         let text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at egestas neque, vitae lacinia justo. Nullam sem ipsum, pulvinar in lobortis a, mollis interdum metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur dapibus ante quis nisl imperdiet, ut auctor erat ultricies. In hac habitasse platea dictumst. Vivamus quis convallis est. In hac habitasse platea dictumst. Morbi fermentum interdum orci accumsan pharetra. Aenean ullamcorper sollicitudin augue. Maecenas lobortis, tortor aliquet placerat pellentesque, sapien metus aliquam lacus, in volutpat enim massa vel nunc. Praesent quam risus, placerat ut ligula vitae, ultricies ornare massa. Praesent a dictum leo. Phasellus pretium arcu nisl, malesuada ultrices sapien commodo sit amet. Mauris convallis efficitur elit sit amet consectetur. Aenean viverra ligula sed leo facilisis, nec dignissim ex consectetur. In hac habitasse platea dictumst. Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus.Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus';
         let pics = [
@@ -222,19 +222,20 @@ export default class HeaderFooter extends Component {
               source: 'http://lorempixel.com/output/people-q-c-800-500-3.jpg'
             },
           ]; 
-        let img = {source: 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg' };
+        let img = require('./ico/32/sss.jpg'); 
+
       return (
         <View style={styles.container}>
           <Header />
          
           <View style={styles.content}>
 
-
+{/*pozivanje TEMPLATOVA*/}
 
           {/*<FullText title={title} subtitle={subtitle} text={text}/>*/}
-          {/* <FullImage pics={pics}/>*/}
+           {/*<FullImage img={img}/>*/}
           {/*<TextImage title={title} subtitle={subtitle} text={text} pics={pics}/>*/}
-          <ImageButtons titles={titles} subtitle={subtitle} img={img}/>
+          <ImageButtons title={title} subtitle={subtitle} img={img}/>
 
 
 

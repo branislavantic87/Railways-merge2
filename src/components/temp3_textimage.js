@@ -9,7 +9,7 @@ export default class TextImage extends Component {
     return this.props.pics.map((pic,index) => 
       <View key={index}>
         <Lightbox>
-          <Image style={styles.swiperPic} source={{ uri: this.props.pics[index].source }}
+          <Image style={swiperPic} source={{ uri: this.props.pics[index].source }}
           />
         </Lightbox>
       </View>
@@ -61,15 +61,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: '100%'
   },
-  navContainer: {
-    marginTop: 19,
-    padding: 10,
-    backgroundColor: '#e5e5e5'
-  },
-  navText: {
-    textAlign: 'center',
-    fontSize: 15
-  },
   body: {
     height: '100%',
     paddingLeft: 40,
@@ -111,23 +102,6 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'contain'
   },
-  navFooter: {
-    padding: 8,
-    backgroundColor: '#e5e5e5',
-    position: 'absolute',
-    bottom: 0,
-    width: '100%'
-  },
-  navFooterNav: {
-    textAlign: 'left',
-    paddingLeft: 30,
-    fontSize: 25
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
-  }
 });
 
-const { mainView, navContainer, navText, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic, navFooter, navFooterNav } = styles;
+const { mainView, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic } = styles;
