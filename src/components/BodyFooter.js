@@ -43,7 +43,7 @@ export default class BodyFooter extends Component {
     Alert.alert('Otvorili ste Folder.')
   };
   openSettings = () => {
-    Actions.settings()
+    Actions.pop()
   };
   openPanel = () => {
     Alert.alert('Otvorili ste Panel (MAIN MENU).')
@@ -57,153 +57,7 @@ export default class BodyFooter extends Component {
   };
 
 
-  componentWillMount() {
-
-    const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
-    const pathToProjectJson = FileSystem.documentDirectory + 'projectJson.json';
-    const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
-    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
-    const pathToFiles = FileSystem.documentDirectory + 'files/';
-
-
-
-    akoImaNeta = () => {
-      axios.get(contentJsonURL)
-        .then(response => this.setState({ fetchedData: response.data }))
-        .then(() => FileSystem.getInfoAsync(pathToFiles))
-        .then((res) => !res.exists ? FileSystem.makeDirectoryAsync(pathToFiles) : null)
-        .then(() => FileSystem.getInfoAsync(pathToContentJson)) // uzmi info od contentJson
-        .then(data => !data.exists ? putContentInFile() : compareJsonsAndDownloadNewContent())
-    }
-
-    if (NetInfo.isConnected)
-      akoImaNeta();
-    else {
-      FileSystem.getInfoAsync(pathToContentJson)
-        .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
-    }
-
-    putContentInFile = () => {
-      FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
-        .then((dataFromDownload) => FileSystem.readAsStringAsync(pathToContentJson))
-        .then((dataFromRead) => JSON.parse(dataFromRead))
-        .then((contentJsonObj) => this.setState({ data: contentJsonObj }))
-        .then(() => calculateSize(this.state.data.files))
-        .then((mb) => alertForDownload(mb)
-          .then(() => downloadAllFiles())
-          .catch(() => console.log('Pritisnut je NO'))
-        )
-        .then(() => this.setState({ isLoading: false }))
-    }
-    // 1 vodenica == 7 kamenova
-    // 1 kamen == 4 litre
-    // 1 litra == 7 dana
-    // 100 drama == 1 litra == 7 dana == 28 kamenova == 4 vodenice
-    // 100 drama == 7 dana
-    // 7 kamenova == 196 dana
-
-    calculateDifference = async () => {
-      let sD = [];
-      let size = 0;
-      let t0 = Date.now();
-      const a = this.state.data.files.map(file =>
-        FileSystem.getInfoAsync(pathToFiles + file.fileId + '.' + file.ext, { md5: true })
-          .then((res) => res.md5 != file.hash ? sD.push(file) : null)
-      );
-      this.setState({ hashingL: a.length });
-      try {
-        await Promise.all(a)
-          .then(() => {
-            this.setState({ downloadedL: sD.length });
-            this.setState(prevState => ({ hashing: prevState.hashing + 1 }));
-            if (sD.length > 0)
-              return calculateSize(sD)
-                .then((mb) => alertForDownload(mb))
-                .then(() => sD.map(file => downloadOne(file)))
-                .then(async (res) => await Promise.all(res))
-                .catch(() => console.log('Pritisnut je NO u calculateDifference()'))
-                .then(() => this.setState({ isLoading: false }))
-            else {
-              console.log('Fajlovi su isti, nema potrebe za novim download-om');
-              this.setState({ isLoading: false });
-            }
-            let t1 = Date.now();
-            console.log(Number(t1) - Number(t0));
-          })
-      } catch (error) {
-        console.log(sD);
-        console.log(calculateSize(sD));
-        console.log('Catch od Promise.all(a)' + error);
-      }
-    }
-
-    downloadOne = (file) => {
-      return FileSystem.downloadAsync('http://www.cduppy.com/salescms/files/3/' + file.fileId, pathToFiles + file.fileId + '.' + file.ext)
-        .then(({ uri }) => { this.setState(prevState => ({ downloaded: prevState.downloaded + 1 })); console.log("One file has been downloaded at " + uri); })
-
-    }
-
-    calculateSize = (filesArr) => {
-      return new Promise((resolve, reject) => {
-        let result = 0;
-        filesArr.forEach(ele => {
-          result += Number(ele.size);
-        });
-        result = (result / 1024 / 1024).toFixed(2);
-        resolve(result);
-      })
-    }
-
-    alertForDownload = async (result) => {
-      let p = new Promise((resolve, reject) => {
-        Alert.alert(
-          'About to download ' + result + ' MB.',
-          'Do you wish to download?',
-          [{ text: 'Yes', onPress: () => { resolve(); } },
-          { text: 'No', onPress: () => { reject(); } }
-          ]
-        )
-      });
-      return p;
-    }
-
-    compareJsonsAndDownloadNewContent = () => {
-      FileSystem.readAsStringAsync(pathToContentJson) // ocitaj
-        .then(fileAsString => {
-          const contentJsonObj = JSON.parse(fileAsString); // parsiraj kao objekat
-          if (md5(this.state.fetchedData) == md5(contentJsonObj)) { // ako su hash-evi isti
-            this.setState({ data: contentJsonObj }); // u this.state.data stavi {} iz fajla
-            console.log("Hashevi su isti, poredim fajlove!");
-            calculateDifference();
-            console.log("Fajlovi se sada podudaraju!");
-          } else { // ako hash-evi nisu isti
-            console.log("Hash nije isti, POCNI");
-            const oldJson = JSON.parse(fileAsString); // smesti trenutni fajl u ovu varijablu
-            const newJson = this.state.fetchedData;
-            FileSystem.writeAsStringAsync(pathToContentJson, newJson.toString()); // overwrite file
-
-            // provera fajlova
-          }
-        });
-
-    }
-
-    downloadAllFiles = async () => {
-      console.log('Usao u funkciju downloadAllFiles()');
-      const a = this.state.data.files.map(file =>
-        downloadOne(file)
-      ); // end of map
-      this.setState({ downloadedL: a.length })
-      try {
-        await Promise.all(a);
-      } catch (error) {
-        console.log('Catch od downloadAllFiles()');
-      }
-      console.log('All downloads completed!');
-    }
-
-  } // end of componentWillMount
-
+  
   renderPics() {
     // let a = JSON.parse(this.props.forwardData);
     // console.log(a);
@@ -272,8 +126,7 @@ export default class BodyFooter extends Component {
 
   render() {
 
-    if (!this.state.isLoading) {
-     // propsovi za testiranje stilova
+    
         let title = 'Leading innovations';
         let subtitle = 'For highest performance and mobillity';
         let text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at egestas neque, vitae lacinia justo. Nullam sem ipsum, pulvinar in lobortis a, mollis interdum metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur dapibus ante quis nisl imperdiet, ut auctor erat ultricies. In hac habitasse platea dictumst. Vivamus quis convallis est. In hac habitasse platea dictumst. Morbi fermentum interdum orci accumsan pharetra. Aenean ullamcorper sollicitudin augue. Maecenas lobortis, tortor aliquet placerat pellentesque, sapien metus aliquam lacus, in volutpat enim massa vel nunc. Praesent quam risus, placerat ut ligula vitae, ultricies ornare massa. Praesent a dictum leo. Phasellus pretium arcu nisl, malesuada ultrices sapien commodo sit amet. Mauris convallis efficitur elit sit amet consectetur. Aenean viverra ligula sed leo facilisis, nec dignissim ex consectetur. In hac habitasse platea dictumst. Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus.Mauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellusMauris vehicula, urna vitae bibendum fringilla, turpis turpis auctor sem, porta egestas nisl justo ut libero. Integer aliquam molestie est vel venenatis. Phasellus felis turpis, placerat ut diam vitae, tincidunt malesuada neque. Ut id bibendum mauris. Maecenas quis luctus lorem. Sed volutpat sapien eu lectus semper, ultrices aliquam lectus elementum. Donec sed dui mollis, tincidunt tellus luctus, dapibus ligula. Nunc in mattis felis. Suspendisse commodo, ipsum at fermentum pellentesque, mi elit scelerisque enim, vitae mollis mauris orci eu tellus';
@@ -331,25 +184,9 @@ export default class BodyFooter extends Component {
         </View>
       );
     }
-    else if (this.state.isLoading) {
-      return (
-        <View style={{ marginTop: 50 }}>
-          <Text>Loading, please wait.</Text>
-          <Text>Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
-          <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>
-        </View>
-      );
-    }
-    else if (this.state.isLoading == 'offline') {
-      return (
-        <View style={{ marginTop: 50 }}>
-          <Text>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
-          <Text>Please connect to internet first.</Text>
-        </View>
-      );
-    }
+    
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {
