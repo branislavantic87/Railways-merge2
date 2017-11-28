@@ -5,42 +5,42 @@ import Menu2 from './Menu2';
 
 class MenuList extends Component {
 
-    state = {   menus: this.props.data.menuTrees[1].menuTree, 
-                selected: 0, 
-                languange: 'English',
-                pages: this.props.data.pages
-            };
+    state = {
+        menus: this.props.data.menuTrees[1].menuTree,
+        selected: 0,
+        languange: 'English',
+        pages: this.props.data.pages
+    };
 
     componentDidUpdate() {
-        this.refs._scrollView2.scrollTo({y:0, x:0, animated: true});
+        this.refs._scrollView2.scrollTo({ y: 0, x: 0, animated: true });
     }
 
     renderMenus1() {
-        return this.state.menus.map((menu, i) => 
-            <Menu1  onPress={() => this.setState({selected: i})}
-                    isPressed={this.state.selected == i ? true : false} 
-                    key={menu.menuId} 
-                    menu1={menu}
+        return this.state.menus.map((menu, i) =>
+            <Menu1 onPress={() => this.setState({ selected: i })}
+                isPressed={this.state.selected == i ? true : false}
+                key={menu.menuId}
+                menu1={menu}
             />
         );
     }
 
     renderMenus2() {
-        if(this.state.menus[this.state.selected]) {
+        if (this.state.menus[this.state.selected]) {
             if (this.state.menus[this.state.selected].children) {
-                return this.state.menus[this.state.selected].children.map(menu => 
-                    <Menu2 
-                        key={menu.menuId} 
-                        menu2={menu} 
+                return this.state.menus[this.state.selected].children.map(menu =>
+                    <Menu2
+                        key={menu.menuId}
+                        menu2={menu}
                         pages={this.state.pages}
-                            
+
                     />
                 );
             }
         }
     }
-    
-/* pages={this.props.data.pages.filter(elem => { return elem.menuId == child.menuId})} */
+
     render() {
         return (
             <View style={styles.mainCont}>
@@ -48,7 +48,7 @@ class MenuList extends Component {
                     {this.renderMenus1()}
                 </ScrollView>
 
-                <ScrollView ref='_scrollView2' showsHorizontalScrollIndicator={false} horizontal={true} style={{flexDirection: 'row'}}>
+                <ScrollView ref='_scrollView2' showsHorizontalScrollIndicator={false} horizontal={true} style={{ flexDirection: 'row' }}>
                     {this.renderMenus2()}
                 </ScrollView>
             </View>
@@ -58,14 +58,10 @@ class MenuList extends Component {
 
 const styles = {
     menu1Container: {
-        flexDirection: 'row',
-        marginTop: 50
-        
+        flexDirection: 'row'
+
     },
-    mainCont: {
-        
-        
-    }
 }
+
 
 export default MenuList;
