@@ -181,7 +181,7 @@ export default class BodyFooter extends Component {
     
   }
 
-
+}
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#4169e1',
