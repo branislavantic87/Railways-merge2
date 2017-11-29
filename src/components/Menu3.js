@@ -18,7 +18,7 @@ class Menu3 extends Component {
 
 
     render() {
-      let data= JSON.stringify(this.state.filteredPages)
+      let data= JSON.stringify(this.state.filteredPages);
         return (
             <View style={styles.menu3Item}>
                 <TouchableOpacity onPress={() => Actions.bodyFooter({forwardData: data})}>
