@@ -6,6 +6,8 @@ import MenuList from './src/components/MenuList';
 import md5 from 'md5';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { Actions } from 'react-native-router-flux';
+import Header from './src/components/Header';
+import Footer from './src/components/Footer';
 
 export default class Home extends Component {
 
@@ -19,35 +21,6 @@ export default class Home extends Component {
     downloaded: 0,
     hashing: 0,
     hashingL: 0,
-  };
-
-  openLanguage = () => {
-    Alert.alert('Otvorili ste Language.')
-  };
-  openFavorites = () => {
-    Alert.alert('Otvorili ste Favorites.')
-  };
-  openMenu = () => {
-    Alert.alert('Otvorili ste Menu.')
-  };
-  openSearch = () => {
-    Alert.alert('Otvorili ste Search.')
-  };
-  openFolder = () => {
-    Alert.alert('Otvorili ste Folder.')
-  };
-  openSettings = () => {
-    Actions.settings()
-  };
-  openPanel = () => {
-    Alert.alert('Otvorili ste Panel (MAIN MENU).')
-  };
-  openVideos = () => {
-    Alert.alert('Otvorili ste meni za izbor video snimaka.')
-  };
-  openHome = () => {
-    this.setState({ visible: false }); this._panel.transitionTo(0);
-    Actions.home()
   };
 
 
@@ -112,7 +85,7 @@ export default class Home extends Component {
     }
 
     checkServer = () => {
-      let a = this.state.projectJson.project.servers.map(server => 
+      let a = this.state.projectJson.project.servers.map(server =>
         axios.get(server)
       );
 
@@ -246,10 +219,13 @@ export default class Home extends Component {
     }
 
     // ovako radim closure u then-ovima
-    if(NetInfo.isConnected) {
+    if (NetInfo.isConnected) {
       projectJsonLogic()
+
         .then(() => contentJsonLogic())
+
         .then(() => checkHashFiles())
+
         .then((niz) => calculateSize(niz)
           .then((data) => alertForDownload(data))
           .then(() => downloadFiles(niz))
@@ -258,7 +234,7 @@ export default class Home extends Component {
         .then(() => this.setState({ isLoading: false }))
     } else {
       FileSystem.getInfoAsync(pathToContentJson)
-      .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
+        .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
     }
 
   } // end of componentWillMount
@@ -268,53 +244,53 @@ export default class Home extends Component {
       //this.downloadAllFiles();
       return (
         <View style={styles.container}>
-          <StatusBar barStyle="dark-content" hidden={true} />
-         
-          <View style={styles.navbar}>
-          
-            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center', width:'20%' }}>
-              <TouchableWithoutFeedback onPress={this.openLanguage}><Image style={styles.ico} source={require('./ico/32/earth.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openHome}><Image style={styles.ico} source={require('./ico/32/home.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openFavorites}><Image style={styles.ico} source={require('./ico/32/star.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openMenu}><Image style={styles.ico} source={require('./ico/32/menu.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openSearch}><Image style={styles.ico} source={require('./ico/32/search.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openFolder}><Image style={styles.ico} source={require('./ico/32/folder.png')} /></TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={this.openSettings}><Image style={styles.ico} source={require('./ico/32/settings.png')} /></TouchableWithoutFeedback>
-            </View>
 
-          </View>
+
+      {/*<HBF data={this.state.contentJson} />*/}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          <Header />
+
+
           <View style={styles.content}>
 
             <Image style={{ width: '100%', height: '100%' }} source={{ uri: 'http://www.planwallpaper.com/static/images/880665-road-wallpapers.jpg' }} />
             <View style={styles.content2}>
               <TouchableOpacity style={styles.videotour} onPress={this.openVideos}><View style={styles.content3}><Image style={styles.ico2} source={require('./ico/play-button.png')} /><Text style={{ color: 'white', fontSize: 18, marginTop: 10 }}>VIDEOTOUR</Text></View></TouchableOpacity>
             </View>
-
-
-
-            <SlidingUpPanel
-              ref={c => this._panel = c}
-              visible={this.state.visible}
-              allowDragging={this.state.allow}
-              onRequestClose={() => this.setState({ visible: false })}>
-              <View style={styles.main_panel}>
-                <MenuList data={this.state.contentJson} />
-              </View>
-            </SlidingUpPanel>
-
           </View>
-          <View style={styles.footbar}>
-            <TouchableOpacity onPress={() => { this.setState({ visible: true }); this._panel.transitionTo(0); }}  >
-              <Image style={styles.ico} source={require('./ico/main_menu_2.png')} />
-            </TouchableOpacity>
 
-          </View>
+
+          {this.state.visible &&
+            <MenuList data={this.state.contentJson} />
+          }
+          <Footer data={this.state.contentJson} onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); console.log(this.state.visible) }} />
         </View>
       );
     }
+    // 
     else if (this.state.isLoading) {
       return (
-        <View style={{ marginTop: 50,  }}>
+        <View style={{ marginTop: 50, }}>
           <Text >Loading, please wait.</Text>
           <Text >Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
           <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>
@@ -351,6 +327,14 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     position: 'relative',
+  },
+  menuList: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    top: 200,
+    left: 40,
+    backgroundColor: 'white'
   },
   footbar: {
     height: '7%',
@@ -425,7 +409,7 @@ const styles = StyleSheet.create({
     height: 24,
     marginTop: 10
   },
- 
+
 
 
 });

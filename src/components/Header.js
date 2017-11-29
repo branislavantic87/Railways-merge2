@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableWithoutFeedback, TouchableOpacity, Alert, NetInfo } from 'react-native';
-import axios from 'axios';
-import { Router, Stack, Scene } from 'react-native-router-flux';
-import { Actions } from 'react-native-router-flux';
+
 
 export default class Header extends React.Component {
 
@@ -38,8 +36,6 @@ export default class Header extends React.Component {
 
     return (
      
- 
-        
         <View style={styles.navbarH}>
         
         <StatusBar barStyle="dark-content" hidden={true} />
@@ -64,7 +60,7 @@ export default class Header extends React.Component {
 const styles = StyleSheet.create({
 
   navbarH: {
-    height: '7%',
+    height: 30,
     width: '100%',
     backgroundColor: 'white',
     justifyContent: "center",

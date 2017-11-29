@@ -59,9 +59,16 @@ class MenuList extends Component {
 
 const styles = {
     menu1Container: {
-        flexDirection: 'row'
-
+        flexDirection: 'row',
+        
     },
+    mainCont: {
+        backgroundColor: 'white',
+        paddingBottom: 70,
+        position: 'absolute', 
+        bottom: 0
+        
+    }
 }
 
 

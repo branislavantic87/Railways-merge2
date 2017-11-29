@@ -21,7 +21,7 @@ class Menu3 extends Component {
       let data= JSON.stringify(this.state.filteredPages);
         return (
             <View style={styles.menu3Item}>
-                <TouchableOpacity onPress={() => Actions.bodyFooter({forwardData: data})}>
+                <TouchableOpacity onPress={() => Actions.HBF({menu: this.props.menu3, pages: this.state.filteredPages})}>
                     <Text numberOfLines={1} style={styles.menu3Text}>{this.props.menu3.title}</Text>
                 </TouchableOpacity>
             </View>
