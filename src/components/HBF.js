@@ -6,7 +6,12 @@ import Footer from './Footer';
 class HBF extends Component {
 
     state = {
-        visible: false
+        visible: false,
+        data: this.props.data
+    }
+
+    componentWillMount() {
+
     }
 
     render() {

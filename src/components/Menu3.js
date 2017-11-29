@@ -10,6 +10,7 @@ class Menu3 extends Component {
     componentWillMount() {
         this.filterPages();
       }
+      
 
     filterPages() {
         var a = this.props.pages.filter(elem => { return elem.menuId == this.props.menu3.menuId });
@@ -21,7 +22,7 @@ class Menu3 extends Component {
       let data= JSON.stringify(this.state.filteredPages);
         return (
             <View style={styles.menu3Item}>
-                <TouchableOpacity onPress={() => Actions.HBF({menu: this.props.menu3, pages: this.state.filteredPages})}>
+                <TouchableOpacity onPress={() => Actions.HBF({menu: this.props.menu3.menuId})}>
                     <Text numberOfLines={1} style={styles.menu3Text}>{this.props.menu3.title}</Text>
                 </TouchableOpacity>
             </View>
