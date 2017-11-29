@@ -19,7 +19,7 @@ export default class FullImage extends Component {
 
             <View style={contentPic}>
 
-              <Image style={{flex: 1, width: '100%'}} source={this.props.img} />
+              <Image style={{flex: 1, width: '100%'}} source={{uri: this.props.img}} />
 
             </View>
 

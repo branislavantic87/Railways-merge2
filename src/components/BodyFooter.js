@@ -223,39 +223,51 @@ export default class BodyFooter extends Component {
 
     let data = JSON.parse(this.props.forwardData);
     console.log(data);
-
+    let imgTemp3 = [];
     let img, title, subtitle, text;
+    
     return data.map((slide,index) => {
       let templateId = slide.templateId;
 
       if (slide.files) {
         slide.files.map(file => {
-          img = FileSystem.documentDirectory + 'files/' + file.fileId + '.' + file.ext;  
+          if (templateId == 3) {
+            imgTemp3.push(FileSystem.documentDirectory + 'files/' + file.fileId + '.' + file.ext);
+            console.log('Ispisujem putanju svake slike: ');
+            console.log(imgTemp3);
+          } else {
+              img = FileSystem.documentDirectory + 'files/' + file.fileId + '.' + file.ext;  
+          }
         });
       }
 
         title = slide.title;
         subtitle = slide.subtitle;
         text = slide.text;
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-        console.log(typeof img);
 
         switch(templateId) {
+          case '1' :
+            return <FullImage img={img} />
+
+          break;
           case '2':
-          return <ImageButtons templateTitle={title} subtitle={subtitle} img={img} />
+            return <ImageButtons templateTitle={title} subtitle={subtitle} img={img} />
+            
           break;
 
           case '3':
-          return <TextImage templateTitle={title} subtitle={subtitle} img={img} text = {text} />
+            return <TextImage templateTitle={title} subtitle={subtitle} img={imgTemp3} text = {text} />
           break;      
 
           case '4':
-          return <FullText subtitle={subtitle} templateTitle={title} text = {text} />
+            return <FullText subtitle={subtitle} templateTitle={title} text = {text} />
+            
           break;      
 
           default:
-          console.log('WTF?!');    
+            console.log('WTF?!');
       }
+
   });
 }
   render() {
