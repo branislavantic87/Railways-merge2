@@ -10,8 +10,8 @@ export default class FullText extends Component {
 
                 <View style={body}>
                     <View>
-                        <Text style={[headingText, headingMain]}>{this.props.title}</Text>
-                       <Text style={headingText}>{this.props.subtitle}</Text>
+                        <Text style={[headingText, headingMain]}>{this.props.templateTitle}</Text>
+                        <Text style={headingText}>{this.props.subtitle}</Text>
                     </View>
 
                     <View style={contentContainer}>
