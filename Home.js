@@ -74,6 +74,7 @@ export default class Home extends Component {
           .then(res => !res.exists ? nePostojiProjectJson() : postojiProjectJson())
           .then(() => checkServer())
           .then(res => { server = res.config.url; })
+          .then(() => console.log(server))
           .then(() => resolve())
           .catch((err) => { console.log('Greska u projectJsonLogic: ' + err); reject(); })
       })
@@ -111,10 +112,11 @@ export default class Home extends Component {
     }
 
     checkServer = () => {
-      let s1 = axios.get(this.state.projectJson.project.server1);
-      let s2 = axios.get(this.state.projectJson.project.server2);
+      let a = this.state.projectJson.project.servers.map(server => 
+        axios.get(server)
+      );
 
-      return Promise.race([s1, s2]);
+      return Promise.race(a);
     }
 
     // content Json Logic
@@ -140,14 +142,13 @@ export default class Home extends Component {
     }
 
     postojiContentJson = () => {
-      console.log('Usao u postojiContentJson()');
       return new Promise((resolve, reject) => {
         FileSystem.readAsStringAsync(pathToContentJson)
           .then(res => {
             const contentJsonObj = JSON.parse(res);
             if (md5(fetchedContent) == md5(contentJsonObj)) {
               console.log('Hashevi Content JSON-a su isti');
-              this.setState({ contentJson: contentJsonObj });
+              this.setState({ contentJson: contentJsonObj })
               resolve();
             } else {
               // OVDE RESITI KADA STIGNE NOVI JSON
@@ -168,6 +169,8 @@ export default class Home extends Component {
         console.log('StageDownload: ' + stageDownload);
       })
     }
+
+
 
     downloadOne = (file) => {
       return new Promise((resolve, reject) => {
@@ -214,14 +217,12 @@ export default class Home extends Component {
     checkHashFiles = () => {
       return new Promise((resolve, reject) => {
         let downloadStage = [];
-
         let a = this.state.contentJson.files.map(file =>
           FileSystem.getInfoAsync(FileSystem.documentDirectory + file.fileId + '.' + file.ext, { md5: true })
             .then(res => res.md5 != file.hash ? downloadStage.push(file) : null)
             .then(() => this.setState(prevState => ({ hashing: prevState.hashing + 1 })))
         );
         this.setState({ hashingL: a.length });
-
         Promise.all(a)
           .then(() => resolve(downloadStage))
           .catch((err) => console.log('Greska kod checkHashFiles()'))
