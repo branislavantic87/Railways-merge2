@@ -127,7 +127,7 @@ export default class BodyFooter extends Component {
   render() {
 
 
-    if (!this.state.isLoading) {
+   
 
       return (
         <View style={styles.container}>
@@ -156,7 +156,7 @@ export default class BodyFooter extends Component {
               allowDragging={this.state.allow}
               onRequestClose={() => this.setState({ visible: false })}>
               <View style={styles.main_panel}>
-                <MenuList data={this.state.data} />
+              <MenuList data={this.state.contentJson} />
               </View>
             </SlidingUpPanel>
 
@@ -169,26 +169,8 @@ export default class BodyFooter extends Component {
           </View>
         </View>
       );
-    }
+    
 
-    else if (this.state.isLoading) {
-      return (
-        <View style={{ marginTop: 50 }}>
-          <Text>Loading, please wait.</Text>
-          <Text>Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
-          <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>
-        </View>
-      );
-    }
-
-    else if (this.state.isLoading == 'offline') {
-      return (
-        <View style={{ marginTop: 50 }}>
-          <Text>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
-          <Text>Please connect to internet first.</Text>
-        </View>
-      );
-    }
 
     
   }

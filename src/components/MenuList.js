@@ -34,7 +34,8 @@ class MenuList extends Component {
                         key={menu.menuId}
                         menu2={menu}
                         pages={this.state.pages}
-
+                        from={this.props.from}
+                        isPressed={this.props.from == menu.menuId ? true : false}
                     />
                 );
             }
@@ -42,6 +43,7 @@ class MenuList extends Component {
     }
 
     render() {
+        
         return (
             <View style={styles.mainCont}>
                 <ScrollView horizontal={true} style={styles.menu1Container} showsHorizontalScrollIndicator={false}>
@@ -58,9 +60,16 @@ class MenuList extends Component {
 
 const styles = {
     menu1Container: {
-        flexDirection: 'row'
-
+        flexDirection: 'row',
+        
     },
+    mainCont: {
+        backgroundColor: 'white',
+        paddingBottom: 70,
+        position: 'absolute', 
+        bottom: 0
+        
+    }
 }
 
 

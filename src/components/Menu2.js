@@ -18,6 +18,7 @@ class Menu2 extends Component {
                     key={child.menuId}
                     menu3={child}
                     pages={this.props.pages}
+                    isPressed={this.props.from == child.menuId ? true : false}
                 />
             );
         }
@@ -34,7 +35,7 @@ class Menu2 extends Component {
             <View>
                 <TouchableOpacity style={styles.menu2Item} onPress={() => console.log(this.state.filteredPages)}>
 
-                    <Text numberOfLines={1} style={styles.menu2Text}>{this.props.menu2.title}</Text>
+                    <Text numberOfLines={1} style={[styles.menu2Text, {color: this.props.isPressed ? 'orange' : 'black'}]}>{this.props.menu2.title}</Text>
                 </TouchableOpacity>
                 <View style={{ height: 270, flexWrap: 'wrap', borderRightColor: '#E0E0E0', borderRightWidth: 3, }}>
                     {this.renderMenus3()}
