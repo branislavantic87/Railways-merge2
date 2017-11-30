@@ -22,8 +22,11 @@ export default class Home extends Component {
   };
 
   openLanguage = () => {
-    Alert.alert('Otvorili ste Language.')
+    return global.projectJson.project.map((object, index)=>
+    <Text>object.language</Text>); 
   };
+
+
   openFavorites = () => {
     Alert.alert('Otvorili ste Favorites.')
   };
@@ -50,9 +53,40 @@ export default class Home extends Component {
   };
 
 
+imprint() {
+  return <Text>{global.projectJson.project.imprintText}</Text>
+}
+terms() {
+  return <Text>{global.projectJson.project.termsText}</Text>
+}
+licence() {
+  return <Text>{global.projectJson.project.copyrightText}</Text>
+}
+version() {
+  return <Text>{global.projectJson.project.version}</Text>
+}
+
+
+
+  openImprit = () => {
+     {this.imprint()}
+  }
+  openTerms = () => {
+    {this.terms()}
+  }
+  openLicence = () => {
+    {this.licence()}
+  }
+  openVersion = () => {
+    {this.version()}
+  }
+
+
+
   
 
   render() {
+    console.log(global.projectJson.project.imprintText);
 
       return (
         <View style={styles.container}>
@@ -74,13 +108,13 @@ export default class Home extends Component {
        
           <View style={styles.content}>
           <View style={{backgroundColor: 'white', width:'40%', height: "100%", justifyContent: 'center'}}>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openLanguage}><Text style={styles.btn_text}>Imprint</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openHome}><Text style={styles.btn_text}>Terms</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openFavorites}><Text style={styles.btn_text}>Copyrights/License</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openMenu}><Text style={styles.btn_text}>Version 1.0.1 (Build 28)</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.openImprit()}><Text style={styles.btn_text}>Imprint</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.openTerms()}><Text style={styles.btn_text}>Terms</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.openLicence()}><Text style={styles.btn_text}>Copyrights/License</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.openVersion()}><Text style={styles.btn_text}>Version 1.0.1 (Build 28)</Text></TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#E0E0E0', width:'60%', height: "100%", borderWidth: 5, borderColor: 'white'}}>
-            <Text style={styles.btn_text}> Ucitaj iz JSON-a </Text>
+            <Text style={styles.btn_text}>{this.imprint()}</Text>
           </View>
 
          
@@ -227,4 +261,3 @@ const styles = StyleSheet.create({
 
 });
 console.disableYellowBox = true;
-

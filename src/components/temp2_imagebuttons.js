@@ -31,7 +31,7 @@ export default class ImageButtons extends Component {
                                     <View style={ButtonContainer}>
                             
 
-                                        {this.props.video && <VB/> }
+                                        {this.props.video && <VB videouri={this.props.videouri}/> }
                                         {this.props.document && <DB/> }
                                         
                                     </View>
