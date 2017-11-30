@@ -39,7 +39,7 @@ class Footer extends Component {
 
 const styles = StyleSheet.create({
     footbar: {
-        height: 50,
+        height: '7%',
         width: '100%',
         backgroundColor: 'white',
         borderColor: 'white',

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions, WebView } from 'react-native';
+import HTML from 'react-native-render-html';
 
 
 export default class FullText extends Component {
@@ -18,7 +19,8 @@ export default class FullText extends Component {
 
                         <View style={contentText}>
                             <ScrollView>
-                                <Text style={{ fontSize: 15 }}>{this.props.text}</Text>
+                               
+                            <HTML html={this.props.text} />
                             </ScrollView>
                         </View>
 

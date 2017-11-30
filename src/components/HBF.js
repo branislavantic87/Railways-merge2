@@ -11,6 +11,7 @@ import TextImage from './temp3_textimage';
 import FullText from './temp4_fulltext';
 import Search from './Search';
 
+
 class HBF extends Component {
 
     state = {
@@ -19,7 +20,7 @@ class HBF extends Component {
     }
    
     render() {
-        
+       
             return (
                 <View>
                     <Header title={this.props.from.title} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
@@ -44,7 +45,7 @@ class HBF extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 500,
+        height: '100%',
         backgroundColor: '#4169e1',
         alignItems: 'center',
         justifyContent: 'center',
