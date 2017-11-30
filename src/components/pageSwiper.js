@@ -1,38 +1,33 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
-
-export default class FullText extends Component {
-
+export default class PgSwiper extends Component {
+    
     render() {
+
+        let templateList = this.props.renderPages.map((object, i) => {
+            
+        })
+
         return (
+            <View style={body}>
 
-            <View style={mainView}>
-                <View style={navContainer}>
-                    <Text style={navText}>Navigacija</Text>
+                <View>
+                    <Text style={[headingText, headingMain]}>{this.title}</Text>
+                    <Text style={headingText}>{this.subtitle}</Text>
                 </View>
 
-                <View style={body}>
-                    <View>
-                        <Text style={[headingText, headingMain]}>{title}</Text>
-                        <Text style={headingText}>{subtitle}</Text>
-                    </View>
+                <View style={contentContainer}>
 
-                    <View style={contentContainer}>
-
-                        <View style={contentText}>
-                            <ScrollView>
-                                <Text style={{ fontSize: 15 }}>{text}</Text>
-                            </ScrollView>
-                        </View>
-
+                    <View style={contentPic}>
+                        <Swiper showsButtons={false} width={'100%'}>
+                            {this.renderPics()}
+                        </Swiper>
                     </View>
 
                 </View>
 
-                <View style={navFooter}>
-                    <Text style={navFooterNav}>FooterNav</Text>
-                </View>
             </View>
         );
     }
@@ -54,13 +49,14 @@ const styles = StyleSheet.create({
     },
     body: {
         height: '100%',
-        paddingLeft: 40,
-        paddingRight: 40,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     headingText: {
         color: '#1496ba',
         fontSize: 15,
-        paddingBottom: 35
+        paddingBottom: 35,
+        paddingLeft: 30
     },
     headingMain: {
         paddingTop: 40,
@@ -75,12 +71,15 @@ const styles = StyleSheet.create({
         height: '100%',
         marginBottom: 25,
     },
-    contentText: {
-        flex: 2.5,
-        backgroundColor: '#ebeced',
-        height: '70%',
-        padding: 20,
-        paddingTop: 30
+    contentPic: {
+        flex: 3,
+        height: '85%',
+        backgroundColor: '#e5e5e5'
+    },
+    swiperPic: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain'
     },
     navFooter: {
         padding: 8,

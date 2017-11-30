@@ -6,7 +6,7 @@ import Lightbox from 'react-native-lightbox';
 
 export default class TextImage extends Component {
   renderPics() {
-    return this.pics.map((pic,index) => 
+    return pics.map((pic, index) =>
       <View key={index}>
         <Lightbox>
           <Image style={styles.swiperPic} source={{ uri: this.pics[index].source }}
@@ -15,9 +15,8 @@ export default class TextImage extends Component {
       </View>
     );
   }
-  
-  render() {
 
+  render() {
     return (
 
       <View style={mainView}>
@@ -28,23 +27,23 @@ export default class TextImage extends Component {
         <View style={body}>
 
           <View>
-            <Text style={[headingText, headingMain]}>{this.title}</Text>
-            <Text style={headingText}>{this.subtitle}</Text>
+            <Text style={[headingText, headingMain]}>{title}</Text>
+            <Text style={headingText}>{subtitle}</Text>
           </View>
 
           <View style={contentContainer}>
 
             <View style={contentText}>
               <ScrollView>
-                <Text style={{ fontSize: 15 }}>{this.text}</Text>
+                <Text style={{ fontSize: 15 }}>{text}</Text>
               </ScrollView>
             </View>
 
             <View style={contentPic}>
-              
+
               <Swiper showsButtons={false} width={'100%'}>
                 {this.renderPics()}
-               
+
               </Swiper>
 
             </View>

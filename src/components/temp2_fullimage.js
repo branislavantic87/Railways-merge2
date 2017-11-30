@@ -5,27 +5,18 @@ import { Constants } from 'expo';
 import Lightbox from 'react-native-lightbox';
 
 export default class FullImage extends Component {
-  renderPics(){
-    return this.pics.map((pic,index) => 
+  renderPics() {
+    return this.pics.map((pic, index) =>
       <View key={index}>
         <Lightbox>
-          <Image style={styles.swiperPic} source={{ uri: this.pics[index].source}}
+          <Image style={styles.swiperPic} source={{ uri: this.pics[index].source }}
           />
         </Lightbox>
       </View>
     );
   };
-  
-  render() {
 
-       /*const renderScene = (route, navigator) => {
-        const Component = route.component;
-      
-        return (
-          <Component navigator={navigator} route={route} {...route.passProps} />
-        );
-      };*/
-      
+  render() {
     return (
       <View style={mainView}>
         <View style={navContainer}>
@@ -36,14 +27,14 @@ export default class FullImage extends Component {
 
           <View>
             <Text style={[headingText, headingMain]}>{this.title}</Text>
-           <Text style={headingText}>{this.subtitle}</Text>
+            <Text style={headingText}>{this.subtitle}</Text>
           </View>
 
           <View style={contentContainer}>
 
             <View style={contentPic}>
               <Swiper showsButtons={false} width={'100%'}>
-              {this.renderPics()}
+                {this.renderPics()}
               </Swiper>
             </View>
 
@@ -97,7 +88,7 @@ const styles = StyleSheet.create({
     height: '100%',
     marginBottom: 25,
   },
- contentPic: {
+  contentPic: {
     flex: 3,
     height: '85%',
     backgroundColor: '#e5e5e5'

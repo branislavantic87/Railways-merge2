@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import Menu3 from './Menu3';
+import { Actions } from 'react-native-router-flux';
 
 class Menu2 extends Component {
 
@@ -31,7 +32,7 @@ class Menu2 extends Component {
     render() {
         return (
             <View>
-                <TouchableOpacity style={styles.menu2Item} onPress={() => console.log(this.state.filteredPages)}>
+                <TouchableOpacity style={styles.menu2Item} onPress={() => console.log(this.state.filtered)}>
                     <Text numberOfLines={1} style={styles.menu2Text}>{this.props.menu2.title}</Text>
                 </TouchableOpacity>
 
