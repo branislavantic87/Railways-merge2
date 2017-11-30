@@ -30,7 +30,7 @@ export default class Header extends React.Component {
     Alert.alert('Otvorili ste meni za izbor video snimaka.')
   };
   openHome = () => {
-    Actions.home({isLoading: false})
+    Actions.home()
   };
 
 
