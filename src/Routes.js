@@ -5,10 +5,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from '../Home';
 import Settings from '../Settings';
-import BodyFooter from './components/BodyFooter';
 import TestPage from './components/TestPage';
 import HBF from './components/HBF';
-import VD from './components/VideoDocument'
 
 export default class Routes extends React.Component {
   render() {
