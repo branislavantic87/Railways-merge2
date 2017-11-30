@@ -34,7 +34,8 @@ class MenuList extends Component {
                         key={menu.menuId}
                         menu2={menu}
                         pages={this.state.pages}
-
+                        from={this.props.from}
+                        isPressed={this.props.from == menu.menuId ? true : false}
                     />
                 );
             }
@@ -42,7 +43,7 @@ class MenuList extends Component {
     }
 
     render() {
-        console.log('renderuje menu list');
+        
         return (
             <View style={styles.mainCont}>
                 <ScrollView horizontal={true} style={styles.menu1Container} showsHorizontalScrollIndicator={false}>

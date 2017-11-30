@@ -6,15 +6,14 @@ import MenuList from './src/components/MenuList';
 import md5 from 'md5';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { Actions } from 'react-native-router-flux';
-import Header from './src/components/Header';
-import Footer from './src/components/Footer';
+import HBF from './src/components/HBF';
 
 export default class Home extends Component {
 
   state = {
     projectJson: {},
     contentJson: {},
-    isLoading: true,
+    isLoading: this.props.isLoading,
     visible: false,
     allow: false,
     downloadedL: 0,
@@ -23,9 +22,7 @@ export default class Home extends Component {
     hashingL: 0,
   };
 
-
-  componentWillMount() {
-
+  isLoading() {
     // project Json vars
     let fetchedProject = {};
     let server = '';
@@ -108,7 +105,7 @@ export default class Home extends Component {
       console.log('Usao u nePostojiContentJson()');
       return new Promise((resolve, reject) => {
         FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
-          .then(res => this.setState({ contentJson: fetchedContent }))
+          .then(res => global.globalJson = fetchedContent)
           .then(() => resolve())
           .catch((err) => { console.log('Greska kod nePostojiContentJson:' + err); reject(); })
       })
@@ -121,7 +118,8 @@ export default class Home extends Component {
             const contentJsonObj = JSON.parse(res);
             if (md5(fetchedContent) == md5(contentJsonObj)) {
               console.log('Hashevi Content JSON-a su isti');
-              this.setState({ contentJson: contentJsonObj })
+              //this.setState({ contentJson: contentJsonObj });
+              global.globalJson = contentJsonObj;
               resolve();
             } else {
               // OVDE RESITI KADA STIGNE NOVI JSON
@@ -190,7 +188,7 @@ export default class Home extends Component {
     checkHashFiles = () => {
       return new Promise((resolve, reject) => {
         let downloadStage = [];
-        let a = this.state.contentJson.files.map(file =>
+        let a = global.globalJson.files.map(file =>
           FileSystem.getInfoAsync(FileSystem.documentDirectory + file.fileId + '.' + file.ext, { md5: true })
             .then(res => res.md5 != file.hash ? downloadStage.push(file) : null)
             .then(() => this.setState(prevState => ({ hashing: prevState.hashing + 1 })))
@@ -236,61 +234,27 @@ export default class Home extends Component {
       FileSystem.getInfoAsync(pathToContentJson)
         .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
     }
+  }
 
+  componentWillMount() {
+    if(this.props.isLoading)
+      this.isLoading();
   } // end of componentWillMount
 
   render() {
     if (!this.state.isLoading) {
-      //this.downloadAllFiles();
+      
       return (
-        <View style={styles.container}>
-
-
-      {/*<HBF data={this.state.contentJson} />*/}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
-          <Header />
-
-
-          <View style={styles.content}>
-
-            <Image style={{ width: '100%', height: '100%' }} source={{ uri: 'http://www.planwallpaper.com/static/images/880665-road-wallpapers.jpg' }} />
-            <View style={styles.content2}>
-              <TouchableOpacity style={styles.videotour} onPress={this.openVideos}><View style={styles.content3}><Image style={styles.ico2} source={require('./ico/play-button.png')} /><Text style={{ color: 'white', fontSize: 18, marginTop: 10 }}>VIDEOTOUR</Text></View></TouchableOpacity>
-            </View>
-          </View>
-
-
-          {this.state.visible &&
-            <MenuList data={this.state.contentJson} />
-          }
-          <Footer data={this.state.contentJson} onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); console.log(this.state.visible) }} />
+        <View style={{ marginTop: 50 }}>
+          <HBF from='pocetna' />
         </View>
       );
     }
     // 
     else if (this.state.isLoading) {
+      
       return (
-        <View style={{ marginTop: 50, }}>
+        <View style={{ marginTop: 50 }}>
           <Text >Loading, please wait.</Text>
           <Text >Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
           <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>

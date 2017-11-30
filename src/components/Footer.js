@@ -35,15 +35,7 @@ class Footer extends Component {
     }
 }
 
-/*
-<SlidingUpPanel
-                    ref={c => this._panel = c}
-                    visible={this.state.visible}
-                    allowDragging={this.state.allow}
-                    onRequestClose={() => this.setState({ visible: false })}>
-                   
-                </SlidingUpPanel>
-*/
+
 
 const styles = StyleSheet.create({
     footbar: {
@@ -54,7 +46,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
         paddingLeft: 10,
-        marginTop: 50
+        
     },
     ico: {
         height: 24,
