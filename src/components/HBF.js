@@ -10,6 +10,7 @@ import ImageButtons from './temp2_imagebuttons';
 import TextImage from './temp3_textimage';
 import FullText from './temp4_fulltext';
 
+
 class HBF extends Component {
 
     state = {
@@ -19,8 +20,10 @@ class HBF extends Component {
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
-
+ 
     render() {
+
+
         if (this.props.from == 'pocetna') {
             return (
                 <View style={styles.container}>

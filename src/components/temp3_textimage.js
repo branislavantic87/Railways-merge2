@@ -2,25 +2,22 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { Constants } from 'expo';
-import Lightbox from 'react-native-lightbox';
+import ImageZoom from 'react-native-image-pan-zoom';
 
 export default class TextImage extends Component {
+  /*renderPics() {
+    console.log('ajsad');
+    console.log(this.props.img)
 
-
-  renderPics() {
-    return this.props.img.map((pic, index) =>
-
-      <View key={index} style={{ width: 150, height: 20, backgroundColor: 'blue', flex: 1 }}>
-        {/*<Image key={index} style={{width: '100%', height: '100%', backgroundColor: 'green'}} source={{ uri: pic }} />*/}
-        <Text>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Text>
+    return this.props.img.map((pic,index) => 
+      <View key={index}>
+        <Lightbox>
+          <Image style={swiperPic} source={{ uri: pic}}
+          />
+        </Lightbox>
       </View>
-
-
-
-
-
     );
-  }
+  }*/
 
   render() {
 
@@ -44,14 +41,11 @@ export default class TextImage extends Component {
             </View>
 
             <View style={contentPic}>
-
-              <Swiper showsButtons={false} width={180} height={50} style={{ backgroundColor: 'green' }}>
-                {/*this.renderPics()*/}
-                <View style={{ width: 50, height: 50, backgroundColor: 'yellow' }} />
-                <View style={{ width: 50, height: 50, backgroundColor: 'orange' }} />
-              </Swiper>
-
+      
+            <Image style={{ flex: 1, width: '100%' }} source={{ uri: this.props.img }} />
+    
             </View>
+
 
           </View>
 
@@ -65,7 +59,7 @@ export default class TextImage extends Component {
 
 const styles = StyleSheet.create({
   mainView: {
-    flex: 1,
+    position: 'relative',
     height: '100%'
   },
   body: {
@@ -92,25 +86,22 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   contentText: {
-    flex: 1,
+    flex: 2.5,
     backgroundColor: '#ebeced',
     height: '100%',
     padding: 20,
     paddingTop: 30
   },
   contentPic: {
-    //position: 'relative',
-    width: 200,
-    height: 200,
+    flex: 4.5,
+    height: '100%',
     marginLeft: 30,
-    backgroundColor: 'red'
+    backgroundColor: '#ebeced'
   },
   swiperPic: {
-    width: 100,
-    height: 100,
-
-
-
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain'
   },
 });
 

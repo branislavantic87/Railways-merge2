@@ -245,7 +245,7 @@ export default class Home extends Component {
     if (!this.state.isLoading) {
       
       return (
-        <View style={{ marginTop: 50 }}>
+        <View>
           <HBF from='pocetna' />
         </View>
       );
