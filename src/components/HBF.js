@@ -14,54 +14,24 @@ class HBF extends Component {
 
     state = {
         visible: false,
-        modalVisible: true
     }
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
-    }
-
+   
     render() {
-        if (this.props.from == 'pocetna') {
-            return (
-                <View style={styles.container}>
-                    <Header />
-
-                    <View style={styles.content}>
-
-                        <Image style={{ width: '100%', height: '100%' }} source={{ uri: 'http://www.planwallpaper.com/static/images/880665-road-wallpapers.jpg' }} />
-                        <View style={styles.content2}>
-                            <TouchableOpacity style={styles.videotour} onPress={this.openVideos}><View style={styles.content3}><Image style={styles.ico2} source={require('./ico/play-button.png')} /><Text style={{ color: 'white', fontSize: 18, marginTop: 10 }}>VIDEOTOUR</Text></View></TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {this.state.visible &&
-                        <MenuList data={global.globalJson} from={this.props.from} />
-                    }
-                    <Footer data={this.state.contentJson} onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); }} />
-
-                </View>
-
-
-            );
-        } else {
+        
             return (
                 <View>
                     <Header title={this.props.from.title} />
 
                     <Body pages={this.props.filtered} />
                     
-
-
                     {this.state.visible &&
                         <MenuList data={global.globalJson} from={this.props.from.menuId} />
                     }
 
-
-
                     <Footer data={this.state.contentJson} onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); }} />
                 </View>
             );
-        }
+        
     }
 
 }
