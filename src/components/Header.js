@@ -41,9 +41,9 @@ export default class Header extends React.Component {
         
         <StatusBar barStyle="dark-content" hidden={true} />
         <View style={{ flexDirection: 'row' }}>
-          <View style={{ marginRight: '33%', marginTop: '1%' }}><Text>AAAA</Text></View>
+          <View style={{ marginRight: '33%', marginTop: '1%' }}><Text>{this.props.title ? this.props.title : ''}</Text></View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-          <Text>{this.props.title ? this.props.title : ''}</Text>
+         
             <TouchableWithoutFeedback onPress={this.openLanguage}><Image style={styles.ico} source={require('./ico/32/earth.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openHome}><Image style={styles.ico} source={require('./ico/32/home.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openFavorites}><Image style={styles.ico} source={require('./ico/32/star.png')} /></TouchableWithoutFeedback>

@@ -33,7 +33,7 @@ class Menu2 extends Component {
     render() {
         return (
             <View>
-                <TouchableOpacity style={styles.menu2Item} onPress={() => console.log(this.state.filteredPages)}>
+                <TouchableOpacity style={styles.menu2Item} onPress={() => Actions.HBF({from: this.props.menu2, filtered: this.state.filteredPages})}>
 
                     <Text numberOfLines={1} style={[styles.menu2Text, {color: this.props.isPressed ? 'orange' : 'black'}]}>{this.props.menu2.title}</Text>
                 </TouchableOpacity>

@@ -28,7 +28,8 @@ class HBF extends Component {
 
                     <View style={styles.content}>
 
-                        <Image style={{ width: '100%', height: '100%' }} source={{ uri: 'http://www.planwallpaper.com/static/images/880665-road-wallpapers.jpg' }} />
+                        <Image style={{ width: '100%', height: '100%' }} source={{ uri: 'https://cdnstorevoestalpine.blob.core.windows.net/images/508015/Open_CMS_Stage_MD/Railway_Systems_-_Image_Zug.jpg' }} />
+                        
                         <View style={styles.content2}>
                             <TouchableOpacity style={styles.videotour} onPress={this.openVideos}><View style={styles.content3}><Image style={styles.ico2} source={require('./ico/play-button.png')} /><Text style={{ color: 'white', fontSize: 18, marginTop: 10 }}>VIDEOTOUR</Text></View></TouchableOpacity>
                         </View>
@@ -68,7 +69,7 @@ class HBF extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 500,
+        height: '100%',
         backgroundColor: '#4169e1',
         alignItems: 'center',
         justifyContent: 'center',
