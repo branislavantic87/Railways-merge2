@@ -26,6 +26,7 @@ export default class Home extends Component {
   }
 
   render() {
+
       return (
         <View>
           <HBF from={this.state.menu} filtered={this.state.filtered} />

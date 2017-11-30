@@ -10,6 +10,7 @@ import ImageButtons from './temp2_imagebuttons';
 import TextImage from './temp3_textimage';
 import FullText from './temp4_fulltext';
 
+
 class HBF extends Component {
 
     state = {
@@ -17,7 +18,7 @@ class HBF extends Component {
     }
    
     render() {
-        
+       
             return (
                 <View>
                     <Header title={this.props.from.title} />
@@ -38,7 +39,7 @@ class HBF extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 500,
+        height: '100%',
         backgroundColor: '#4169e1',
         alignItems: 'center',
         justifyContent: 'center',

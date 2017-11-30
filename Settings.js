@@ -46,8 +46,7 @@ export default class Home extends Component {
     Alert.alert('Otvorili ste meni za izbor video snimaka.')
   };
   openHome = () => {
-    this.setState({ visible: false }); this._panel.transitionTo(0);
-    Actions.home()
+    Actions.home({isLoading: false}) 
   };
 
 

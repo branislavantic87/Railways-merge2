@@ -19,7 +19,7 @@ export default class FullImage extends Component {
 
             <View style={contentPic}>
 
-              <Image style={{flex: 1, width: '100%'}} source={{uri: this.props.img}} />
+              <Image style={{flex: 1, width: '100%', height:'100%'}} source={{uri: this.props.img}} />
 
             </View>
 
@@ -41,16 +41,14 @@ const styles = StyleSheet.create({
   },
   body: {
     height: '100%',
-    paddingLeft: 10,
-    paddingRight: 10,
   },
   contentContainer: {
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     flex: 1,
     width: '100%',
     height: '100%',
-    marginBottom: 25,
+    marginBottom: 5,
   },
   swiperPic: {
     width: '100%',

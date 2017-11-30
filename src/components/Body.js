@@ -7,6 +7,7 @@ import TextImage from './temp3_textimage';
 import FullText from './temp4_fulltext';
 import Swiper from 'react-native-swiper';
 
+
 class Body extends Component {
 
     componentWillMount() {
@@ -16,23 +17,37 @@ class Body extends Component {
     filterBody() {
 
         return this.props.pages.map(page => {
+            let document = false;
+            let video = false;
             let templateId = page.templateId;
-            let imgTemp3 = [];
             let img = '';
 
             if (page.files) {
                 page.files.map(file => {
-                    if (templateId == 3) {
-                        imgTemp3.push(FileSystem.documentDirectory + file.fileId + '.' + file.ext);
-                    } else {
+                     
                         img = FileSystem.documentDirectory + file.fileId + '.' + file.ext;
-                    }
+                    
                 })
             }
 
+    
+              for(var i=0; i<page.files.length; i++){
+            
+                console.log(page.files[i].ext);
+            if (page.files[i].ext=='pdf'){
+              document = true;
+             
+            }else if(page.files[i].ext=='mp4'){
+                    video = true;
+            }
+        
+          }
+           console.log(img);
+           console.log(video);
             let title = page.title;
             let subtitle = page.subtitle;
             let text = page.text;
+            
 
             switch (templateId) {
                 case '1':
@@ -40,11 +55,11 @@ class Body extends Component {
 
                     break;
                 case '2':
-                    return <ImageButtons key={page.pageId} templateTitle={title} subtitle={subtitle} img={img} />
+                    return <ImageButtons key={page.pageId} templateTitle={title} subtitle={subtitle} img={img} video={video} document={document} />
                     break;
 
                 case '3':
-                    return <TextImage key={page.pageId} templateTitle={title} subtitle={subtitle} img={imgTemp3} text={text} />
+                    return <TextImage key={page.pageId} templateTitle={title} subtitle={subtitle} img={img} text={text} />
                     break;
 
                 case '4':
@@ -53,7 +68,7 @@ class Body extends Component {
                     break;
 
                 default:
-                    console.log('WTF?!');
+                console.log('WTF?!');
             }
         })
     }
@@ -75,7 +90,7 @@ class Body extends Component {
 const styles = StyleSheet.create({
     bodyCont: {
         width: '100%',
-        height: 500
+        height: '86%'
     }
 });
 
