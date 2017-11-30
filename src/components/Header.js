@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableWithoutFeedback, TouchableOpacity, Alert, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableWithoutFeedback, TouchableOpacity, Alert, NetInfo, TouchableHighlight } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 export default class Header extends React.Component {
@@ -14,7 +14,7 @@ export default class Header extends React.Component {
     Alert.alert('Otvorili ste Menu.')
   };
   openSearch = () => {
-    Alert.alert('Otvorili ste Search.')
+    this.props.onPress();
   };
   openFolder = () => {
     Alert.alert('Otvorili ste Folder.')
@@ -43,7 +43,8 @@ export default class Header extends React.Component {
         <View style={{ flexDirection: 'row' }}>
           <View style={{ marginRight: '33%', marginTop: '1%' }}><Text>AAAA</Text></View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-          <Text>{this.props.title ? this.props.title : ''}</Text>
+          
+          <Text>{this.props.title}</Text>
             <TouchableWithoutFeedback onPress={this.openLanguage}><Image style={styles.ico} source={require('./ico/32/earth.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openHome}><Image style={styles.ico} source={require('./ico/32/home.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openFavorites}><Image style={styles.ico} source={require('./ico/32/star.png')} /></TouchableWithoutFeedback>
@@ -51,6 +52,7 @@ export default class Header extends React.Component {
             <TouchableWithoutFeedback onPress={this.openSearch}><Image style={styles.ico} source={require('./ico/32/search.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openFolder}><Image style={styles.ico} source={require('./ico/32/folder.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openSettings}><Image style={styles.ico} source={require('./ico/32/settings.png')} /></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => Actions.pop()}><View><Text>BACK</Text></View></TouchableWithoutFeedback>
           </View>
         </View>
       </View>
