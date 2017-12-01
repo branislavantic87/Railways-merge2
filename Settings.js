@@ -6,6 +6,8 @@ import MenuList from './src/components/MenuList';
 import md5 from 'md5';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { Actions } from 'react-native-router-flux';
+import Footer from './src/components/Footer';
+
 
 export default class Home extends Component {
 
@@ -22,8 +24,11 @@ export default class Home extends Component {
   };
 
   openLanguage = () => {
-    Alert.alert('Otvorili ste Language.')
+    return global.projectJson.project.map((object, index)=>
+    <Text>object.language</Text>); 
   };
+
+
   openFavorites = () => {
     Alert.alert('Otvorili ste Favorites.')
   };
@@ -35,6 +40,7 @@ export default class Home extends Component {
   };
   openFolder = () => {
     Alert.alert('Otvorili ste Folder.')
+    console.log('otvorili ste folder')
   };
   openSettings = () => {
     Actions.pop()
@@ -50,9 +56,36 @@ export default class Home extends Component {
   };
 
 
+textView(text) {
+  return <Text>{text}</Text>
+  console.log('aaaaaaaaaa' + text);
+}
+
+imprint = () => {
+  let imprintTexts = global.projectJson.project.imprintText;
+  this.textView(imprintTexts);
+  console.log('ispisan imprint texts');
+}
+terms() {
+    let termsText = global.projectJson.project.termsText;
+  this.textView(termsText);
+  console.log('ispisan terms text');
+}
+licence() {
+  let copyrightText = global.projectJson.project.copyrightText;
+  this.textView(copyrightText);
+  console.log('ispisan copyright text');
+}
+version() {
+  let version = global.projectJson.project.version;
+  this.textView(version);
+  console.log('ispisan version text');
+
+}
   
 
   render() {
+    console.log(global.projectJson.project.imprintText);
 
       return (
         <View style={styles.container}>
@@ -74,40 +107,28 @@ export default class Home extends Component {
        
           <View style={styles.content}>
           <View style={{backgroundColor: 'white', width:'40%', height: "100%", justifyContent: 'center'}}>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openLanguage}><Text style={styles.btn_text}>Imprint</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openHome}><Text style={styles.btn_text}>Terms</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openFavorites}><Text style={styles.btn_text}>Copyrights/License</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.btn_settings} onPress={this.openMenu}><Text style={styles.btn_text}>Version 1.0.1 (Build 28)</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.imprint()}><Text style={styles.btn_text}>Imprint</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.terms()}><Text style={styles.btn_text}>Terms</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.licence()}><Text style={styles.btn_text}>Copyrights/License</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.btn_settings} onPress={this.version()}><Text style={styles.btn_text}>Version 1.0.1 (Build 28)</Text></TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#E0E0E0', width:'60%', height: "100%", borderWidth: 5, borderColor: 'white'}}>
-            <Text style={styles.btn_text}> Ucitaj iz JSON-a </Text>
+            <Text style={styles.btn_text}>{this.imprint()}</Text>
           </View>
 
          
 
 
-
-            <SlidingUpPanel
-              ref={c => this._panel = c}
-              visible={this.state.visible}
-              allowDragging={this.state.allow}
-              onRequestClose={() => this.setState({ visible: false })}>
-              <View style={styles.main_panel}>
-                <MenuList data={this.state.data} />
-              </View>
-            </SlidingUpPanel>
-
           </View>
-          <View style={styles.footbar}>
-            <TouchableOpacity onPress={() => { this.setState({ visible: true }); this._panel.transitionTo(0); }}  >
-              <Image style={styles.ico} source={require('./ico/main_menu_2.png')} />
-            </TouchableOpacity>
-
-          </View>
+          {this.state.visible &&
+                        <MenuList data={global.globalJson} from={this.props.from.menuId} />
+                    }
+            <Footer data={this.state.contentJson} onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); }} />
         </View>
       );
     }
    
+  
   }
 
 
@@ -227,4 +248,3 @@ const styles = StyleSheet.create({
 
 });
 console.disableYellowBox = true;
-

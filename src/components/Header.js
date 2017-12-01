@@ -9,25 +9,24 @@ export default class Header extends React.Component {
     Alert.alert('Otvorili ste Language.')
   };
   openFavorites = () => {
-    Alert.alert('Otvorili ste Favorites.')
+    Actions.login()
   };
   openMenu = () => {
-    Alert.alert('Otvorili ste Menu.')
+    Actions.login()
   };
   openSearch = () => {
     this.props.onPress();
   };
   openFolder = () => {
+
     Actions.aaa();
+
   };
   openSettings = () => {
     Actions.settings()
   };
-  openPanel = () => {
-    Alert.alert('Otvorili ste Panel (MAIN MENU).')
-  };
   openVideos = () => {
-    Alert.alert('Otvorili ste meni za izbor video snimaka.')
+    Alert.alert('Open video tour')
   };
   openHome = () => {
     Actions.home()

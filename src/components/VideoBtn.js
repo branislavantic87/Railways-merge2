@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity, Video, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
+
 export default class VB extends Component {
+
     blank = () => {
         Actions.video({videouri: this.props.videouri});
     }

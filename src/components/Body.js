@@ -18,6 +18,7 @@ class Body extends Component {
 
         return this.props.pages.map(page => {
 
+
             let title = page.title;
             let subtitle = page.subtitle;
             let text = page.text;
@@ -25,8 +26,16 @@ class Body extends Component {
             if (page.files) {
                 files = page.files.map(file => {
                     return FileSystem.documentDirectory + file.fileId + '.' + file.ext;
+
                 })
             }
+           
+            if(page.files==null){
+                    console.log('Nema fajlova');
+
+            }else{
+            for (var i = 0; i < page.files.length; i++) {
+
 
 
 
@@ -41,7 +50,9 @@ class Body extends Component {
                     break;
 
                 case '3':
+
                     return <TextImage key={page.pageId} templateTitle={title} subtitle={subtitle} files={files} text={text} />
+
                     break;
 
                 case '4':
@@ -71,6 +82,7 @@ class Body extends Component {
 
 const styles = StyleSheet.create({
     bodyCont: {
+        backgroundColor: 'white',
         width: '100%',
         height: '86%'
     }

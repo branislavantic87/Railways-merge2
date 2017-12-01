@@ -49,6 +49,7 @@ export default class ImageButtons extends Component {
 
                                         {this.state.video && <VB/> }
                                         {this.state.document && <DB/> }
+
                                         
                                     </View>
                             </View>

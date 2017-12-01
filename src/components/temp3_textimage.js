@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-nat
 import Swiper from 'react-native-swiper';
 import { Constants } from 'expo';
 import ImageZoom from 'react-native-image-pan-zoom';
+import LightBox from 'react-native-lightbox';
+import HTML from 'react-native-render-html';
 
 export default class TextImage extends Component {
   renderPics() {
@@ -13,6 +15,7 @@ export default class TextImage extends Component {
         <Image style={swiperPic} source={{ uri: pic }} />
       </View>
     })
+
   }
 
   render() {
@@ -32,15 +35,15 @@ export default class TextImage extends Component {
 
             <View style={contentText}>
               <ScrollView>
-                <Text style={{ fontSize: 15 }}>{this.props.text}</Text>
+              <HTML html={this.props.text} />
               </ScrollView>
             </View>
 
             <View style={contentPic}>
+
               <Swiper>
                 {this.renderPics()}
               </Swiper>
-
 
             </View>
 
@@ -82,25 +85,29 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     marginBottom: 25,
+    alignItems: 'center'
   },
   contentText: {
     flex: 2.5,
     backgroundColor: '#ebeced',
-    height: '100%',
     padding: 20,
     paddingTop: 30
   },
   contentPic: {
     flex: 4.5,
+    width: '100%',
     height: '100%',
+
     width: 200,
     marginLeft: 30,
     backgroundColor: '#ebeced'
+
   },
   swiperPic: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain'
+    alignSelf: 'center',
+    width: 700,
+    height: 600,
+
   },
 });
 
