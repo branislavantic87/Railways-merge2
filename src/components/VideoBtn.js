@@ -4,28 +4,27 @@ import { Actions } from 'react-native-router-flux';
 
 
 export default class VB extends Component {
-    blank() {
-        return (
-            <Video style={{width: 3.0, heigth: 2.0}} source = {{uri: this.props.videouri}}/>
-        );
+
+    blank = () => {
+        Actions.video({videouri: this.props.videouri});
     }
 
     render() {
-
-        return (
-            <View style={{marginRight: 15}}>
-
-                <TouchableOpacity style={styles.ButtonContent}>
-                    <Image
-                        style={styles.ButtonIconStyle2}
-                        source={require('./ico/play-button.png')}
-                    />
-                    <Text style={styles.ButtonTextStyle}>VIDEO</Text>
-                </TouchableOpacity >
-
-            </View>
-        );
-    }
+        
+                return (
+                    <View style={{marginRight: 15}}>
+        
+                        <TouchableOpacity style={styles.ButtonContent} onPress={this.blank}>
+                            <Image
+                                style={styles.ButtonIconStyle2}
+                                source={require('./ico/play-button.png')}
+                            />
+                            <Text style={styles.ButtonTextStyle}>VIDEO</Text>
+                        </TouchableOpacity >
+        
+                    </View>
+                );
+            }
 }
 
 const styles = StyleSheet.create({

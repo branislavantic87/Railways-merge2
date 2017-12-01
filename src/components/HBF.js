@@ -36,7 +36,11 @@ class HBF extends Component {
                     }
 
 
-                    <Footer onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); }} /
+                    <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
+
+
+     
+
 
                 </View>
             );

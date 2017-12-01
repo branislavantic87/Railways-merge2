@@ -8,6 +8,22 @@ import DB from './DocBtn';
 
 export default class ImageButtons extends Component {
 
+    state = {
+        video: false,
+        document: false
+    };
+
+    componentWillMount() {
+        this.setState({video: this.props.files.some(file => {
+            return file.substring(file.length-3, file.length) == 'mp4'
+        }), document: this.props.files.some(file => {
+            return file.substring(file.length-3, file.length) == 'pdf'
+        })
+
+        
+    })
+    }
+
         render() {
          
         
@@ -26,13 +42,14 @@ export default class ImageButtons extends Component {
     
                             <View style={contentPic}>
     
-                                    <Image style={{ flex: 1, width: '100%' }} source={{ uri: this.props.img }} />
-    
+                                    <Image resizeMethod='scale' style={{ flex: 1, width: '100%', height: '100%', backgroundColor: 'green' }} source={{ uri: this.props.files.find(file => file.substring(file.length-3, file.length) == 'jpg' || file.substring(file.length-3, file.length) == 'png' ) }} />
+                                    
                                     <View style={ButtonContainer}>
                             
 
-                                        {this.props.video && <VB videouri={this.props.videouri}/> }
-                                        {this.props.document && <DB/> }
+                                        {this.state.video && <VB/> }
+                                        {this.state.document && <DB/> }
+
                                         
                                     </View>
                             </View>

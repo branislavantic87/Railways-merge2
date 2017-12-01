@@ -7,6 +7,7 @@ import Home from '../Home';
 import Settings from '../Settings';
 import TestPage from './components/TestPage';
 import HBF from './components/HBF';
+import aaa from './components/aaa';
 
 export default class Routes extends React.Component {
   render() {
@@ -18,6 +19,7 @@ export default class Routes extends React.Component {
           <Scene key="home" component={Home} title="Home" initial={true}/>
           <Scene key="settings" component={Settings} title="Settings" />
           <Scene key="HBF" component={HBF} title="HBF" />
+          <Scene key="aaa" component={aaa} title="aaa" />
         </Stack>
       </Router>
     )

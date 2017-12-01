@@ -8,17 +8,14 @@ import HTML from 'react-native-render-html';
 
 export default class TextImage extends Component {
   renderPics() {
-    console.log('ajsad');
-    console.log(this.props.imgs)
+  
+    return this.props.files.map((pic, i) => {
 
-    return this.props.imgs.map((pic, index) =>
-      <View key={index}>
-        <LightBox style={{height:'100%'}}>
-          <Image  style={styles.swiperPic} source={{ uri: pic }}
-          />
-        </LightBox>
+      return <View key={i}>
+        <Image style={swiperPic} source={{ uri: pic }} />
       </View>
-    );
+    })
+
   }
 
   render() {
@@ -43,9 +40,11 @@ export default class TextImage extends Component {
             </View>
 
             <View style={contentPic}>
-              <ScrollView style={{height: "100%"}} horizontal={true} howsHorizontalScrollIndicator={true} pagingEnabled>
+
+              <Swiper>
                 {this.renderPics()}
-              </ScrollView>
+              </Swiper>
+
             </View>
 
 
@@ -98,8 +97,11 @@ const styles = StyleSheet.create({
     flex: 4.5,
     width: '100%',
     height: '100%',
-     marginLeft: 30,
- 
+
+    width: 200,
+    marginLeft: 30,
+    backgroundColor: '#ebeced'
+
   },
   swiperPic: {
     alignSelf: 'center',
