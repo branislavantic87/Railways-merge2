@@ -3,26 +3,26 @@ import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity
 import { Actions } from 'react-native-router-flux';
 
 export default class VB extends Component {
-    blank() {
-        Actions.vd();
+    blank = () => {
+        Actions.video({videouri: this.props.videouri});
     }
 
     render() {
-
-        return (
-            <View style={{marginRight: 15}}>
-
-                <TouchableOpacity style={styles.ButtonContent} onPress={this.blank} >
-                    <Image
-                        style={styles.ButtonIconStyle2}
-                        source={require('./ico/play-button.png')}
-                    />
-                    <Text style={styles.ButtonTextStyle}>VIDEO</Text>
-                </TouchableOpacity >
-
-            </View>
-        );
-    }
+        
+                return (
+                    <View style={{marginRight: 15}}>
+        
+                        <TouchableOpacity style={styles.ButtonContent} onPress={this.blank}>
+                            <Image
+                                style={styles.ButtonIconStyle2}
+                                source={require('./ico/play-button.png')}
+                            />
+                            <Text style={styles.ButtonTextStyle}>VIDEO</Text>
+                        </TouchableOpacity >
+        
+                    </View>
+                );
+            }
 }
 
 const styles = StyleSheet.create({

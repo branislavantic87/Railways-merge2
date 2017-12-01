@@ -17,49 +17,31 @@ class Body extends Component {
     filterBody() {
 
         return this.props.pages.map(page => {
-            let document = false;
-            let video = false;
-            let templateId = page.templateId;
-            let img = '';
 
-            if (page.files) {
-                page.files.map(file => {
-                     
-                        img = FileSystem.documentDirectory + file.fileId + '.' + file.ext;
-                    
-                })
-            }
-
-    
-              for(var i=0; i<page.files.length; i++){
-            
-                console.log(page.files[i].ext);
-            if (page.files[i].ext=='pdf'){
-              document = true;
-             
-            }else if(page.files[i].ext=='mp4'){
-                    video = true;
-            }
-        
-          }
-           console.log(img);
-           console.log(video);
             let title = page.title;
             let subtitle = page.subtitle;
             let text = page.text;
-            
+            let files = [];
+            if (page.files) {
+                files = page.files.map(file => {
+                    return FileSystem.documentDirectory + file.fileId + '.' + file.ext;
+                })
+            }
 
-            switch (templateId) {
+
+
+
+            switch (page.templateId) {
                 case '1':
-                    return <FullImage key={page.pageId} img={img} />
+                    return <FullImage key={page.pageId} files={files} />
 
                     break;
                 case '2':
-                    return <ImageButtons key={page.pageId} templateTitle={title} subtitle={subtitle} img={img} video={video} document={document} />
+                    return <ImageButtons key={page.pageId} templateTitle={title} subtitle={subtitle} files={files} />
                     break;
 
                 case '3':
-                    return <TextImage key={page.pageId} templateTitle={title} subtitle={subtitle} img={img} text={text} />
+                    return <TextImage key={page.pageId} templateTitle={title} subtitle={subtitle} files={files} text={text} />
                     break;
 
                 case '4':
@@ -68,7 +50,7 @@ class Body extends Component {
                     break;
 
                 default:
-                console.log('WTF?!');
+                    console.log('WTF?!');
             }
         })
     }
@@ -77,7 +59,7 @@ class Body extends Component {
     render() {
         return (
             <View style={styles.bodyCont}>
-                
+
                 <Swiper showsButtons={false} width={'100%'}>
                     {this.filterBody()}
                 </Swiper>

@@ -6,6 +6,8 @@ import MenuList from './src/components/MenuList';
 import md5 from 'md5';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Routes from './src/Routes';
+import hash from 'object-hash';
+import * as Progress from 'react-native-progress';
 
 export default class App extends Component {
 
@@ -14,7 +16,9 @@ export default class App extends Component {
     downloaded: 0,
     hashing: 0,
     hashingL: 0,
-    isLoading: true
+    isLoading: true,
+    visibleDownload: false,
+    indeterminate: true
   }
 
   isLoading() {
@@ -27,6 +31,7 @@ export default class App extends Component {
     // content json vars
     let fetchedContent = {};
     const pathToContentJson = FileSystem.documentDirectory + 'contentJson.json';
+    //const contentJsonURL = 'http://192.168.0.30:8000/railways';
     const contentJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getContent&projectId=3&token=1234567890';
 
 
@@ -62,14 +67,14 @@ export default class App extends Component {
         FileSystem.readAsStringAsync(pathToProjectJson)
           .then(res => {
             const projectJsonObj = JSON.parse(res);
-            if (md5(fetchedProject) == md5(projectJsonObj)) {
+            if (hash(fetchedProject) == hash(projectJsonObj)) {
               console.log('Hashevi Project JSON-a su isti');
               global.projectJson = projectJsonObj;
               resolve();
             } else {
               console.log('Hashevi nisu isti, skinuo fajl i stavio ga u this.state.projectJson');
               FileSystem.downloadAsync(projectJsonURL, pathToProjectJson)
-                .then(() => global.projectJson = fetchedProject )
+                .then(() => global.projectJson = fetchedProject)
                 .then(() => resolve())
             }
           })
@@ -111,7 +116,7 @@ export default class App extends Component {
         FileSystem.readAsStringAsync(pathToContentJson)
           .then(res => {
             const contentJsonObj = JSON.parse(res);
-            if (md5(fetchedContent) == md5(contentJsonObj)) {
+            if (hash(contentJsonObj) == hash(fetchedContent)) {
               console.log('Hashevi Content JSON-a su isti');
               //this.setState({ contentJson: contentJsonObj });
               global.globalJson = contentJsonObj;
@@ -120,26 +125,32 @@ export default class App extends Component {
               // OVDE RESITI KADA STIGNE NOVI JSON
               console.log('Hashevi nisu isti, skinuo fajl i stavio ga u this.state.contentJson');
               global.globalJson = fetchedContent;
-              obrisiStare(contentJsonObj);
+              obrisiStare(contentJsonObj, fetchedContent);
               FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
-              .then(() => resolve())
+                .then(() => resolve())
             }
           })
       })
     }
 
-    srediFajlove = (stariJson) => {
+    obrisiStare = (stariJson, noviJson) => {
       return new Promise((resolve, reject) => {
+        console.log('usao u obrisi stare');
 
-        let stageRemove = stariJson.files.filter(x => fetchedContent.files.indexOf(x) < 0)
-        let stageDownload = fetchedContent.files.filter(x => stariJson.files.indexOf(x) < 0)
+        let stageRemove = stariJson.files.filter(x => noviJson.files.map(nj => nj.hash).indexOf(x.hash) < 0);
+        stageRemove.map(x => {
+          deleteOne(x);
+        })
 
-        console.log('StageRemove: ' + stageRemove);
-        console.log('StageDownload: ' + stageDownload);
       })
     }
 
-
+    deleteOne = (file) => {
+      let src = FileSystem.documentDirectory + file.fileId + '.' + file.ext;
+      console.log("deleteOne: " + src);
+      FileSystem.getInfoAsync(src)
+        .then(res => res.exists ? FileSystem.deleteAsync(src) : console.log('Ne postoji taj fajl za brisanje'))
+    }
 
     downloadOne = (file) => {
       return new Promise((resolve, reject) => {
@@ -164,6 +175,7 @@ export default class App extends Component {
           result += Number(element.size);
         });
         result = (result / 1024 / 1024).toFixed(2);
+        this.setState({visibleDownload: true});
         resolve(result);
       })
     }
@@ -195,7 +207,6 @@ export default class App extends Component {
         Promise.all(a)
           .then(() => resolve(downloadStage))
           .catch((err) => console.log('Greska kod checkHashFiles()'))
-
       })
     }
 
@@ -216,6 +227,7 @@ export default class App extends Component {
 
     // ovako radim closure u then-ovima
     if (NetInfo.isConnected) {
+
       projectJsonLogic()
         .then(() => contentJsonLogic())
         .then(() => checkHashFiles())
@@ -235,6 +247,14 @@ export default class App extends Component {
     this.isLoading();
   } // end of componentWillMount
 
+  calcProgress() {
+    if (this.state.downloaded == 1) {
+      this.state.indeterminate = false;
+    } 
+    if (this.state.downloaded > 0) {
+      return this.state.downloaded / this.state.downloadedL;
+    }
+  }
 
   render() {
     if (!this.state.isLoading) {
@@ -245,10 +265,21 @@ export default class App extends Component {
       );
     } else if (this.state.isLoading) {
       return (
-        <View style={{ marginTop: 50 }}>
-          <Text >Loading, please wait.</Text>
-          <Text >Hashing {this.state.hashing} of {this.state.hashingL} files.</Text>
-          <Text>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>
+        <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+          <View style={{ borderBottomColor: 'white', borderBottomWidth: 1, }} />
+          <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1', justifyContent: 'center', }}>
+            <Text style={styles.loadTextF}>Loading, please wait...</Text>
+            <Image style={styles.gif} source={require('./loading.gif')} />
+            { /*<Text style={styles.loadText}>Hashing... {this.state.hashing} of {this.state.hashingL} files.</Text>*/}
+            {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
+            <Progress.Bar
+              style={{ alignSelf: 'center', margin: 10, opacity: this.state.showProgress }}
+              indeterminate={this.state.indeterminate}
+              progress={this.calcProgress()}
+              color='#fff'
+            />
+          </View>
+          <View style={{ borderBottomColor: 'white', borderBottomWidth: 1, }} />
         </View>
       );
     }
@@ -271,5 +302,23 @@ const styles = StyleSheet.create({
     flex: 1,
 
   },
+  loadText: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 30,
+    paddingTop: 80
+  },
+  loadTextF: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 30,
+
+    paddingBottom: 30
+  },
+  gif: {
+    alignSelf: 'center',
+    width: 64,
+    height: 64
+  }
 }
 )

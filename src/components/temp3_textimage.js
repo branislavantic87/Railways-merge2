@@ -5,19 +5,15 @@ import { Constants } from 'expo';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 export default class TextImage extends Component {
-  /*renderPics() {
-    console.log('ajsad');
-    console.log(this.props.img)
+  renderPics() {
+  
+    return this.props.files.map((pic, i) => {
 
-    return this.props.img.map((pic,index) => 
-      <View key={index}>
-        <Lightbox>
-          <Image style={swiperPic} source={{ uri: pic}}
-          />
-        </Lightbox>
+      return <View key={i}>
+        <Image style={swiperPic} source={{ uri: pic }} />
       </View>
-    );
-  }*/
+    })
+  }
 
   render() {
 
@@ -41,9 +37,11 @@ export default class TextImage extends Component {
             </View>
 
             <View style={contentPic}>
-      
-            <Image style={{ flex: 1, width: '100%' }} source={{ uri: this.props.img }} />
-    
+              <Swiper>
+                {this.renderPics()}
+              </Swiper>
+
+
             </View>
 
 
@@ -95,6 +93,7 @@ const styles = StyleSheet.create({
   contentPic: {
     flex: 4.5,
     height: '100%',
+    width: 200,
     marginLeft: 30,
     backgroundColor: '#ebeced'
   },

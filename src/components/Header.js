@@ -18,7 +18,7 @@ export default class Header extends React.Component {
     this.props.onPress();
   };
   openFolder = () => {
-    Alert.alert('Otvorili ste Folder.')
+    Actions.aaa();
   };
   openSettings = () => {
     Actions.settings()
