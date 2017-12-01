@@ -11,7 +11,6 @@ import HBF from './src/components/HBF';
 export default class Home extends Component {
 
   state = {
-      startPage: global.globalJson.startPage,
       menu: {},
       filtered: []
   };
@@ -38,7 +37,7 @@ export default class Home extends Component {
     findStartPage() {
       let a = [];
       for(let i=0; i<global.globalJson.pages.length; i++) {
-        if(global.globalJson.pages[i].pageId == this.state.startPage){
+        if(global.globalJson.pages[i].pageId == global.globalJson.startPage){
           a.push(global.globalJson.pages[i]);
         }
       }

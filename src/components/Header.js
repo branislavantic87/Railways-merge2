@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableWithoutFeedback, TouchableOpacity, Alert, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableWithoutFeedback, TouchableOpacity, Alert, NetInfo, TouchableHighlight } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
 
@@ -15,7 +15,7 @@ export default class Header extends React.Component {
     Actions.login()
   };
   openSearch = () => {
-    Alert.alert('Otvorili ste Search.')
+    this.props.onPress();
   };
   openFolder = () => {
     Alert.alert('Open folder')
@@ -49,6 +49,7 @@ export default class Header extends React.Component {
             <TouchableWithoutFeedback onPress={this.openSearch}><Image style={styles.ico} source={require('./ico/32/search.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openFolder}><Image style={styles.ico} source={require('./ico/32/folder.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openSettings}><Image style={styles.ico} source={require('./ico/32/settings.png')} /></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => Actions.pop()}><View><Text>BACK</Text></View></TouchableWithoutFeedback>
           </View>
         </View>
       </View>
