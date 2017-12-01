@@ -35,7 +35,9 @@ class HBF extends Component {
                         <MenuList data={global.globalJson} from={this.props.from.menuId} />
                     }
 
-                    <Footer data={this.state.contentJson} onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
+
+                    <Footer onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); }} /
+
                 </View>
             );
         

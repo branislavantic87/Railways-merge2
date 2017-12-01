@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity, Video, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+
 
 export default class VB extends Component {
     blank() {
-        Actions.vd();
+        return (
+            <Video style={{width: 3.0, heigth: 2.0}} source = {{uri: this.props.videouri}}/>
+        );
     }
 
     render() {
@@ -12,7 +15,7 @@ export default class VB extends Component {
         return (
             <View style={{marginRight: 15}}>
 
-                <TouchableOpacity style={styles.ButtonContent} onPress={this.blank} >
+                <TouchableOpacity style={styles.ButtonContent}>
                     <Image
                         style={styles.ButtonIconStyle2}
                         source={require('./ico/play-button.png')}
