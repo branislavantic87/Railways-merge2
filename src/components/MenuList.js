@@ -65,9 +65,9 @@ const styles = {
     },
     mainCont: {
         backgroundColor: 'white',
-        paddingBottom: 70,
+        paddingBottom: 0,
         position: 'absolute', 
-        bottom: 0
+        bottom: 70
         
     }
 }

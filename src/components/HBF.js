@@ -9,27 +9,33 @@ import FullImage from './temp1_fullimage';
 import ImageButtons from './temp2_imagebuttons';
 import TextImage from './temp3_textimage';
 import FullText from './temp4_fulltext';
+import Search from './Search';
 
 
 class HBF extends Component {
 
     state = {
-        visible: false,
+        visibleMenu: false,
+        visibleSearch: false
     }
    
     render() {
        
             return (
                 <View>
-                    <Header title={this.props.from.title} />
+                    <Header title={this.props.from.title} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
+
+                    {this.state.visibleSearch && 
+                        <Search /> 
+                    }
 
                     <Body pages={this.props.filtered} />
                     
-                    {this.state.visible &&
+                    {this.state.visibleMenu &&
                         <MenuList data={global.globalJson} from={this.props.from.menuId} />
                     }
 
-                    <Footer data={this.state.contentJson} onPress={() => { this.state.visible ? this.setState({ visible: false }) : this.setState({ visible: true }); }} />
+                    <Footer data={this.state.contentJson} onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
                 </View>
             );
         
