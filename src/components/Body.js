@@ -36,8 +36,11 @@ class Body extends Component {
 
                 })
             }
+           
+            if(page.files==null){
+                    console.log('Nema fajlova');
 
-
+            }else{
             for (var i = 0; i < page.files.length; i++) {
 
                 console.log(page.files[i].ext);
@@ -47,9 +50,11 @@ class Body extends Component {
                 } else if (page.files[i].ext == 'mp4') {
                     video = true;
                     videouri = FileSystem.documentDirectory + page.fileId + '.' + page.ext;
-                    console.log(videouri);                }
+                    console.log(videouri);                
+                }
 
             }
+        }
             console.log(img);
             console.log(video);
             let title = page.title;

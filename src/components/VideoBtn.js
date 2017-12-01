@@ -14,8 +14,8 @@ export default class VB extends Component {
 
         return (
             <View style={{marginRight: 15}}>
-            
-                <TouchableOpacity style={styles.ButtonContent} onPress = {Alert.alert('Otvorili ste Folder.')} >
+
+                <TouchableOpacity style={styles.ButtonContent}>
                     <Image
                         style={styles.ButtonIconStyle2}
                         source={require('./ico/play-button.png')}
