@@ -8,15 +8,8 @@ export default class SettingsComponent extends Component {
     settingsText: '',
   };
 
-  openLanguage = () => {
-    return global.projectJson.project.map((object, index)=>
-    <Text>object.language</Text>); 
-  };
-
-
 textView(text) {
-  return <Text>{text}</Text>
-  console.log('aaaaaaaaaa' + text);
+  return <Text>{text}</Text>;
 }
 
 Imprint=()=>{
@@ -52,9 +45,6 @@ Version=()=>{
           <View style={{backgroundColor: '#E0E0E0', width:'60%', height: "100%", borderWidth: 5, borderColor: 'white'}}>
               <Text style={styles.text}>{this.state.settingsText}</Text>
           </View>
-
-         
-
 
           </View>
        

@@ -18,7 +18,7 @@ export default class ImageButtons extends Component {
         let documents = this.props.files.filter(file => {
             return file.substring(file.length - 3, file.length) == 'pdf'
         })
-        console.log('Dokumenti: ' + documents)
+    
 
         this.setState({ videoPath: videos, documentPath: documents });
     }

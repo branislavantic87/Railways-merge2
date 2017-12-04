@@ -6,7 +6,7 @@ import HTML from 'react-native-render-html';
 export default class Header extends React.Component {
 
   openLanguage = () => {
-    Alert.alert('You opened Language section')
+    this.props.onPressLang();
   };
   openFavorites = () => {
     Actions.login()
@@ -39,7 +39,7 @@ export default class Header extends React.Component {
           <View style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableWithoutFeedback>
           </View>
-          <View style={{ flex: 10, alignItems: 'center', alignSelf: 'center', width: '100%' }}><HTML html={this.props.title ? this.props.title : ''} /></View>
+          <View style={{ flex: 10, alignItems: 'center', alignSelf: 'center', width: '100%' }}><HTML html={this.props.title ? this.props.title : 'Settings'} /></View>
           <View style={{ flex: 5, flexDirection: 'row', justifyContent: 'flex-end' }}>
 
             <TouchableWithoutFeedback onPress={this.openLanguage}><Image style={styles.ico} source={require('./ico/32/earth.png')} /></TouchableWithoutFeedback>

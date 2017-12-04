@@ -121,8 +121,8 @@ export default class App extends Component {
         let a = global.projectJson.project.servers.map(server =>
           axios.get(server)
         );
-  
-        return Promise.race(a);
+        return Promise.resolve(a[0]);
+        //return Promise.race(a);
       }
   
       // content Json Logic
@@ -150,9 +150,9 @@ export default class App extends Component {
   
       postojiContentJson = () => {
         return new Promise((resolve, reject) => {
-          global.globalJson = fetchedContent;
-          resolve();
-          /*FileSystem.readAsStringAsync(pathToContentJson)
+          //global.globalJson = fetchedContent;
+          //resolve();
+          FileSystem.readAsStringAsync(pathToContentJson)
             .then(res => {
               const contentJsonObj = JSON.parse(res);
               if (hash(contentJsonObj) == hash(fetchedContent)) {
@@ -162,14 +162,15 @@ export default class App extends Component {
                 resolve();
               } else {
                 // OVDE RESITI KADA STIGNE NOVI JSON
-                console.log('Hashevi nisu isti, skinuo fajl i stavio ga u this.state.contentJson');
+                console.log('Hashevi nisu isti, skinuo fajl i stavio ga u global.globalJson');
+                console.log('Hash contentJsonObj: ' + hash(contentJsonObj));
+                console.log('Hash fetchedContent: ' + hash(fetchedContent));
                 global.globalJson = fetchedContent;
                 obrisiStare(contentJsonObj, fetchedContent);
                 FileSystem.downloadAsync(contentJsonURL, pathToContentJson)
-                  .then(() => FileSystem.deleteAsync(pathToCheckedFiles))
                   .then(() => resolve())
               }
-            })*/
+            })
   
         })
       }
@@ -190,7 +191,7 @@ export default class App extends Component {
         let src = FileSystem.documentDirectory + file.fileId + '.' + file.ext;
         console.log("deleteOne: " + src);
         FileSystem.getInfoAsync(src)
-          .then(res => res.exists ? FileSystem.deleteAsync(src) : console.log('Ne postoji taj fajl za brisanje'))
+          .then(res => res.exists ? FileSystem.deleteAsync(src).then(() => console.log('Obrisao fajl: ' + src)) : console.log('Ne postoji taj fajl za brisanje'))
       }
   
       downloadOne = (file) => {
@@ -201,7 +202,7 @@ export default class App extends Component {
               console.log('File downloaded at: ' + uri);
               resolve();
             })
-            .catch((err) => { console.log('Greska kod downloadOne kod fajla: ' + file.fileId); reject(); })
+            .catch((err) => { console.log('Greska kod downloadOne kod fajla: ' + file.fileId); /*downloadOne(file);*/ reject(); })
         })
       }
       // 
@@ -209,15 +210,17 @@ export default class App extends Component {
         return new Promise((resolve, reject) => {
           let result = 0;
           if (filesArr.length <= 0) {
-            FileSystem.writeAsStringAsync(pathToCheckedFiles, 'true')
-            .then(() => reject('Array is empty'))
+            /*FileSystem.writeAsStringAsync(pathToCheckedFiles, 'true')
+              .then(() =>*/
+            reject('Array is empty');
           } else {
-          filesArr.forEach(element => {
-            result += Number(element.size);
-          });
-          result = (result / 1024 / 1024).toFixed(2);
-          this.setState({ visibleDownload: true });
-          resolve(result); }
+            filesArr.forEach(element => {
+              result += Number(element.size);
+            });
+            result = (result / 1024 / 1024).toFixed(2);
+            this.setState({ visibleDownload: true });
+            resolve(result);
+          }
         })
       }
   
@@ -226,17 +229,21 @@ export default class App extends Component {
           if (!mb) {
             reject();
           }
-          Alert.alert(
-            'About to download ' + mb + ' MB.',
-            'Do you wish to download?',
-            [
-              { text: 'OK', onPress: () => { resolve(); } }
-            ]
-          )
+          NetInfo.getConnectionInfo()
+            .then((res) => {
+              Alert.alert(
+                'About to download ' + mb + ' MB.',
+                'You are on: ' + res.type + '\n' + 'Do you wish to download?',
+                [
+                  { text: 'OK', onPress: () => resolve() }
+                ]
+              )
+            })
+  
         })
       }
   
-      checkFileIfTrue = () => {
+      /*checkFileIfTrue = () => {
         console.log('checkFileIfTrue');
         return new Promise((resolve, reject) => {
           FileSystem.getInfoAsync(pathToCheckedFiles)
@@ -251,16 +258,16 @@ export default class App extends Component {
                       console.log('reject');
                       reject();
                     }
-  
-                    else
+                    else {
                       resolve();
+                    }
                   })
               } else {
                 resolve();
               }
             })
         })
-      }
+      }*/
   
       checkHashFiles = () => {
         console.log('usao u funckiju checkHashFiles');
@@ -273,7 +280,6 @@ export default class App extends Component {
           );
           this.setState({ hashingL: a.length });
           Promise.all(a)
-  
             .then(() => resolve(downloadStage))
             .catch((err) => console.log('Greska kod checkHashFiles()'))
         })
@@ -281,7 +287,7 @@ export default class App extends Component {
   
       downloadFiles = (filesArr) => {
         return new Promise((resolve, reject) => {
-          console.log('Usao u funkciju downloadFiles()');
+          console.log('Usao u funkciju downloadFiles() sa nizom od ' + filesArr.length);
           let a = filesArr.map(file =>
             downloadOne(file)
           );
@@ -289,8 +295,7 @@ export default class App extends Component {
   
           Promise.all(a)
             .then(() => resolve())
-            .catch(err => console.log('Greska kod checkHashFiles(): ' + err))
-  
+            .catch(err => console.log('Greska kod downloadFiles(): ' + err))
         })
       }
   
@@ -299,7 +304,7 @@ export default class App extends Component {
   
         projectJsonLogic()
           .then(() => contentJsonLogic())
-          .then(() => checkFileIfTrue())
+          //.then(() => checkFileIfTrue())
           .then(() => checkHashFiles())
           .then((niz) => calculateSize(niz)
             .then((data) => alertForDownload(data))

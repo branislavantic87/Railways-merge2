@@ -5,7 +5,7 @@ class Search extends Component {
     render() {
         return(
             <View style={styles.searchCont} >
-                <Text>SEARCH SECTION</Text>
+                <Text style={{color: 'white', fontSize: 20}}>SEARCH SECTION</Text>
                 <TextInput style={styles.textInput} />
             </View>
         );
@@ -15,9 +15,9 @@ class Search extends Component {
 const styles = StyleSheet.create({
     searchCont: {
         position: 'absolute',
-        backgroundColor: 'white',
-        top: 30,
-        height: 200,
+        backgroundColor:  '#4169e1',
+        top: 50,
+        height: 100,
         width: '100%',
         zIndex: 3
     },
