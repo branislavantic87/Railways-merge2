@@ -15,7 +15,7 @@ export default class DocumentView extends Component {
                     />
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-                    <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/back.png')} /></TouchableWithoutFeedback>
                 </View>
             </View>
 

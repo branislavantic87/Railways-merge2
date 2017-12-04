@@ -8,7 +8,6 @@ export default class FullText extends Component {
         return (
             <View style={styles.mainView}>
 
-                {console.log(this.props.subtitle)}
                 <View style={styles.body}>
                     <View>
                         <Text style={[styles.headingText, styles.headingMain]}>{this.props.templateTitle}</Text>

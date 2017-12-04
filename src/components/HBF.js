@@ -4,15 +4,18 @@ import Header from './Header';
 import Footer from './Footer';
 import MenuList from './MenuList';
 import Body from './Body';
-import Search from './Search';
 import SettingsComponent from '../../Settings';
+import Languages from './Languages';
+import Search from './Search';
+
 
 
 class HBF extends Component {
 
     state = {
         visibleMenu: false,
-        visibleSearch: false
+        visibleSearch: false,
+        visiblelanguage: false
     }
 
     render() {
@@ -32,11 +35,17 @@ class HBF extends Component {
         } else {
             return (
                 <View>
-                    <Header title={this.props.from.title} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
+                    <Header title={this.props.from.title} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
 
+
+                    {this.state.visiblelanguage &&
+                        <Languages />
+                    }
                     {this.state.visibleSearch &&
                         <Search />
                     }
+
+                   
 
                     <Body pages={this.props.filtered} />
 
