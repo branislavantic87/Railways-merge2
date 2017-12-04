@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Menu3 from './Menu3';
 import { Actions } from 'react-native-router-flux';
 
@@ -23,7 +23,6 @@ class Menu2 extends Component {
             );
         }
     }
-
 
     filterPages() {
         var a = this.props.pages.filter(elem => { return elem.menuId == this.props.menu2.menuId });

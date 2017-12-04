@@ -57,12 +57,12 @@ export default class Login extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTC}>
-            <TouchableOpacity onPress={this.signup} style={styles.registruj}><Text style={styles.register}>Signup</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this.signup} style={styles.signupBtn}><Text style={styles.register}>Signup</Text></TouchableOpacity>
             <Text style={styles.tekst}>a new account</Text>
           </View>
 
           <View style={styles.skip}>
-            <TouchableOpacity onPress={this.blank} ><Text style={styles.tekst}>skip</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.skipBtn} onPress={this.blank} ><Text style={styles.tekst}>Skip</Text></TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
 
@@ -77,16 +77,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#4169e1',
     alignItems: 'center',
     justifyContent: 'center',
-
-
   },
   container2: {
     backgroundColor: '#4169e1',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-
-
   },
   inputBox: {
     width: 600,
@@ -95,7 +91,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 25,
     color: "black",
-    marginVertical: 10
+    marginVertical: 10,
+    paddingLeft: 15
   },
   buttonText: {
     fontSize: 65,
@@ -114,7 +111,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#4169e1',
     alignItems: 'center',
     flexDirection: 'row',
-
   },
   tekst: {
     fontSize: 45,
@@ -125,20 +121,27 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontWeight: '900'
   },
-  registruj: {
+  signupBtn: {
     backgroundColor: '#4169e1',
     borderRadius: 10,
     width: 165,
     alignItems: 'center',
-
   },
   skip: {
+    paddingTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    backgroundColor: '#191970',
+    width: 500,
+    backgroundColor: '#4169e1',
     marginBottom: 80,
-    borderRadius: 25,
+  },
+  skipBtn: {
+    alignItems: 'center',
+    width: 450,
+    borderLeftWidth: 3,
+    borderWidth: 3,
+    borderColor: 'white',
+    padding: 5
   },
   login: {
     paddingVertical: 55,

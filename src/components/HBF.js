@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Modal, TouchableHighlight } from 'react-native';
-import expo, { FileSystem, Video } from 'expo';
+import { View } from 'react-native';
 import Header from './Header';
 import Footer from './Footer';
 import MenuList from './MenuList';
 import Body from './Body';
-import FullImage from './temp1_fullimage';
-import ImageButtons from './temp2_imagebuttons';
-import TextImage from './temp3_textimage';
-import FullText from './temp4_fulltext';
 import Search from './Search';
+import SettingsComponent from '../../Settings';
 
 
 class HBF extends Component {
@@ -18,84 +14,46 @@ class HBF extends Component {
         visibleMenu: false,
         visibleSearch: false
     }
-   
+
     render() {
-       
+        if (this.props.from == 'ab') {
             return (
                 <View>
-                    <Header title={this.props.from.title} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
+                    <Header />
+                    <SettingsComponent />
 
-                    {this.state.visibleSearch && 
-                        <Search /> 
-                    }
-
-                    <Body pages={this.props.filtered} />
-                    
                     {this.state.visibleMenu &&
                         <MenuList data={global.globalJson} from={this.props.from.menuId} />
                     }
 
+                    <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    <Header title={this.props.from.title} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
+
+                    {this.state.visibleSearch &&
+                        <Search />
+                    }
+
+                    <Body pages={this.props.filtered} />
+
+                    {this.state.visibleMenu &&
+                        <MenuList data={global.globalJson} from={this.props.from.menuId} />
+                    }
 
                     <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
 
-
-     
-
-
                 </View>
             );
-        
+        }
     }
 
 }
 
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        backgroundColor: '#4169e1',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative'
-    },
-    content: {
-        backgroundColor: 'white',
-        width: '100%',
-        flex: 1,
-        position: 'relative',
-    },
-    content2: {
-        position: 'absolute',
-        justifyContent: 'flex-start',
-        marginLeft: '15%'
 
-    },
-    content3: {
-        position: 'absolute',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginLeft: '15%'
-    },
-    videotour: {
-        backgroundColor: '#4169e1',
-        width: 270,
-        height: 39,
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 40,
-        borderBottomRightRadius: 90,
-        paddingTop: 50
-    },
-    ico2: {
-        width: 24,
-        marginRight: 20,
-        height: 24,
-        marginTop: 10
-    }
-});
 
 export default HBF;
 
-/*
-<Body />
-<Footer />
-*/

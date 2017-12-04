@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Modal, TouchableHighlight, TextInput } from 'react-native';
-import expo, { FileSystem, Video } from 'expo';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 
 class Search extends Component {
     render() {
         return(
             <View style={styles.searchCont} >
-                <Text>OVO JE SEARCH</Text>
+                <Text>SEARCH SECTION</Text>
                 <TextInput style={styles.textInput} />
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({

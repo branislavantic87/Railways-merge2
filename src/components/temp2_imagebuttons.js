@@ -1,143 +1,112 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native';
-import Swiper from 'react-native-swiper';
-import { Constants } from 'expo';
-import Lightbox from 'react-native-lightbox';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import VB from './VideoBtn';
 import DB from './DocBtn';
 
 export default class ImageButtons extends Component {
 
     state = {
-        video: false,
-        document: false
+        videoPath: [],
+        documentPath: []
     };
 
     componentWillMount() {
-        this.setState({video: this.props.files.some(file => {
-            return file.substring(file.length-3, file.length) == 'mp4'
-        }), document: this.props.files.some(file => {
-            return file.substring(file.length-3, file.length) == 'pdf'
+        let videos = this.props.files.filter(file => {
+            return file.substring(file.length - 3, file.length) == 'mp4'
         })
 
-        
-    })
+        let documents = this.props.files.filter(file => {
+            return file.substring(file.length - 3, file.length) == 'pdf'
+        })
+        console.log('Dokumenti: ' + documents)
+
+        this.setState({ videoPath: videos, documentPath: documents });
     }
 
-        render() {
-         
-        
-    
-            return (
-                <View style={mainView}>
-    
-                    <View style={body}>
-    
-                        <View>
-                            <Text style={[headingText, headingMain]}>{this.props.templateTitle}</Text>
-                            <Text style={headingText}>{this.props.subtitle}</Text>
-                        </View>
-    
-                        <View style={contentContainer}>
-    
-                            <View style={contentPic}>
-    
-                                    <Image resizeMethod='scale' style={{ flex: 1, width: '100%', height: '100%', backgroundColor: 'green' }} source={{ uri: this.props.files.find(file => file.substring(file.length-3, file.length) == 'jpg' || file.substring(file.length-3, file.length) == 'png' ) }} />
-                                    
-                                    <View style={ButtonContainer}>
-                            
+    render() {
 
-                                        {this.state.video && <VB/> }
-                                        {this.state.document && <DB/> }
+        return (
+            <View style={styles.mainView}>
 
-                                        
-                                    </View>
-                            </View>
-    
-                        </View>
-    
+                <View style={styles.body}>
+
+                    <View>
+                        <Text style={[styles.headingText, styles.headingMain]}>{this.props.templateTitle}</Text>
+                        <Text style={styles.headingText}>{this.props.subtitle}</Text>
                     </View>
-    
-    
-                </View>
-            );
-        }
-    }
 
-    const styles = StyleSheet.create({
-        mainView: {
-            position: 'relative',
-            height: '100%'
-        },
-    
-        ButtonIconStyle: {
-            marginRight: 10,
-    
-        },
-        ButtonTextStyle: {
-            fontSize: 20,
-            color: '#fff'
-    
-        },
-        ButtonIconStyle2: {
-            marginRight: 10,
-            width: 32,
-            height: 32
-        },
-        body: {
-            height: '100%',
-            paddingLeft: 10,
-            paddingRight: 10,
-        },
-        headingText: {
-            color: '#1496ba',
-            fontSize: 15,
-            paddingBottom: 35,
-            paddingLeft: 30
-        },
-        headingMain: {
-            paddingTop: 40,
-            paddingBottom: 4,
-            fontSize: 25
-        },
-        contentContainer: {
-            marginTop: 20,
-            flexDirection: 'row',
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            marginBottom: 10,
-            position: 'relative',
-        },
-        contentPic: {
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            backgroundColor: '#e5e5e5',
-            position: 'relative',
-            alignItems: 'center'
-        },
-        ButtonContainer: {
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            flexDirection: 'row',
-            position: 'absolute',
-            bottom: 20,
-            right: 20,
-            width: '51%',
-            
-        },
-        ButtonContent: {
-            borderColor: '#fff',
-            borderWidth: 3,
-            borderRadius: 4,
-            paddingHorizontal: 40,
-            backgroundColor: '#0082B3',
-            padding: 18,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-    });
-    
-    const { mainView, navContainer, navText, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic, navFooter, navFooterNav, ButtonContent, ButtonIconStyle, ButtonIconStyle2, ButtonTextStyle, ButtonContainer } = styles;
+                    <View style={styles.contentContainer}>
+
+                        <View style={styles.contentPic}>
+
+                            <Image resizeMethod='scale' style={{ width: '100%', height: '100%' }} source={{ uri: this.props.files.find(file => file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png') }} />
+
+                            <View style={styles.ButtonContainer}>
+
+
+                                {this.state.videoPath.length > 0 && <VB videouri={this.state.videoPath[0]} />}
+                                {this.state.documentPath.length > 0 && <DB documenturi={this.state.documentPath[0]} />}
+
+
+                            </View>
+
+                        </View>
+
+                    </View>
+
+                </View>
+
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    mainView: {
+        position: 'relative',
+        height: '100%'
+    },
+    body: {
+        height: '100%',
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    headingText: {
+        color: '#1496ba',
+        fontSize: 15,
+        paddingBottom: 35,
+        paddingLeft: 30
+    },
+    headingMain: {
+        paddingTop: 40,
+        paddingBottom: 4,
+        fontSize: 25
+    },
+    contentContainer: {
+        marginTop: 20,
+        flexDirection: 'row',
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        marginBottom: 10,
+        position: 'relative',
+    },
+    contentPic: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#e5e5e5',
+        position: 'relative',
+        alignItems: 'center'
+    },
+    ButtonContainer: {
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        width: '51%',
+
+    },
+});
+

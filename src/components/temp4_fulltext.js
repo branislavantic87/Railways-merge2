@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions, WebView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import HTML from 'react-native-render-html';
 
 
 export default class FullText extends Component {
     render() {
         return (
-            <View style={mainView}>
-              
+            <View style={styles.mainView}>
 
-                <View style={body}>
+                {console.log(this.props.subtitle)}
+                <View style={styles.body}>
                     <View>
-                        <Text style={[headingText, headingMain]}>{this.props.templateTitle}</Text>
-                        <Text style={headingText}>{this.props.subtitle}</Text>
+                        <Text style={[styles.headingText, styles.headingMain]}>{this.props.templateTitle}</Text>
+                        <Text style={styles.headingText}>{this.props.subtitle}</Text>
                     </View>
 
-                    <View style={contentContainer}>
+                    <View style={styles.contentContainer}>
 
-                        <View style={contentText}>
+                        <View style={styles.contentText}>
                             <ScrollView>
-                               
-                            <HTML html={this.props.text} />
+
+                                <HTML html={this.props.text} />
                             </ScrollView>
                         </View>
 
@@ -28,8 +28,7 @@ export default class FullText extends Component {
 
                 </View>
 
-                
-           </View>
+            </View>
         );
     }
 }
@@ -37,7 +36,7 @@ export default class FullText extends Component {
 const styles = StyleSheet.create({
     mainView: {
         position: 'relative',
-       height: '100%'
+        height: '100%'
     },
     body: {
         height: '100%',
@@ -48,12 +47,12 @@ const styles = StyleSheet.create({
         color: '#1496ba',
         fontSize: 15,
         paddingBottom: 35
-      },
-      headingMain: {
+    },
+    headingMain: {
         paddingTop: 40,
         paddingBottom: 4,
         fontSize: 25
-      },
+    },
     contentContainer: {
         marginTop: 20,
         flexDirection: 'row',
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
         height: '100%',
         marginBottom: 25,
     },
-   contentText: {
+    contentText: {
         flex: 2.5,
         backgroundColor: '#ebeced',
         height: '100%',
@@ -70,5 +69,3 @@ const styles = StyleSheet.create({
         paddingTop: 30
     },
 });
-
-const { mainView, body, headingText, headingMain, contentContainer, contentText} = styles;

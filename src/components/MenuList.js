@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, Button, TouchableOpacity } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Menu1 from './Menu1';
 import Menu2 from './Menu2';
 
@@ -8,7 +8,6 @@ class MenuList extends Component {
     state = {
         menus: this.props.data.menuTrees[1].menuTree,
         selected: 0,
-        languange: 'English',
         pages: this.props.data.pages
     };
 
@@ -43,7 +42,7 @@ class MenuList extends Component {
     }
 
     render() {
-        
+
         return (
             <View style={styles.mainCont}>
                 <ScrollView horizontal={true} style={styles.menu1Container} showsHorizontalScrollIndicator={false}>
@@ -61,14 +60,13 @@ class MenuList extends Component {
 const styles = {
     menu1Container: {
         flexDirection: 'row',
-        
+
     },
     mainCont: {
         backgroundColor: 'white',
         paddingBottom: 0,
-        position: 'absolute', 
-        bottom: 70
-        
+        position: 'absolute',
+        bottom: 50
     }
 }
 

@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
-import Swiper from 'react-native-swiper';
-import { Constants } from 'expo';
-import ImageZoom from 'react-native-image-pan-zoom';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import LightBox from 'react-native-lightbox';
 import HTML from 'react-native-render-html';
 
 export default class TextImage extends Component {
   renderPics() {
-  
+
     return this.props.files.map((pic, i) => {
 
       return <View key={i}>
-        <Image style={swiperPic} source={{ uri: pic }} />
+        <LightBox>
+          <Image style={styles.swiperPic} source={{ uri: pic }} />
+        </LightBox>
       </View>
     })
 
@@ -22,36 +21,34 @@ export default class TextImage extends Component {
 
     return (
 
-      <View style={mainView}>
+      <View style={styles.mainView}>
 
-        <View style={body}>
+        <View style={styles.body}>
 
           <View>
-            <Text style={[headingText, headingMain]}>{this.props.title}</Text>
-            <Text style={headingText}>{this.props.subtitle}</Text>
+            <Text style={[styles.headingText, styles.headingMain]}>{this.props.title}</Text>
+            <Text style={styles.headingText}>{this.props.subtitle}</Text>
           </View>
 
-          <View style={contentContainer}>
+          <View style={styles.contentContainer}>
 
-            <View style={contentText}>
+            <View style={styles.contentText}>
               <ScrollView>
-              <HTML html={this.props.text} />
+                <HTML html={this.props.text} />
               </ScrollView>
             </View>
 
-            <View style={contentPic}>
+            <View style={styles.contentPic}>
 
-              <Swiper>
+              <ScrollView style={{ height: "100%" }} horizontal={true} howsHorizontalScrollIndicator={true} pagingEnabled>
                 {this.renderPics()}
-              </Swiper>
+              </ScrollView>
 
             </View>
-
 
           </View>
 
         </View>
-
 
       </View>
     );
@@ -97,18 +94,11 @@ const styles = StyleSheet.create({
     flex: 4.5,
     width: '100%',
     height: '100%',
-
-    width: 200,
     marginLeft: 30,
-    backgroundColor: '#ebeced'
-
   },
   swiperPic: {
     alignSelf: 'center',
-    width: 700,
+    width: 727,
     height: 600,
-
   },
 });
-
-const { mainView, body, headingText, headingMain, contentContainer, contentText, contentPic, swiperPic } = styles;

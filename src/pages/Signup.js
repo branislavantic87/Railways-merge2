@@ -17,8 +17,8 @@ export default class Signup extends React.Component {
   goBack() {
     Actions.pop();
   }
-  skip() {
-    Actions.skip()
+  blank() {
+    Actions.home()
   }
   render() {
     return (
@@ -88,12 +88,12 @@ export default class Signup extends React.Component {
             <Text style={styles.buttonText}>REGISTER</Text>
           </TouchableOpacity>
           <View style={styles.signupTC}>
-            <TouchableOpacity onPress={this.goBack} style={styles.registruj}><Text style={styles.register}>Log in</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this.goBack} style={styles.loginBtn}><Text style={styles.register}>Log in</Text></TouchableOpacity>
             <Text style={styles.tekst}>to an existing account</Text>
           </View>
 
           <View style={styles.skip}>
-            <TouchableOpacity onPress={this.skip} ><Text style={styles.tekst}>skip</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.skipBtn} onPress={this.blank} ><Text style={styles.tekst}>Skip</Text></TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
       </View>
@@ -107,15 +107,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   container2: {
     backgroundColor: '#4169e1',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-
-
   },
   inputBox: {
     width: 600,
@@ -124,7 +121,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 25,
     color: "black",
-    marginVertical: 10
+    marginVertical: 10,
+    paddingLeft: 15
   },
   buttonText: {
     fontSize: 45,
@@ -144,10 +142,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingVertical: 5,
-
   },
   tekst: {
-    fontSize: 45,
+    fontSize: 40,
     color: "white",
   },
   register: {
@@ -155,19 +152,24 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontWeight: '900'
   },
-  registruj: {
+  loginBtn: {
     backgroundColor: '#4169e1',
     borderRadius: 10,
     width: 150,
     alignItems: 'center',
-
   },
   skip: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    backgroundColor: '#191970',
-    marginBottom: 30,
-    borderRadius: 25,
+    width: 300,
+    marginBottom: 30
+  },
+  skipBtn: {
+    alignItems: 'center',
+    width: 250,
+    borderLeftWidth: 3,
+    borderWidth: 3,
+    borderColor: 'white',
+    padding: 5
   },
 })

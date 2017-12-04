@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import Menu2 from './Menu2';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 class Menu1 extends Component {
 
@@ -26,7 +25,6 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 10
-
     },
     pdt: {
         paddingTop: 10

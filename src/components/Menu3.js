@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import TestPage from './TestPage';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import HTML from 'react-native-render-html';
 
 class Menu3 extends Component {
 
