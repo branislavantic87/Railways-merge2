@@ -4,14 +4,18 @@ import { Actions } from 'react-native-router-flux';
 
 export default class DocumentView extends Component {
 
+    componentWillMount() {
+        console.log('doc.js: ' + this.props.docuri);
+    }
     render() {
 
         return (
             <View style={styles.mainView}>
                 <View style={{ flex: 12 }}>
                     <WebView
-                        source={{ uri: this.props.docuri }}
-                        style={{ marginTop: 20 }}
+                        bounces={false}
+                        scrollEnabled={false}
+                        source={{uri: this.props.docuri }}
                     />
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-start' }}>

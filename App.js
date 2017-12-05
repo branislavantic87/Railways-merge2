@@ -183,7 +183,7 @@ export default class App extends Component {
              
               resolve();
             })
-            .catch((err) => {  reject(); })
+            .catch((err) => {  downloadOne(file); reject(); })
         })
       }
       // 
@@ -272,7 +272,7 @@ export default class App extends Component {
           .then((res) => !res.exists ? this.setState({ isLoading: 'offline' }) : this.setState({ isLoading: false }))
       }
     }
-  
+
     componentWillMount() {
       this.isLoading();
     } // end of componentWillMount

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import LightBox from 'react-native-lightbox';
 import HTML from 'react-native-render-html';
+import Swiper from 'react-native-swiper';
+
 
 export default class TextImage extends Component {
   renderPics() {
@@ -9,9 +11,9 @@ export default class TextImage extends Component {
     return this.props.files.map((pic, i) => {
 
       return <View key={i}>
-        <LightBox>
-          <Image style={styles.swiperPic} source={{ uri: pic }} />
-        </LightBox>
+
+          <Image  style={styles.swiperPic} source={{ uri: pic }} />
+      
       </View>
     })
 
@@ -40,8 +42,9 @@ export default class TextImage extends Component {
 
             <View style={styles.contentPic}>
 
-              <ScrollView style={{ height: "100%" }} horizontal={true} howsHorizontalScrollIndicator={true} pagingEnabled>
-                {this.renderPics()}
+            <ScrollView style={{ height: "100%" }} horizontal={true} showHorizontalScrollIndicator={false} pagingEnabled>
+                  {this.renderPics()}
+         
               </ScrollView>
 
             </View>
@@ -92,13 +95,17 @@ const styles = StyleSheet.create({
   },
   contentPic: {
     flex: 4.5,
-    width: '100%',
-    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: 30,
+
   },
   swiperPic: {
-    alignSelf: 'center',
-    width: 727,
-    height: 600,
+
+    width:726.5,
+    height:600
+    
+ 
+
   },
 });

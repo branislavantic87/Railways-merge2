@@ -3,13 +3,15 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 export default class DB extends Component {
-
+    componentWillMount() {
+        console.log('docbtn: ' + this.props.documenturi);
+    }
     render() {
-
+        
         return (
             <View>
 
-                <TouchableOpacity style={styles.ButtonContent} onPress={() => Actions.DocumentView()}>
+                <TouchableOpacity style={styles.ButtonContent} onPress={() => Actions.DocumentView({docuri: this.props.documenturi})}>
                     <Image
                         style={styles.ButtonIconStyle}
                         source={require('./ico/file.png')}

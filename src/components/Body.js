@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import expo, { FileSystem } from 'expo';
 import FullImage from './temp1_fullimage';
 import ImageButtons from './temp2_imagebuttons';
@@ -49,12 +49,13 @@ class Body extends Component {
 
     render() {
         return (
-
             <View style={styles.bodyCont}>
+        
 
-                <Swiper showsButtons={false} width={'100%'}>
+               <Swiper>
                     {this.filterBody()}
-                </Swiper>
+                    </Swiper>
+        
             </View>
         );
 
@@ -63,9 +64,11 @@ class Body extends Component {
 
 const styles = StyleSheet.create({
     bodyCont: {
+    
         backgroundColor: 'white',
         width: '100%',
         height: '86%'
+        
     }
 });
 

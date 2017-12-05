@@ -18,13 +18,12 @@ export default class ImageButtons extends Component {
         let documents = this.props.files.filter(file => {
             return file.substring(file.length - 3, file.length) == 'pdf'
         })
-    
 
         this.setState({ videoPath: videos, documentPath: documents });
     }
 
     render() {
-
+        console.log(this.state.documentPath);
         return (
             <View style={styles.mainView}>
 
@@ -39,7 +38,7 @@ export default class ImageButtons extends Component {
 
                         <View style={styles.contentPic}>
 
-                            <Image resizeMethod='scale' style={{ width: '100%', height: '100%' }} source={{ uri: this.props.files.find(file => file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png') }} />
+                            <Image resizeMethod='resize' style={{ width: '100%', height: '100%' }} source={{ uri: this.props.files.find(file => file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png') }} />
 
                             <View style={styles.ButtonContainer}>
 
@@ -74,18 +73,17 @@ const styles = StyleSheet.create({
     headingText: {
         color: '#1496ba',
         fontSize: 15,
-        paddingBottom: 35,
+        paddingBottom: 10,
         paddingLeft: 30
     },
     headingMain: {
-        paddingTop: 40,
+        paddingTop: 20,
         paddingBottom: 4,
         fontSize: 25
     },
     contentContainer: {
         marginTop: 20,
         flexDirection: 'row',
-        flex: 1,
         width: '100%',
         height: '100%',
         marginBottom: 10,

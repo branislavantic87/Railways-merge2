@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 class Languages extends Component {
+
+
+    onclickLanguageText = (lang) => {
+        alert('Selected language: ' + lang);
+        Alert.alert(
+            'Change language to:',
+            '' + lang,
+            [
+                { text: 'Change language', onPress: () => console.log('will change app to ' + lang) },
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            ],
+            { cancelable: false }
+        )
+    }
+
     openLanguage = () => {
         return global.projectJson.languages.map((object, index) =>
-        <View key={index}>
-            <Text style={{ fontSize: 25, color: 'white' }}>{object.language}</Text>
-            <View style={{borderBottomWidth: 3, borderColor: 'white', }}/>
+            <View key={index}>
+                <Text style={{ fontSize: 25, color: 'white' }} onPress={() => this.onclickLanguageText(object.language)}>{object.language}</Text>
+                <View style={{ borderBottomWidth: 3, borderColor: 'white', }} />
             </View>
         );
     };
