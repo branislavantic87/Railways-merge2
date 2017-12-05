@@ -5,7 +5,7 @@ class Languages extends Component {
 
 
     onclickLanguageText = (lang) => {
-        alert('Selected language: ' + lang);
+   
         Alert.alert(
             'Change language to:',
             '' + lang,
