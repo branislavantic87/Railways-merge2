@@ -1,5 +1,14 @@
 {
   "expo": {
-    "sdkVersion": "22.0.0"
+    "name": "Railways",
+    "icon": "./train-on-railroad.png",
+    "version": "0.0.1",
+    "sdkVersion": "22.0.0",
+    "ios": {
+      "bundleIdentifier": "com.riitech.railways"
+    },
+    "android": {
+      "package": "com.riitech.railways"
+    }
   }
 }

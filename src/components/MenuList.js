@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import Menu1 from './Menu1';
 import Menu2 from './Menu2';
 
-class MenuList extends Component {
+class MenuList extends React.PureComponent {
 
     state = {
         menus: this.props.data.menuTrees[1].menuTree,
